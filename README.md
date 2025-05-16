@@ -28,7 +28,7 @@ Follow these steps to get started with the react-vite-ui template:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/AryaJayadi/SupplyChain_web.git
+   git clone https://github.com/AryaJayadi/MedTrace_web.git
    ```
 
 2. Navigate to the project directory:
