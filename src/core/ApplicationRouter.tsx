@@ -5,6 +5,7 @@ import { ROUTES } from "./Routes";
 import { AuthLayout } from "@/presentation/template/AuthLayout";
 import { LoginPage } from "@/presentation/auth/LoginPage";
 import BatchesPage from "@/presentation/batch/BatchPage";
+import { BaseLayout } from "@/presentation/template/BaseLayout";
 
 interface ProtectedRouteProps {
   redirectPath: string;
@@ -30,16 +31,22 @@ const router = createBrowserRouter([
     element: <Root />,
     children: [
       {
-        path: "",
+        path: ROUTES.ROOT,
         element: <Navigate to={ROUTES.FULL_PATH_APP_BATCH} replace />
       },
       {
-        path: "",
+        path: ROUTES.ROOT,
         element: <ProtectedRoute redirectPath={ROUTES.FULL_PATH_AUTH_LOGIN} />,
         children: [
           {
-            path: ROUTES.APP_BATCH,
-            element: <BatchesPage />
+            path: ROUTES.APP_MAIN_SEGMENT,
+            element: <BaseLayout />,
+            children: [
+              {
+                path: ROUTES.APP_BATCH,
+                element: <BatchesPage />
+              }
+            ]
           }
         ]
       },
