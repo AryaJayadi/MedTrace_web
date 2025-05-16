@@ -4,6 +4,7 @@ import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-rou
 import { ROUTES } from "./Routes";
 import { AuthLayout } from "@/presentation/template/AuthLayout";
 import { LoginPage } from "@/presentation/auth/LoginPage";
+import BatchesPage from "@/presentation/batch/BatchPage";
 
 interface ProtectedRouteProps {
   redirectPath: string;
@@ -30,13 +31,16 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Navigate to="" replace />
+        element: <Navigate to={ROUTES.FULL_PATH_APP_BATCH} replace />
       },
       {
         path: "",
         element: <ProtectedRoute redirectPath={ROUTES.FULL_PATH_AUTH_LOGIN} />,
         children: [
-
+          {
+            path: ROUTES.APP_BATCH,
+            element: <BatchesPage />
+          }
         ]
       },
       {

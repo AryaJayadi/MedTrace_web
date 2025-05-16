@@ -5,7 +5,10 @@ export const ROUTES = {
 
   AUTH_SEGMENT: "auth",
 
+  APP_BATCH: "batch",
+
   AUTH_LOGIN: "login",
 
+  FULL_PATH_APP_BATCH: "/app/batch",
   FULL_PATH_AUTH_LOGIN: "/auth/login",
 };
