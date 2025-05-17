@@ -8,6 +8,7 @@ import BatchesPage from "@/presentation/batch/BatchPage";
 import { BaseLayout } from "@/presentation/template/BaseLayout";
 import CreateBatchPage from "@/presentation/batch/CreateBatchPage";
 import TransferPage from "@/presentation/transfer/TransferPage";
+import CreateTransferPage from "@/presentation/transfer/CreateTransferPage";
 
 interface ProtectedRouteProps {
   redirectPath: string;
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
               {
                 path: ROUTES.APP_TRANSFER,
                 element: <TransferPage />
+              },
+              {
+                path: ROUTES.APP_TRANSFER_CREATE,
+                element: <CreateTransferPage />
               }
             ]
           }
