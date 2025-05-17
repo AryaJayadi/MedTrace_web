@@ -3,6 +3,7 @@ import { Package, ArrowRightLeft, ChevronLeft, ChevronRight } from "lucide-react
 import { useState, useEffect } from "react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Link, useLocation } from "react-router"
+import { ROUTES } from "@/core/Routes"
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -29,8 +30,8 @@ export default function Sidebar() {
   }, [isOpen]); // Added isOpen to dependencies to handle closing it on resize
 
   const navItems = [
-    { name: "Batch", path: "/batches", icon: <Package className="h-5 w-5" /> },
-    { name: "Transfer", path: "/transfers", icon: <ArrowRightLeft className="h-5 w-5" /> },
+    { name: "Batch", path: ROUTES.FULL_PATH_APP_BATCH, icon: <Package className="h-5 w-5" /> },
+    { name: "Transfer", path: ROUTES.FULL_PATH_APP_TRANSFER, icon: <ArrowRightLeft className="h-5 w-5" /> },
     // Add more items as needed
   ];
 
@@ -117,8 +118,8 @@ export default function Sidebar() {
   return (
     // Relative container for the desktop sidebar and its toggle button
     <div className={cn(
-        "relative h-screen transition-width duration-300 ease-in-out", // Ensure h-screen if it's a direct child of body or a flex container
-        collapsed ? "w-20" : "w-64"
+      "relative h-screen transition-width duration-300 ease-in-out", // Ensure h-screen if it's a direct child of body or a flex container
+      collapsed ? "w-20" : "w-64"
     )}>
       {/* Desktop Navigation Panel */}
       <nav
@@ -130,17 +131,17 @@ export default function Sidebar() {
       >
         {/* Desktop Sidebar Header (e.g., App Name/Logo) */}
         <div className={cn(
-            "flex items-center h-16 border-b border-sidebar-border px-4 shrink-0", // shrink-0 to prevent shrinking
-            collapsed ? "justify-center" : "justify-start gap-2"
+          "flex items-center h-16 border-b border-sidebar-border px-4 shrink-0", // shrink-0 to prevent shrinking
+          collapsed ? "justify-center" : "justify-start gap-2"
         )}>
-            {/* <Activity className={cn("h-7 w-7", collapsed ? "text-sidebar-primary" : "text-sidebar-primary")} /> */}
-            {/* ^ You can add an icon like Activity here if you want a logo */}
-            {!collapsed && <span className="text-xl font-semibold text-sidebar-primary">MedTrace</span>}
-             {collapsed && ( /* Show a small icon when collapsed for branding */
-                <Link to="/" aria-label="Home">
-                    <Package className="h-7 w-7 text-sidebar-primary" />
-                </Link>
-            )}
+          {/* <Activity className={cn("h-7 w-7", collapsed ? "text-sidebar-primary" : "text-sidebar-primary")} /> */}
+          {/* ^ You can add an icon like Activity here if you want a logo */}
+          {!collapsed && <span className="text-xl font-semibold text-sidebar-primary">MedTrace</span>}
+          {collapsed && ( /* Show a small icon when collapsed for branding */
+            <Link to="/" aria-label="Home">
+              <Package className="h-7 w-7 text-sidebar-primary" />
+            </Link>
+          )}
         </div>
 
         {/* Navigation items container */}
