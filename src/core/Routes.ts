@@ -9,11 +9,13 @@ export const ROUTES = {
   APP_BATCH_CREATE: "batch/create",
 
   APP_TRANSFER: "transfer",
+  APP_TRANSFER_CREATE: "transfer/create",
 
   AUTH_LOGIN: "login",
 
   FULL_PATH_APP_BATCH: "/app/batch",
   FULL_PATH_APP_BATCH_CREATE: "/app/batch/create",
   FULL_PATH_APP_TRANSFER: "/app/transfer",
+  FULL_PATH_APP_TRANSFER_CREATE: "/app/transfer/create",
   FULL_PATH_AUTH_LOGIN: "/auth/login",
 };
