@@ -53,7 +53,7 @@ export default function BatchesTable() {
       case "active":
         // Using accent for active, assuming accent is a positive/neutral color like green or blue
         // bg-accent/10 for a light background, text-accent for darker text.
-        return "bg-accent/10 text-accent border-accent/20";
+        return "bg-primary/10 text-primary border-primary/20";
       case "pending":
         // Using a generic approach for pending, could be a yellow-ish or blue-ish accent
         // For example, if you have chart-1 as a yellow-ish color:
