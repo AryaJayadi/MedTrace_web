@@ -4,7 +4,7 @@ import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-rou
 import { ROUTES } from "./Routes";
 import { AuthLayout } from "@/presentation/template/AuthLayout";
 import { LoginPage } from "@/presentation/auth/LoginPage";
-import BatchesPage from "@/presentation/batch/BatchPage";
+import BatchPage from "@/presentation/batch/BatchPage";
 import { BaseLayout } from "@/presentation/template/BaseLayout";
 import CreateBatchPage from "@/presentation/batch/CreateBatchPage";
 import TransferPage from "@/presentation/transfer/TransferPage";
@@ -47,7 +47,7 @@ const router = createBrowserRouter([
             children: [
               {
                 path: ROUTES.APP_BATCH,
-                element: <BatchesPage />
+                element: <BatchPage />
               },
               {
                 path: ROUTES.APP_BATCH_CREATE,

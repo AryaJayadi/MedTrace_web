@@ -4,7 +4,7 @@ import { ROUTES } from "@/core/Routes";
 import { Plus, ArrowRightLeft } from "lucide-react"
 import { Link } from "react-router"
 
-export default function TransfersPage() {
+export default function TransferPage() {
   return (
     <div className="space-y-6 p-4 md:p-6">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">

@@ -5,7 +5,7 @@ import { ROUTES } from "@/core/Routes"
 import { Plus, Filter } from "lucide-react"
 import { Link } from "react-router"
 
-export default function BatchesPage() {
+export default function BatchPage() {
   return (
     <div className="space-y-6 p-4 md:p-6">
       <div className="flex items-center justify-between">
