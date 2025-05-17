@@ -15,7 +15,7 @@ export default function Header() {
           <span className="text-xl font-semibold">MedTrace</span>
         </Link>
 
-        <div className="flex items-center gap-3 bg-primary-foreground/10 backdrop-blur-sm px-4 py-2 rounded-full">
+        <div className="flex items-center gap-3 bg-primary-foreground/10 text-foreground backdrop-blur-sm px-4 py-2 rounded-full">
           <div className="h-2.5 w-2.5 rounded-full bg-accent animate-pulse"></div>
           <span className="hidden sm:inline text-sm">Welcome,</span>
           <span className="text-sm font-medium">
