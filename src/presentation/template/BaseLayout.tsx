@@ -1,5 +1,5 @@
 import Header from "@/components/header"
-import { Sidebar } from "lucide-react"
+import Sidebar from "@/components/sidebar"
 import { Outlet } from "react-router"
 
 export const BaseLayout = () => {
