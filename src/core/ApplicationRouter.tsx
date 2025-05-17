@@ -6,6 +6,7 @@ import { AuthLayout } from "@/presentation/template/AuthLayout";
 import { LoginPage } from "@/presentation/auth/LoginPage";
 import BatchesPage from "@/presentation/batch/BatchPage";
 import { BaseLayout } from "@/presentation/template/BaseLayout";
+import CreateBatchPage from "@/presentation/batch/CreateBatchPage";
 
 interface ProtectedRouteProps {
   redirectPath: string;
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
               {
                 path: ROUTES.APP_BATCH,
                 element: <BatchesPage />
+              },
+              {
+                path: ROUTES.APP_BATCH_CREATE,
+                element: <CreateBatchPage />
               }
             ]
           }
