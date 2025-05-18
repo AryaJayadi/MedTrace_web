@@ -12,7 +12,7 @@ interface Transfer {
   quantity: number;
   sender: string;
   receiver: string;
-  status: string; // "pending", "completed", "rejected"
+  status: string;
   date: string;
 }
 
@@ -24,9 +24,6 @@ export default function TransfersTable({
   transfers: initialTransfers,
 }: TransfersTableProps) {
   const [transfers, setTransfers] = useState<Transfer[]>(initialTransfers);
-
-  // This function is no longer needed as styles are applied directly with cn
-  // const getStatusBadgeClasses = (status: string) => { ... };
 
   const handleAccept = (id: string) => {
     setTransfers(
@@ -49,9 +46,6 @@ export default function TransfersTable({
   };
 
   if (!transfers || transfers.length === 0) {
-    // Assumes 'card', 'card-foreground', 'primary', 'foreground',
-    // 'muted-foreground' are aliased in @theme inline and produce utilities
-    // like bg-card, text-primary etc.
     return (
       <div className="bg-card text-card-foreground rounded-xl p-8 shadow-lg flex flex-col items-center justify-center text-center py-16">
         <div className="bg-primary/10 p-4 rounded-full mb-6"> {/* Assumes 'primary' utility exists */}
@@ -68,7 +62,6 @@ export default function TransfersTable({
   }
 
   return (
-    // Assumes 'border', 'muted', 'card-foreground', 'foreground' produce utilities
     <div className="rounded-lg border border-border overflow-hidden">
       <Table>
         <TableHeader className="bg-muted/50"> {/* Assumes 'muted' utility exists */}
@@ -95,10 +88,9 @@ export default function TransfersTable({
               <TableCell>{transfer.receiver}</TableCell>
               <TableCell>
                 <Badge
-                  variant="outline" // Outline variant uses theme's border color by default.
-                  // We are overriding bg, text, and border for status indication.
+                  variant="outline"
                   className={cn(
-                    "capitalize font-medium px-2.5 py-0.5 text-xs", // Base badge styles
+                    "capitalize font-medium px-2.5 py-0.5 text-xs",
                     transfer.status.toLowerCase() === "completed" &&
                     "bg-status-completed-background text-status-completed-foreground border-status-completed-border",
                     transfer.status.toLowerCase() === "pending" &&
@@ -107,7 +99,7 @@ export default function TransfersTable({
                     "bg-status-rejected-background text-status-rejected-foreground border-status-rejected-border",
                     // Fallback for any other status not explicitly defined
                     !["completed", "pending", "rejected"].includes(transfer.status.toLowerCase()) &&
-                    "bg-muted text-muted-foreground border-border" // Uses general theme utilities
+                    "bg-muted text-muted-foreground border-border"
                   )}
                 >
                   {transfer.status}
@@ -116,7 +108,6 @@ export default function TransfersTable({
               <TableCell className="text-center">
                 {transfer.status.toLowerCase() === "pending" ? (
                   <div className="flex justify-center gap-2">
-                    {/* Accept Button: Green themed */}
                     <Button
                       size="sm"
                       onClick={() => handleAccept(transfer.id)}
@@ -125,14 +116,10 @@ export default function TransfersTable({
                     >
                       <CheckCircle className="h-4 w-4 mr-1.5" /> Accept
                     </Button>
-                    {/* Reject Button: Red themed (outline variant) */}
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => handleReject(transfer.id)}
-                      // Uses status-reject-border (which you set to var(--status-reject-background) in globals.css)
-                      // and status-reject-foreground for text.
-                      // Hover uses status-reject-background and status-reject-foreground.
                       className="bg-status-reject-background border-status-reject-border text-status-reject-foreground hover:bg-status-reject-hover-background hover:text-status-reject-foreground focus-visible:ring-status-reject-background"
                       aria-label={`Reject transfer ${transfer.id}`}
                     >
@@ -142,7 +129,6 @@ export default function TransfersTable({
                 ) : (
                   <span className={cn(
                     "text-sm font-medium",
-                    // Uses specific status foreground colors for the text
                     transfer.status.toLowerCase() === "completed" ? "text-status-completed-foreground" : "",
                     transfer.status.toLowerCase() === "rejected" ? "text-status-rejected-foreground" : ""
                   )}>
