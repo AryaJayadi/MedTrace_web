@@ -10,6 +10,7 @@ import { Search, ArrowLeft, Save, Building, MapPin, Package } from "lucide-react
 import { Link, useNavigate } from "react-router"
 import { ROUTES } from "@/core/Routes"
 import { cn } from "@/lib/utils"
+import useViewModel from "./CreateTransferPageViewModel"
 
 // Define a type for a batch if not already defined elsewhere
 interface Batch {
@@ -38,6 +39,9 @@ export default function CreateTransferPage() {
     searchQuery: "",
     selectedBatches: [],
   });
+  const {
+
+  } = useViewModel();
 
   // This would come from an API in a real application
   const [availableBatches, setAvailableBatches] = useState<Batch[]>([
@@ -293,7 +297,7 @@ export default function CreateTransferPage() {
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader className="bg-muted/50">
-                    <TableRow className="border-b-0"> {/* Remove border if header has bg */}
+                    <TableRow className="border-b-0">
                       <TableHead className="w-[50px] text-muted-foreground"><span className="sr-only">Select</span></TableHead>
                       <TableHead className="font-semibold text-muted-foreground">Batch ID</TableHead>
                       <TableHead className="font-semibold text-muted-foreground">Drug Name</TableHead>

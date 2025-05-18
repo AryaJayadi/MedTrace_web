@@ -27,7 +27,7 @@ export class OrganizationApiDataSource implements OrganizationDataSource {
   async getOrganizations(): Promise<BaseListResponse<Organization>> {
     const response = await this.axiosInstance({
       method: "GET",
-      url: "/",
+      url: "",
     })
 
     console.log(response);
