@@ -1,11 +1,21 @@
 import { cn } from "@/lib/utils"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-import { Pencil, Trash2 } from "lucide-react"
+import { Package, Pencil, Trash2 } from "lucide-react"
 import { useState } from "react"
 
 // This would typically come from an API
-const initialBatches = [
+interface Batch {
+  id: string;
+  drugName: string;
+  quantity: number;
+  productionDate: string;
+  expiryDate: string;
+  status: string; // "active", "pending", "expired"
+}
+
+// This would typically come from an API
+const initialBatches: Batch[] = [
   {
     id: "B-001",
     drugName: "Paracetamol",
@@ -35,37 +45,15 @@ const initialBatches = [
     drugName: "Aspirin",
     quantity: 20000,
     productionDate: "2024-01-01",
-    expiryDate: "2025-01-01", // Example of an expired batch
+    expiryDate: "2025-01-01",
     status: "expired",
   },
 ];
 
 export default function BatchesTable() {
-  const [data, setData] = useState(initialBatches);
+  const [data, setData] = useState<Batch[]>(initialBatches);
 
-  // Function to determine badge styling based on status
-  // This now uses themed variables.
-  // For more specific status colors, you might define variables like
-  // --status-active-background, --status-active-foreground, etc. in your global.css
-  // and map them in tailwind.config.js
-  const getStatusBadgeClasses = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "active":
-        // Using accent for active, assuming accent is a positive/neutral color like green or blue
-        // bg-accent/10 for a light background, text-accent for darker text.
-        return "bg-primary/10 text-primary border-primary/20";
-      case "pending":
-        // Using a generic approach for pending, could be a yellow-ish or blue-ish accent
-        // For example, if you have chart-1 as a yellow-ish color:
-        return "bg-chart-1/10 text-chart-1 border-chart-1/20";
-      case "expired":
-        // Using destructive for expired status
-        return "bg-destructive/10 text-destructive border-destructive/20";
-      default:
-        // Default fallback using muted colors
-        return "bg-muted/50 text-muted-foreground border-border";
-    }
-  };
+  // getStatusBadgeClasses function is no longer needed as styles are applied directly
 
   // TODO: Implement actual edit and delete functions
   const handleEdit = (batchId: string) => {
@@ -79,102 +67,101 @@ export default function BatchesTable() {
     // setData(data.filter(batch => batch.id !== batchId));
   };
 
+  if (!data || data.length === 0) {
+    // Assumes 'card', 'card-foreground', 'primary', 'foreground',
+    // 'muted-foreground' are aliased in @theme inline and produce utilities
+    // like bg-card, text-primary etc.
+    return (
+      <div className="bg-card text-card-foreground rounded-xl p-8 shadow-lg flex flex-col items-center justify-center text-center py-16">
+        <div className="bg-primary/10 p-4 rounded-full mb-6"> {/* Assumes 'primary' utility exists */}
+          <Package className="h-10 w-10 text-primary" /> {/* Using Package icon */}
+        </div>
+        <h3 className="text-xl font-semibold text-foreground mb-2">
+          No Batches Found
+        </h3>
+        <p className="text-muted-foreground max-w-md">
+          Create your first batch to get started.
+        </p>
+      </div>
+    );
+  }
 
   return (
-    // Table container
-    // - rounded-lg: Keeps rounded corners.
-    // - border border-border: Uses the themed border color.
-    // - overflow-hidden: Necessary for rounded corners on the table itself.
+    // Assumes 'border', 'muted', 'card-foreground', 'foreground' produce utilities
     <div className="rounded-lg border border-border overflow-hidden">
       <Table>
-        {/* Table Header */}
-        {/* - bg-muted/50: A very light background for the header, using a muted theme color.
-            Alternatively, bg-card or bg-background could be used for a flatter look.
-        */}
-        <TableHeader className="bg-muted/50">
+        <TableHeader className="bg-muted/50"> {/* Assumes 'muted' utility exists */}
           <TableRow className="border-b border-border">
-            {/* Table Headings */}
-            {/* - text-muted-foreground: Uses themed color for less prominent text.
-                - font-semibold: Standard bolding.
-            */}
             <TableHead className="font-semibold text-muted-foreground">Batch ID</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Drug Name</TableHead>
-            <TableHead className="font-semibold text-muted-foreground">Quantity</TableHead>
+            <TableHead className="font-semibold text-muted-foreground text-right">Quantity</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Production Date</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Expiry Date</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Status</TableHead>
             <TableHead className="text-right font-semibold text-muted-foreground">Actions</TableHead>
           </TableRow>
         </TableHeader>
-        {/* Table Body */}
-        {/* - text-card-foreground: Default text color for table cells, inherited from parent card or set here. */}
         <TableBody className="text-card-foreground">
-          {data.length === 0 ? (
-            // Empty state row
-            <TableRow>
-              <TableCell colSpan={7} className="h-32 text-center text-muted-foreground">
-                No batches found.
-                {/* You could add a button here to "Create New Batch" if desired */}
+          {data.map((batch) => (
+            <TableRow
+              key={batch.id}
+              className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors"
+            >
+              <TableCell className="font-medium text-foreground">{batch.id}</TableCell>
+              <TableCell>{batch.drugName}</TableCell>
+              <TableCell className="text-right">{batch.quantity.toLocaleString()}</TableCell>
+              <TableCell>{batch.productionDate}</TableCell>
+              <TableCell>{batch.expiryDate}</TableCell>
+              <TableCell>
+                <Badge
+                  variant="outline" // Outline variant uses theme's border color by default.
+                  // We are overriding bg, text, and border for status indication.
+                  className={cn(
+                    "capitalize font-medium px-2.5 py-0.5 text-xs", // Base badge styles
+                    batch.status.toLowerCase() === "active" &&
+                    "bg-status-info-background text-status-info-foreground border-status-info-border", // Blue for active
+                    batch.status.toLowerCase() === "pending" &&
+                    "bg-status-pending-background text-status-pending-foreground border-status-pending-border", // Yellow for pending
+                    batch.status.toLowerCase() === "expired" &&
+                    "bg-status-rejected-background text-status-rejected-foreground border-status-rejected-border", // Red for expired
+                    // Fallback for any other status not explicitly defined
+                    !["active", "pending", "expired"].includes(batch.status.toLowerCase()) &&
+                    "bg-muted text-muted-foreground border-border" // Uses general theme utilities
+                  )}
+                >
+                  {batch.status}
+                </Badge>
+              </TableCell>
+              <TableCell className="text-right">
+                <div className="flex justify-end gap-2">
+                  {/* Edit Button: Uses primary for hover state */}
+                  <button
+                    onClick={() => handleEdit(batch.id)}
+                    aria-label={`Edit batch ${batch.id}`}
+                    className={cn(
+                      "p-1.5 rounded-md transition-colors",
+                      "text-muted-foreground hover:text-primary hover:bg-primary/10", // Uses primary theme for hover
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                    )}
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </button>
+                  {/* Delete Button: Uses destructive for hover state */}
+                  <button
+                    onClick={() => handleDelete(batch.id)}
+                    aria-label={`Delete batch ${batch.id}`}
+                    className={cn(
+                      "p-1.5 rounded-md transition-colors",
+                      "text-muted-foreground hover:text-destructive hover:bg-destructive/10", // Uses destructive theme for hover
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                    )}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
               </TableCell>
             </TableRow>
-          ) : (
-            // Data rows
-            data.map((batch) => (
-              <TableRow
-                key={batch.id}
-                // - hover:bg-muted/30: Light hover effect using a muted theme color.
-                // - border-b border-border: Bottom border for each row.
-                className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors"
-              >
-                <TableCell className="font-medium text-foreground">{batch.id}</TableCell>
-                <TableCell>{batch.drugName}</TableCell>
-                <TableCell>{batch.quantity.toLocaleString()}</TableCell>
-                <TableCell>{batch.productionDate}</TableCell>
-                <TableCell>{batch.expiryDate}</TableCell>
-                <TableCell>
-                  {/* Badge for status */}
-                  {/* - variant="outline" is kept from original.
-                      - getStatusBadgeClasses provides themed background, text, and border colors.
-                  */}
-                  <Badge
-                    variant="outline"
-                    className={cn("capitalize font-medium", getStatusBadgeClasses(batch.status))}
-                  >
-                    {batch.status}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-right">
-                  {/* Action buttons */}
-                  <div className="flex justify-end gap-2">
-                    {/* Edit Button */}
-                    <button
-                      onClick={() => handleEdit(batch.id)}
-                      aria-label={`Edit batch ${batch.id}`}
-                      className={cn(
-                        "p-1.5 rounded-md transition-colors",
-                        "text-muted-foreground hover:text-primary hover:bg-primary/10",
-                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
-                      )}
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </button>
-                    {/* Delete Button */}
-                    <button
-                      onClick={() => handleDelete(batch.id)}
-                      aria-label={`Delete batch ${batch.id}`}
-                      className={cn(
-                        "p-1.5 rounded-md transition-colors",
-                        "text-muted-foreground hover:text-destructive hover:bg-destructive/10",
-                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
-                      )}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))
-          )}
+          ))}
         </TableBody>
       </Table>
     </div>

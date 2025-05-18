@@ -7,7 +7,7 @@ import { useState } from "react"
 import { Link } from "react-router"
 
 export default function BatchesPage() {
-  const [hasBatches, setHasBatches] = useState(false);
+  const [hasBatches, setHasBatches] = useState(true);
 
   return (
     <div className="space-y-6 p-4 md:p-6">
