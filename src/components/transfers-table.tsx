@@ -30,7 +30,7 @@ export default function TransfersTable({
     switch (status.toLowerCase()) {
       case "completed":
         // Using accent for completed, assuming accent is a positive color (e.g., green)
-        return "bg-accent/10 text-accent border-accent/20";
+        return "bg-primary/10 text-primary border-primary/20";
       case "pending":
         // Using a chart color for pending, assuming it's a neutral/warning color (e.g., yellow/blue)
         return "bg-chart-1/10 text-chart-1 border-chart-1/20";
@@ -129,7 +129,7 @@ export default function TransfersTable({
                       size="sm"
                       onClick={() => handleAccept(transfer.id)}
                       // Assuming accent is green-like, or define a specific --success variable
-                      className="bg-accent hover:bg-accent/90 text-accent-foreground"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground"
                       aria-label={`Accept transfer ${transfer.id}`}
                     >
                       <CheckCircle className="h-4 w-4 mr-1.5" /> Accept
@@ -150,7 +150,7 @@ export default function TransfersTable({
                   // Status Text for completed/rejected: Uses themed muted foreground color.
                   <span className={cn(
                     "text-sm font-medium",
-                    transfer.status === "completed" ? "text-accent" : "text-destructive"
+                    transfer.status === "completed" ? "text-primary" : "text-destructive"
                   )}>
                     {transfer.status === "completed" ? "Accepted" : "Rejected"}
                   </span>

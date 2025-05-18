@@ -4,15 +4,15 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --radius: 1rem;
+  --radius: 0.5rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.606 0.25 292.717);
-  --primary-foreground: oklch(0.969 0.016 293.756);
+  --primary: oklch(0.645 0.246 16.439);
+  --primary-foreground: oklch(0.969 0.015 12.422);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.967 0.001 286.375);
@@ -22,7 +22,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.606 0.25 292.717);
+  --ring: oklch(0.645 0.246 16.439);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -30,43 +30,12 @@
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-primary: oklch(0.606 0.25 292.717);
-  --sidebar-primary-foreground: oklch(0.969 0.016 293.756);
+  --sidebar-primary: oklch(0.645 0.246 16.439);
+  --sidebar-primary-foreground: oklch(0.969 0.015 12.422);
   --sidebar-accent: oklch(0.967 0.001 286.375);
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.606 0.25 292.717);
-
-  /* Status: Completed (Typically Greenish) */
-  --status-completed-background: oklch(0.88 0.15 145); /* Light Greenish */
-  --status-completed-foreground: oklch(0.4 0.18 145); /* Dark Greenish */
-  --status-completed-border: oklch(0.75 0.15 145 / 50%); /* Lighter Greenish Border */
-
-  /* Status: Pending (Typically Yellowish/Orangish or Bluish) */
-  --status-pending-background: oklch(0.95 0.12 85);  /* Light Yellowish */
-  --status-pending-foreground: oklch(0.55 0.15 85); /* Dark Yellowish */
-  --status-pending-border: oklch(0.85 0.12 85 / 50%); /* Lighter Yellowish Border */
-
-  /* Status: Rejected/Error/Destructive (Typically Reddish) */
-  /* You already have --destructive, but we can make specific status ones if needed, or alias it */
-  --status-rejected-background: oklch(0.88 0.18 25); /* Light Reddish (using destructive as a base) */
-  --status-rejected-foreground: oklch(0.5 0.22 25); /* Dark Reddish */
-  --status-rejected-border: oklch(0.75 0.18 25 / 50%); /* Lighter Reddish Border */
-
-  /* Action: Accept (Similar to Completed or a distinct positive action color) */
-  --status-accept-background: oklch(0.606 0.25 292.717); /* Using --primary as base */
-  --status-accept-foreground: oklch(0.969 0.016 293.756);/* Using --primary-foreground */
-  --status-accept-hover-background: oklch(0.55 0.25 292.717); /* Slightly darker primary */
-
-  /* Action: Reject (Similar to Rejected or a distinct negative action color) */
-  --status-reject-background: oklch(0.577 0.245 27.325); /* Using --destructive as base */
-  --status-reject-foreground: oklch(0.969 0.016 293.756);/* Using --primary-foreground for high contrast on dark bg */
-  --status-reject-hover-background: oklch(0.52 0.245 27.325); /* Slightly darker destructive */
-
-  /* You can add more statuses like "warning", "info", "on-hold" etc. */
-  --status-info-background: oklch(0.9 0.1 230); /* Light Bluish */
-  --status-info-foreground: oklch(0.45 0.15 230); /* Dark Bluish */
-  --status-info-border: oklch(0.8 0.1 230 / 50%);
+  --sidebar-ring: oklch(0.645 0.246 16.439);
 }
 
 .dark {
@@ -76,8 +45,8 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.21 0.006 285.885);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.541 0.281 293.009);
-  --primary-foreground: oklch(0.969 0.016 293.756);
+  --primary: oklch(0.645 0.246 16.439);
+  --primary-foreground: oklch(0.969 0.015 12.422);
   --secondary: oklch(0.274 0.006 286.033);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.274 0.006 286.033);
@@ -87,7 +56,7 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.541 0.281 293.009);
+  --ring: oklch(0.645 0.246 16.439);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -95,42 +64,12 @@
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.21 0.006 285.885);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.541 0.281 293.009);
-  --sidebar-primary-foreground: oklch(0.969 0.016 293.756);
+  --sidebar-primary: oklch(0.645 0.246 16.439);
+  --sidebar-primary-foreground: oklch(0.969 0.015 12.422);
   --sidebar-accent: oklch(0.274 0.006 286.033);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.541 0.281 293.009);
-
-  /* Status: Completed */
-  --status-completed-background: oklch(0.4 0.18 145 / 0.2);  /* Darker Greenish, low opacity bg */
-  --status-completed-foreground: oklch(0.88 0.15 145);   /* Light Greenish text */
-  --status-completed-border: oklch(0.5 0.18 145 / 50%); /* Mid Greenish Border */
-
-  /* Status: Pending */
-  --status-pending-background: oklch(0.55 0.15 85 / 0.2);   /* Darker Yellowish, low opacity bg */
-  --status-pending-foreground: oklch(0.95 0.12 85);   /* Light Yellowish text */
-  --status-pending-border: oklch(0.65 0.15 85 / 50%);  /* Mid Yellowish Border */
-
-  /* Status: Rejected/Error/Destructive */
-  --status-rejected-background: oklch(0.5 0.22 25 / 0.2);    /* Darker Reddish, low opacity bg (using destructive as base) */
-  --status-rejected-foreground: oklch(0.88 0.18 25);    /* Light Reddish text */
-  --status-rejected-border: oklch(0.6 0.22 25 / 50%);   /* Mid Reddish Border */
-
-  /* Action: Accept */
-  --status-accept-background: oklch(0.541 0.281 293.009); /* Using dark --primary */
-  --status-accept-foreground: oklch(0.969 0.016 293.756); /* Using dark --primary-foreground */
-  --status-accept-hover-background: oklch(0.50 0.281 293.009); /* Slightly darker dark primary */
-
-  /* Action: Reject */
-  --status-reject-background: oklch(0.704 0.191 22.216); /* Using dark --destructive */
-  --status-reject-foreground: oklch(0.969 0.016 293.756);/* Using dark --primary-foreground */
-  --status-reject-hover-background: oklch(0.65 0.191 22.216); /* Slightly darker dark destructive */
-
-  /* Status: Info */
-  --status-info-background: oklch(0.45 0.15 230 / 0.2); /* Darker Bluish, low opacity bg */
-  --status-info-foreground: oklch(0.9 0.1 230);   /* Light Bluish text */
-  --status-info-border: oklch(0.55 0.15 230 / 50%);
+  --sidebar-ring: oklch(0.645 0.246 16.439);
 }
 
 @theme inline {
