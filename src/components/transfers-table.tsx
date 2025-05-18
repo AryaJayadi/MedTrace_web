@@ -10,10 +10,10 @@ interface Transfer {
   batchId: string;
   drugName: string;
   quantity: number;
-  sender: string; // This field was in your interface but not used in the table, kept it.
+  sender: string;
   receiver: string;
   status: string; // "pending", "completed", "rejected"
-  date: string; // This field was in your interface but not used in the table, kept it.
+  date: string;
 }
 
 interface TransfersTableProps {
@@ -25,23 +25,8 @@ export default function TransfersTable({
 }: TransfersTableProps) {
   const [transfers, setTransfers] = useState<Transfer[]>(initialTransfers);
 
-  // Function to determine badge styling based on status, using themed variables.
-  const getStatusBadgeClasses = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "completed":
-        // Using accent for completed, assuming accent is a positive color (e.g., green)
-        return "bg-primary/10 text-primary border-primary/20";
-      case "pending":
-        // Using a chart color for pending, assuming it's a neutral/warning color (e.g., yellow/blue)
-        return "bg-chart-1/10 text-chart-1 border-chart-1/20";
-      case "rejected":
-        // Using destructive for rejected status
-        return "bg-destructive/10 text-destructive border-destructive/20";
-      default:
-        // Default fallback using muted colors
-        return "bg-muted/50 text-muted-foreground border-border";
-    }
-  };
+  // This function is no longer needed as styles are applied directly with cn
+  // const getStatusBadgeClasses = (status: string) => { ... };
 
   const handleAccept = (id: string) => {
     setTransfers(
@@ -50,6 +35,7 @@ export default function TransfersTable({
       )
     );
     // TODO: Add API call to update status on the backend
+    console.log(`Transfer ${id} accepted.`);
   };
 
   const handleReject = (id: string) => {
@@ -59,13 +45,17 @@ export default function TransfersTable({
       )
     );
     // TODO: Add API call to update status on the backend
+    console.log(`Transfer ${id} rejected.`);
   };
 
   if (!transfers || transfers.length === 0) {
+    // Assumes 'card', 'card-foreground', 'primary', 'foreground',
+    // 'muted-foreground' are aliased in @theme inline and produce utilities
+    // like bg-card, text-primary etc.
     return (
       <div className="bg-card text-card-foreground rounded-xl p-8 shadow-lg flex flex-col items-center justify-center text-center py-16">
-        <div className="bg-primary/10 p-4 rounded-full mb-6">
-          <XCircle className="h-10 w-10 text-primary" /> {/* Or another appropriate icon */}
+        <div className="bg-primary/10 p-4 rounded-full mb-6"> {/* Assumes 'primary' utility exists */}
+          <XCircle className="h-10 w-10 text-primary" /> {/* Assumes 'text-primary' utility exists */}
         </div>
         <h3 className="text-xl font-semibold text-foreground mb-2">
           No Transfers Found
@@ -78,17 +68,11 @@ export default function TransfersTable({
   }
 
   return (
-    // Table container
-    // - rounded-lg: Keeps rounded corners.
-    // - border border-border: Uses the themed border color.
-    // - overflow-hidden: Necessary for rounded corners on the table itself.
+    // Assumes 'border', 'muted', 'card-foreground', 'foreground' produce utilities
     <div className="rounded-lg border border-border overflow-hidden">
       <Table>
-        {/* Table Header */}
-        {/* - bg-muted/50: A very light background for the header. */}
-        <TableHeader className="bg-muted/50">
+        <TableHeader className="bg-muted/50"> {/* Assumes 'muted' utility exists */}
           <TableRow className="border-b border-border">
-            {/* Table Headings: Use themed muted foreground color. */}
             <TableHead className="font-semibold text-muted-foreground">Transfer ID</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Batch ID</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Drug Name</TableHead>
@@ -98,13 +82,10 @@ export default function TransfersTable({
             <TableHead className="font-semibold text-muted-foreground text-center">Actions</TableHead>
           </TableRow>
         </TableHeader>
-        {/* Table Body: Default text color from parent card or text-card-foreground. */}
         <TableBody className="text-card-foreground">
           {transfers.map((transfer) => (
             <TableRow
               key={transfer.id}
-              // - hover:bg-muted/30: Light themed hover effect.
-              // - border-b border-border: Bottom border for each row.
               className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors"
             >
               <TableCell className="font-medium text-foreground">{transfer.id}</TableCell>
@@ -113,44 +94,57 @@ export default function TransfersTable({
               <TableCell className="text-right">{transfer.quantity.toLocaleString()}</TableCell>
               <TableCell>{transfer.receiver}</TableCell>
               <TableCell>
-                {/* Status Badge: Uses themed classes from getStatusBadgeClasses. */}
                 <Badge
-                  variant="outline" // Kept from original, shadcn Badge should handle this well with themed border
-                  className={cn("capitalize font-medium", getStatusBadgeClasses(transfer.status))}
+                  variant="outline" // Outline variant uses theme's border color by default.
+                  // We are overriding bg, text, and border for status indication.
+                  className={cn(
+                    "capitalize font-medium px-2.5 py-0.5 text-xs", // Base badge styles
+                    transfer.status.toLowerCase() === "completed" &&
+                    "bg-status-completed-background text-status-completed-foreground border-status-completed-border",
+                    transfer.status.toLowerCase() === "pending" &&
+                    "bg-status-pending-background text-status-pending-foreground border-status-pending-border",
+                    transfer.status.toLowerCase() === "rejected" &&
+                    "bg-status-rejected-background text-status-rejected-foreground border-status-rejected-border",
+                    // Fallback for any other status not explicitly defined
+                    !["completed", "pending", "rejected"].includes(transfer.status.toLowerCase()) &&
+                    "bg-muted text-muted-foreground border-border" // Uses general theme utilities
+                  )}
                 >
                   {transfer.status}
                 </Badge>
               </TableCell>
               <TableCell className="text-center">
-                {transfer.status === "pending" ? (
+                {transfer.status.toLowerCase() === "pending" ? (
                   <div className="flex justify-center gap-2">
-                    {/* Accept Button: Themed for a positive action. */}
+                    {/* Accept Button: Green themed */}
                     <Button
                       size="sm"
                       onClick={() => handleAccept(transfer.id)}
-                      // Assuming accent is green-like, or define a specific --success variable
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                      className="bg-status-accept-background hover:bg-status-accept-hover-background text-status-accept-foreground"
                       aria-label={`Accept transfer ${transfer.id}`}
                     >
                       <CheckCircle className="h-4 w-4 mr-1.5" /> Accept
                     </Button>
-                    {/* Reject Button: Themed for a destructive action. */}
+                    {/* Reject Button: Red themed (outline variant) */}
                     <Button
                       size="sm"
-                      variant="outline" // Outline variant for secondary destructive action
+                      variant="outline"
                       onClick={() => handleReject(transfer.id)}
-                      // Explicitly styling for destructive outline button
-                      className="border-destructive/50 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      // Uses status-reject-border (which you set to var(--status-reject-background) in globals.css)
+                      // and status-reject-foreground for text.
+                      // Hover uses status-reject-background and status-reject-foreground.
+                      className="bg-status-reject-background border-status-reject-border text-status-reject-foreground hover:bg-status-reject-hover-background hover:text-status-reject-foreground focus-visible:ring-status-reject-background"
                       aria-label={`Reject transfer ${transfer.id}`}
                     >
                       <XCircle className="h-4 w-4 mr-1.5" /> Reject
                     </Button>
                   </div>
                 ) : (
-                  // Status Text for completed/rejected: Uses themed muted foreground color.
                   <span className={cn(
                     "text-sm font-medium",
-                    transfer.status === "completed" ? "text-primary" : "text-destructive"
+                    // Uses specific status foreground colors for the text
+                    transfer.status.toLowerCase() === "completed" ? "text-status-completed-foreground" : "",
+                    transfer.status.toLowerCase() === "rejected" ? "text-status-rejected-foreground" : ""
                   )}>
                     {transfer.status === "completed" ? "Accepted" : "Rejected"}
                   </span>

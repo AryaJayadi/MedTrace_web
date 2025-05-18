@@ -4,15 +4,15 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --radius: 0.5rem;
+  --radius: 1rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.645 0.246 16.439);
-  --primary-foreground: oklch(0.969 0.015 12.422);
+  --primary: oklch(0.606 0.25 292.717);
+  --primary-foreground: oklch(0.969 0.016 293.756);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.967 0.001 286.375);
@@ -22,7 +22,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.645 0.246 16.439);
+  --ring: oklch(0.606 0.25 292.717);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -30,12 +30,44 @@
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-primary: oklch(0.645 0.246 16.439);
-  --sidebar-primary-foreground: oklch(0.969 0.015 12.422);
+  --sidebar-primary: oklch(0.606 0.25 292.717);
+  --sidebar-primary-foreground: oklch(0.969 0.016 293.756);
   --sidebar-accent: oklch(0.967 0.001 286.375);
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.645 0.246 16.439);
+  --sidebar-ring: oklch(0.606 0.25 292.717);
+
+  /* Status: Completed (Typically Greenish) */
+  --status-completed-background: oklch(0.88 0.15 145); /* Light Greenish */
+  --status-completed-foreground: oklch(0.4 0.18 145); /* Dark Greenish */
+  --status-completed-border: oklch(0.75 0.15 145 / 50%); /* Lighter Greenish Border */
+
+  /* Status: Pending (Typically Yellowish/Orangish or Bluish) */
+  --status-pending-background: oklch(0.95 0.12 85);  /* Light Yellowish */
+  --status-pending-foreground: oklch(0.55 0.15 85); /* Dark Yellowish */
+  --status-pending-border: oklch(0.85 0.12 85 / 50%); /* Lighter Yellowish Border */
+
+  /* Status: Rejected/Error/Destructive (Typically Reddish) */
+  /* You already have --destructive, but we can make specific status ones if needed, or alias it */
+  --status-rejected-background: oklch(0.88 0.18 25); /* Light Reddish (using destructive as a base) */
+  --status-rejected-foreground: oklch(0.5 0.22 25); /* Dark Reddish */
+  --status-rejected-border: oklch(0.75 0.18 25 / 50%); /* Lighter Reddish Border */
+
+  /* Action: Accept (Similar to Completed or a distinct positive action color) */
+  --status-accept-background: oklch(0.65 0.22 145);       /* Clear, medium Green */
+  --status-accept-foreground: oklch(0.98 0.02 145);       /* Very Light Green / White text */
+  --status-accept-hover-background: oklch(0.60 0.22 145); /* Slightly Darker Green */
+
+  /* Action: Reject (Red Themed) */
+  --status-reject-background: oklch(0.60 0.24 25);        /* Clear, medium Red */
+  --status-reject-foreground: oklch(0.98 0.02 25);        /* Very Light Red / White text */
+  --status-reject-hover-background: oklch(0.55 0.24 25); /* Slightly Darker Red */
+  --status-reject-border: var(--status-reject-background); /* Optional: makes reject outline border match reject bg */
+
+  /* You can add more statuses like "warning", "info", "on-hold" etc. */
+  --status-info-background: oklch(0.9 0.1 230); /* Light Bluish */
+  --status-info-foreground: oklch(0.45 0.15 230); /* Dark Bluish */
+  --status-info-border: oklch(0.8 0.1 230 / 50%);
 }
 
 .dark {
@@ -45,8 +77,8 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.21 0.006 285.885);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.645 0.246 16.439);
-  --primary-foreground: oklch(0.969 0.015 12.422);
+  --primary: oklch(0.541 0.281 293.009);
+  --primary-foreground: oklch(0.969 0.016 293.756);
   --secondary: oklch(0.274 0.006 286.033);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.274 0.006 286.033);
@@ -56,7 +88,7 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.645 0.246 16.439);
+  --ring: oklch(0.541 0.281 293.009);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -64,12 +96,43 @@
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.21 0.006 285.885);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.645 0.246 16.439);
-  --sidebar-primary-foreground: oklch(0.969 0.015 12.422);
+  --sidebar-primary: oklch(0.541 0.281 293.009);
+  --sidebar-primary-foreground: oklch(0.969 0.016 293.756);
   --sidebar-accent: oklch(0.274 0.006 286.033);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.645 0.246 16.439);
+  --sidebar-ring: oklch(0.541 0.281 293.009);
+
+  /* Status: Completed */
+  --status-completed-background: oklch(0.4 0.18 145 / 0.2);  /* Darker Greenish, low opacity bg */
+  --status-completed-foreground: oklch(0.88 0.15 145);   /* Light Greenish text */
+  --status-completed-border: oklch(0.5 0.18 145 / 50%); /* Mid Greenish Border */
+
+  /* Status: Pending */
+  --status-pending-background: oklch(0.55 0.15 85 / 0.2);   /* Darker Yellowish, low opacity bg */
+  --status-pending-foreground: oklch(0.95 0.12 85);   /* Light Yellowish text */
+  --status-pending-border: oklch(0.65 0.15 85 / 50%);  /* Mid Yellowish Border */
+
+  /* Status: Rejected/Error/Destructive */
+  --status-rejected-background: oklch(0.5 0.22 25 / 0.2);    /* Darker Reddish, low opacity bg (using destructive as base) */
+  --status-rejected-foreground: oklch(0.88 0.18 25);    /* Light Reddish text */
+  --status-rejected-border: oklch(0.6 0.22 25 / 50%);   /* Mid Reddish Border */
+
+  /* Action: Accept (Green Themed) */
+  --status-accept-background: oklch(0.60 0.20 145);       /* Vibrant Green for dark mode */
+  --status-accept-foreground: oklch(0.98 0.02 145);       /* Very Light Green / White text */
+  --status-accept-hover-background: oklch(0.55 0.20 145); /* Slightly Darker Green */
+
+  /* Action: Reject (Red Themed) */
+  --status-reject-background: oklch(0.58 0.22 25);        /* Vibrant Red for dark mode */
+  --status-reject-foreground: oklch(0.98 0.02 25);        /* Very Light Red / White text */
+  --status-reject-hover-background: oklch(0.53 0.22 25); /* Slightly Darker Red */
+  --status-reject-border: var(--status-reject-background); /* Optional: makes reject outline border match reject bg in dark mode */
+
+  /* Status: Info */
+  --status-info-background: oklch(0.45 0.15 230 / 0.2); /* Darker Bluish, low opacity bg */
+  --status-info-foreground: oklch(0.9 0.1 230);   /* Light Bluish text */
+  --status-info-border: oklch(0.55 0.15 230 / 50%);
 }
 
 @theme inline {
@@ -108,6 +171,31 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  
+  --color-status-completed-background: var(--status-completed-background);
+  --color-status-completed-foreground: var(--status-completed-foreground);
+  --color-status-completed-border: var(--status-completed-border);
+
+  --color-status-pending-background: var(--status-pending-background);
+  --color-status-pending-foreground: var(--status-pending-foreground);
+  --color-status-pending-border: var(--status-pending-border);
+
+  --color-status-rejected-background: var(--status-rejected-background);
+  --color-status-rejected-foreground: var(--status-rejected-foreground);
+  --color-status-rejected-border: var(--status-rejected-border);
+
+  --color-status-accept-background: var(--status-accept-background);
+  --color-status-accept-foreground: var(--status-accept-foreground);
+  --color-status-accept-hover-background: var(--status-accept-hover-background);
+
+  --color-status-reject-background: var(--status-reject-background);
+  --color-status-reject-foreground: var(--status-reject-foreground);
+  --color-status-reject-hover-background: var(--status-reject-hover-background);
+  --color-status-reject-border: var(--status-reject-border);
+
+  --color-status-info-background: var(--status-info-background);
+  --color-status-info-foreground: var(--status-info-foreground);
+  --color-status-info-border: var(--status-info-border);
 }
 
 @layer base {
