@@ -13,6 +13,11 @@ export default function BatchesPage() {
     <div className="space-y-6 p-4 md:p-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-foreground">Batch Management</h1>
+        <Link to={ROUTES.FULL_PATH_APP_BATCH_CREATE}>
+          <Button className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Plus className="mr-2 h-4 w-4" /> Create Batch
+          </Button>
+        </Link>
       </div>
 
       {hasBatches ? (

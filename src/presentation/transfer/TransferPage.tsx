@@ -16,7 +16,7 @@ export default function TransferPage() {
         </Link>
       </div>
 
-      <div className="bg-card text-card-foreground rounded-xl p-8 card-shadow flex flex-col items-center justify-center text-center py-16 shadow-lg">
+      <div className="bg-card text-card-foreground rounded-xl p-8 flex flex-col items-center justify-center text-center py-16 shadow-lg">
         <div className="bg-primary/10 p-4 rounded-full mb-6">
           <ArrowRightLeft className="h-10 w-10 text-primary" />
         </div>
