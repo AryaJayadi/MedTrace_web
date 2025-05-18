@@ -29,8 +29,6 @@ export class OrganizationApiDataSource implements OrganizationDataSource {
       method: "GET",
       url: "",
     })
-
-    console.log(response);
     return response.data as BaseListResponse<Organization>;
   }
 
