@@ -5,8 +5,12 @@ import { ROUTES } from "@/core/Routes"
 import { Plus, Filter, Package } from "lucide-react"
 import { useState } from "react"
 import { Link } from "react-router"
+import useViewModel from "./BatchPageViewModel"
 
 export default function BatchesPage() {
+  const {
+
+  } = useViewModel()
   const [hasBatches, setHasBatches] = useState(true);
 
   return (
