@@ -1,6 +1,6 @@
-import { Organization } from "../model/organization/Organization";
-import { BaseValueResponse } from "../model/response/BaseValueResponse";
-import { OrganizationRepository } from "../repository/OrganizationRepository";
+import { Organization } from "@/domain/model/organization/Organization";
+import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
+import { OrganizationRepository } from "@/domain/repository/OrganizationRepository";
 
 interface GetOrganizationByIdUseCase {
   invoke(id: string): Promise<BaseValueResponse<Organization>>;

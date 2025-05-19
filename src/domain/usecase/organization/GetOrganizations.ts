@@ -1,6 +1,6 @@
-import { Organization } from "../model/organization/Organization";
-import { BaseListResponse } from "../model/response/BaseListResponse";
-import { OrganizationRepository } from "../repository/OrganizationRepository";
+import { Organization } from "@/domain/model/organization/Organization";
+import { BaseListResponse } from "@/domain/model/response/BaseListResponse";
+import { OrganizationRepository } from "@/domain/repository/OrganizationRepository";
 
 interface GetOrganizationsUseCase {
   invoke(): Promise<BaseListResponse<Organization>>;
