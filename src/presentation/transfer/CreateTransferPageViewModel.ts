@@ -2,7 +2,7 @@ import { useApiRequest } from "@/core/hooks/useApiRequest";
 import { OrganizationApiDataSource } from "@/data/datasource/api/OrganizationApiDataSource";
 import { OrganizationRepositoryDataSource } from "@/data/repository/OrganizationRepositoryDataSource";
 import { Organization } from "@/domain/model/organization/Organization";
-import { GetOrganizations } from "@/domain/usecase/GetOrganizations";
+import { GetOrganizations } from "@/domain/usecase/organization/GetOrganizations";
 import { useCallback, useEffect, useMemo } from "react";
 
 export default function CreateTransferPageViewModel() {
