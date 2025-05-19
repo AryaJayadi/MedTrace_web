@@ -2,13 +2,12 @@ import { RootLayout } from "@/presentation/template/RootLayout";
 import { JSX } from "react";
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router";
 import { ROUTES } from "./Routes";
-import { AuthLayout } from "@/presentation/template/AuthLayout";
-import { LoginPage } from "@/presentation/auth/LoginPage";
 import BatchPage from "@/presentation/batch/BatchPage";
 import { BaseLayout } from "@/presentation/template/BaseLayout";
 import CreateBatchPage from "@/presentation/batch/CreateBatchPage";
 import TransferPage from "@/presentation/transfer/TransferPage";
 import CreateTransferPage from "@/presentation/transfer/CreateTransferPage";
+import LoginPage from "@/presentation/auth/LoginPage";
 
 interface ProtectedRouteProps {
   redirectPath: string;
@@ -67,7 +66,7 @@ const router = createBrowserRouter([
       },
       {
         path: ROUTES.AUTH_SEGMENT,
-        element: <AuthLayout />,
+        element: <Root />,
         children: [
           {
             path: ROUTES.AUTH_LOGIN,
