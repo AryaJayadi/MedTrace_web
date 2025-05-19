@@ -59,10 +59,6 @@ export default function LoginPageViewModel() {
     }
   }
 
-  function handleSubmit() {
-
-  }
-
   return {
     form,
     onSubmit,
