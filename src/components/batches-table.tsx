@@ -90,7 +90,7 @@ export default function BatchesTable() {
     // Assumes 'border', 'muted', 'card-foreground', 'foreground' produce utilities
     <div className="rounded-lg border border-border overflow-hidden">
       <Table>
-        <TableHeader className="bg-muted/50"> {/* Assumes 'muted' utility exists */}
+        <TableHeader className="bg-muted/50">
           <TableRow className="border-b border-border">
             <TableHead className="font-semibold text-muted-foreground">Batch ID</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Drug Name</TableHead>
@@ -134,7 +134,6 @@ export default function BatchesTable() {
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
-                  {/* Edit Button: Uses primary for hover state */}
                   <button
                     onClick={() => handleEdit(batch.id)}
                     aria-label={`Edit batch ${batch.id}`}
@@ -146,7 +145,6 @@ export default function BatchesTable() {
                   >
                     <Pencil className="h-4 w-4" />
                   </button>
-                  {/* Delete Button: Uses destructive for hover state */}
                   <button
                     onClick={() => handleDelete(batch.id)}
                     aria-label={`Delete batch ${batch.id}`}
