@@ -75,7 +75,7 @@ export default function LoginPage() {
                     <div className="flex items-center justify-between">
                       <FormLabel className="text-foreground">Password</FormLabel>
                       <Link
-                        to={ROUTES.FULL_PATH_FORGOT_PASSWORD || "/forgot-password"}
+                        to={"/forgot-password"}
                         className="text-sm text-primary hover:underline"
                       >
                         Forgot password?
@@ -112,7 +112,7 @@ export default function LoginPage() {
       <div className="mt-8 text-center text-sm text-muted-foreground">
         Don't have an account?{" "}
         <Link
-          to={ROUTES.FULL_PATH_CONTACT_US || "/contact"}
+          to={"/contact"}
           className="font-medium text-primary hover:underline"
         >
           Contact us
