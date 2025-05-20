@@ -9,7 +9,10 @@ import useViewModel from "./BatchPageViewModel"
 
 export default function BatchesPage() {
   const {
-
+    batches,
+    batchesIsLoading,
+    batchesError,
+    fetchBatches
   } = useViewModel()
   const [hasBatches, setHasBatches] = useState(true);
 
