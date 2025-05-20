@@ -2,6 +2,7 @@ import axios from "axios";
 import { BatchDataSource } from "../BatchDataSource";
 import { Batch } from "@/domain/model/batch/Batch";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
+import { BaseListResponse } from "@/domain/model/response/BaseListResponse";
 import { CreateBatchRequest } from "./request/CreateBatchRequest";
 import { UpdateBatchRequest } from "@/domain/model/dto/UpdateBatchRequest";
 
@@ -36,6 +37,21 @@ export class BatchApiDataSource implements BatchDataSource {
 
   async updateBatch(request: UpdateBatchRequest): Promise<BaseValueResponse<Batch>> {
     const response = await this.axiosInstance.patch<BaseValueResponse<Batch>>("", request);
+    return response.data;
+  }
+
+  async getAllBatches(): Promise<BaseListResponse<Batch>> {
+    const response = await this.axiosInstance.get<BaseListResponse<Batch>>("");
+    return response.data;
+  }
+
+  async getBatchByID(batchID: string): Promise<BaseValueResponse<Batch>> {
+    const response = await this.axiosInstance.get<BaseValueResponse<Batch>>(`/${batchID}`);
+    return response.data;
+  }
+
+  async batchExists(batchID: string): Promise<BaseValueResponse<boolean>> {
+    const response = await this.axiosInstance.get<BaseValueResponse<boolean>>(`/${batchID}/exists`);
     return response.data;
   }
 }
