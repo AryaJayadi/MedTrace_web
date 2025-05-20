@@ -3,6 +3,7 @@ import { BatchDataSource } from "../BatchDataSource";
 import { Batch } from "@/domain/model/batch/Batch";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
 import { CreateBatchRequest } from "./request/CreateBatchRequest";
+import { UpdateBatchRequest } from "@/domain/model/dto/UpdateBatchRequest";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL + "/batches";
 
@@ -31,5 +32,10 @@ export class BatchApiDataSource implements BatchDataSource {
       data: request,
     })
     return response.data as BaseValueResponse<Batch>;
+  }
+
+  async updateBatch(request: UpdateBatchRequest): Promise<BaseValueResponse<Batch>> {
+    const response = await this.axiosInstance.patch<BaseValueResponse<Batch>>("", request);
+    return response.data;
   }
 }
