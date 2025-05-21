@@ -36,4 +36,9 @@ export class DrugApiDataSource implements DrugDataSource {
     const response = await this.axiosInstance.get<BaseValueResponse<Drug>>(`/${drugID}`);
     return response.data;
   }
+
+  async getDrugsByBatch(batchID: string): Promise<BaseListResponse<Drug>> {
+    const response = await this.axiosInstance.get<BaseListResponse<Drug>>(`/batch/${batchID}`);
+    return response.data;
+  }
 } 

@@ -7,4 +7,5 @@ export interface DrugDataSource {
   createDrug(request: CreateDrugRequest): Promise<BaseValueResponse<Drug>>; // Assuming it returns the created drug
   getMyDrugs(): Promise<BaseListResponse<Drug>>;
   getDrug(drugID: string): Promise<BaseValueResponse<Drug>>;
+  getDrugsByBatch(batchID: string): Promise<BaseListResponse<Drug>>;
 } 
