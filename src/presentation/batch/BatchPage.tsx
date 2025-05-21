@@ -7,7 +7,6 @@ import { Link } from "react-router"
 import useViewModel from "./BatchPageViewModel"
 import { Skeleton } from "@/components/ui/skeleton"
 
-// Skeleton component for loading state
 const BatchesTableSkeleton = () => (
   <div className="space-y-4">
     <div className="flex justify-between items-center">
@@ -33,7 +32,6 @@ export default function BatchesPage() {
     batches,
     batchesIsLoading,
     batchesError,
-    // fetchBatches // fetchBatches is called in useEffect in ViewModel
   } = useViewModel()
 
   const hasBatches = batches && batches.length > 0;
@@ -60,7 +58,6 @@ export default function BatchesPage() {
           <p className="max-w-md mb-8">
             There was an issue retrieving the batch data. Please try again later.
           </p>
-          {/* Optional: Add a retry button here */}
         </div>
       ) : hasBatches ? (
         <div className="bg-card text-card-foreground rounded-xl p-6 shadow-lg">
