@@ -13,23 +13,11 @@ export default function BatchesTable({ batches }: BatchesTableProps) {
     batchQuantities,
     batchQuantitiesLoading,
     batchQuantitiesError,
+    handleEdit,
+    handleDelete,
   } = useViewModel(batches);
 
-  // TODO: Implement actual edit and delete functions
-  const handleEdit = (batchId: string) => {
-    console.log("Edit batch:", batchId);
-    // Navigate to edit page or open a modal
-  };
-
-  const handleDelete = (batchId: string) => {
-    console.log("Delete batch:", batchId);
-    // Show confirmation dialog and then remove from data
-  };
-
   if (!batches || batches.length === 0) {
-    // Assumes 'card', 'card-foreground', 'primary', 'foreground',
-    // 'muted-foreground' are aliased in @theme inline and produce utilities
-    // like bg-card, text-primary etc.
     return (
       <div className="bg-card text-card-foreground rounded-xl p-8 shadow-lg flex flex-col items-center justify-center text-center py-16">
         <div className="bg-primary/10 p-4 rounded-full mb-6"> {/* Assumes 'primary' utility exists */}
@@ -46,7 +34,6 @@ export default function BatchesTable({ batches }: BatchesTableProps) {
   }
 
   return (
-    // Assumes 'border', 'muted', 'card-foreground', 'foreground' produce utilities
     <div className="rounded-lg border border-border overflow-hidden">
       <Table>
         <TableHeader className="bg-muted/50">

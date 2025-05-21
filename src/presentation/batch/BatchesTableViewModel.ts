@@ -60,9 +60,22 @@ export default function BatchesTableViewModel(initialBatches: Batch[]) {
     }
   }, [initialBatches, getDrugsByBatchUseCase, batchQuantities, batchQuantitiesLoading, batchQuantitiesError]);
 
+  // TODO: Implement actual edit and delete functions
+  const handleEdit = (batchId: string) => {
+    console.log("Edit batch:", batchId);
+    // Navigate to edit page or open a modal
+  };
+
+  const handleDelete = (batchId: string) => {
+    console.log("Delete batch:", batchId);
+    // Show confirmation dialog and then remove from data
+  };
+
   return {
     batchQuantities,
     batchQuantitiesLoading,
     batchQuantitiesError,
+    handleEdit,
+    handleDelete,
   };
 }
