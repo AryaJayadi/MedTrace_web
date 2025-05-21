@@ -3,7 +3,7 @@ import { BatchApiDataSource } from "@/data/datasource/api/BatchApiDataSource"
 import { BatchRepositoryDataSource } from "@/data/repository/BatchRepositoryDataSource"
 import { Batch } from "@/domain/model/batch/Batch"
 import { GetAllBatches } from "@/domain/usecase/batch/GetAllBatches"
-import { useMemo, useCallback } from "react"
+import { useMemo, useCallback, useEffect } from "react"
 
 export default function BatchPageViewModel() {
 
@@ -21,6 +21,10 @@ export default function BatchPageViewModel() {
     error: batchesError,
     execute: fetchBatches
   } = useApiRequest<Batch, []>(getAllBatches)
+
+  useEffect(() => {
+    fetchBatches()
+  }, [])
 
   return {
     batches,

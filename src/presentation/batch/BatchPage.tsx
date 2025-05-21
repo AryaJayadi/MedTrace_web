@@ -2,19 +2,41 @@ import BatchesTable from "@/components/batches-table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ROUTES } from "@/core/Routes"
-import { Plus, Filter, Package } from "lucide-react"
-import { useState } from "react"
+import { Plus, Filter, Package, AlertTriangle } from "lucide-react"
 import { Link } from "react-router"
 import useViewModel from "./BatchPageViewModel"
+import { Skeleton } from "@/components/ui/skeleton"
+
+// Skeleton component for loading state
+const BatchesTableSkeleton = () => (
+  <div className="space-y-4">
+    <div className="flex justify-between items-center">
+      <Skeleton className="h-8 w-1/4" />
+      <Skeleton className="h-10 w-1/4" />
+    </div>
+    <Skeleton className="h-12 w-full" />
+    {[...Array(5)].map((_, i) => (
+      <div key={i} className="flex items-center space-x-4 p-4 border-b">
+        <Skeleton className="h-6 w-1/6" />
+        <Skeleton className="h-6 w-1/4" />
+        <Skeleton className="h-6 w-1/6" />
+        <Skeleton className="h-6 w-1/6" />
+        <Skeleton className="h-6 w-1/6" />
+        <Skeleton className="h-6 w-1/12" />
+      </div>
+    ))}
+  </div>
+);
 
 export default function BatchesPage() {
   const {
     batches,
     batchesIsLoading,
     batchesError,
-    fetchBatches
+    // fetchBatches // fetchBatches is called in useEffect in ViewModel
   } = useViewModel()
-  const [hasBatches, setHasBatches] = useState(true);
+
+  const hasBatches = batches && batches.length > 0;
 
   return (
     <div className="space-y-6 p-4 md:p-6">
@@ -27,7 +49,20 @@ export default function BatchesPage() {
         </Link>
       </div>
 
-      {hasBatches ? (
+      {batchesIsLoading ? (
+        <BatchesTableSkeleton />
+      ) : batchesError ? (
+        <div className="bg-destructive/10 text-destructive-foreground rounded-xl p-8 shadow-lg flex flex-col items-center justify-center text-center py-16">
+          <AlertTriangle className="h-10 w-10 text-destructive mb-6" />
+          <h3 className="text-xl font-semibold mb-2">
+            Error Fetching Batches
+          </h3>
+          <p className="max-w-md mb-8">
+            There was an issue retrieving the batch data. Please try again later.
+          </p>
+          {/* Optional: Add a retry button here */}
+        </div>
+      ) : hasBatches ? (
         <div className="bg-card text-card-foreground rounded-xl p-6 shadow-lg">
           <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
             <div className="w-full sm:max-w-md lg:max-w-lg relative">
@@ -44,7 +79,7 @@ export default function BatchesPage() {
             </Link>
           </div>
 
-          <BatchesTable />
+          <BatchesTable batches={batches} />
         </div>
       ) : (
         <div className="bg-card text-card-foreground rounded-xl p-8 shadow-lg flex flex-col items-center justify-center text-center py-16">
