@@ -1,63 +1,19 @@
 import { cn } from "@/lib/utils"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { Package, Pencil, Trash2 } from "lucide-react"
+import { Package, Pencil, Trash2, Loader2, AlertCircle } from "lucide-react"
 import { Batch } from "@/domain/model/batch/Batch"
-
-// This would typically come from an API
-// interface Batch { // Remove local Batch interface
-//   id: string;
-//   drugName: string;
-//   quantity: number;
-//   productionDate: string;
-//   expiryDate: string;
-//   status: string; // "active", "pending", "expired"
-// }
-
-// This would typically come from an API
-// const initialBatches: Batch[] = [
-//   {
-//     id: "B-001",
-//     drugName: "Paracetamol",
-//     quantity: 100000,
-//     productionDate: "2025-01-01",
-//     expiryDate: "2027-01-01",
-//     status: "active",
-//   },
-//   {
-//     id: "B-002",
-//     drugName: "Amoxicillin",
-//     quantity: 50000,
-//     productionDate: "2025-02-15",
-//     expiryDate: "2026-02-15",
-//     status: "active",
-//   },
-//   {
-//     id: "B-003",
-//     drugName: "Ibuprofen",
-//     quantity: 75000,
-//     productionDate: "2025-03-10",
-//     expiryDate: "2027-03-10",
-//     status: "pending",
-//   },
-//   {
-//     id: "B-004",
-//     drugName: "Aspirin",
-//     quantity: 20000,
-//     productionDate: "2024-01-01",
-//     expiryDate: "2025-01-01",
-//     status: "expired",
-//   },
-// ];
+import useViewModel from "./BatchesTableViewModel"
 
 interface BatchesTableProps {
   batches: Batch[];
 }
 
 export default function BatchesTable({ batches }: BatchesTableProps) {
-  // const [data, setData] = useState<Batch[]>(initialBatches);
-
-  // getStatusBadgeClasses function is no longer needed as styles are applied directly
+  const {
+    batchQuantities,
+    batchQuantitiesLoading,
+    batchQuantitiesError,
+  } = useViewModel(batches);
 
   // TODO: Implement actual edit and delete functions
   const handleEdit = (batchId: string) => {
@@ -68,7 +24,6 @@ export default function BatchesTable({ batches }: BatchesTableProps) {
   const handleDelete = (batchId: string) => {
     console.log("Delete batch:", batchId);
     // Show confirmation dialog and then remove from data
-    // setData(data.filter(batch => batch.id !== batchId));
   };
 
   if (!batches || batches.length === 0) {
@@ -98,6 +53,7 @@ export default function BatchesTable({ batches }: BatchesTableProps) {
           <TableRow className="border-b border-border">
             <TableHead className="font-semibold text-muted-foreground">Batch ID</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Drug Name</TableHead>
+            <TableHead className="font-semibold text-muted-foreground">Quantity</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Production Date</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Expiry Date</TableHead>
             <TableHead className="text-right font-semibold text-muted-foreground">Actions</TableHead>
@@ -111,6 +67,21 @@ export default function BatchesTable({ batches }: BatchesTableProps) {
             >
               <TableCell className="font-medium text-foreground">{batch.ID}</TableCell>
               <TableCell>{batch.DrugName}</TableCell>
+              <TableCell className="">
+                {batchQuantitiesLoading[batch.ID] ? (
+                  <Loader2 className="h-4 w-4 animate-spin inline-block" />
+                ) : batchQuantitiesError[batch.ID] ? (
+                  <div className="flex items-center justify-end text-destructive">
+                    <AlertCircle className="h-4 w-4 mr-1 inline-block" />
+                    <span className="sr-only">Error: {batchQuantitiesError[batch.ID]}</span>
+                    N/A
+                  </div>
+                ) : batchQuantities[batch.ID] !== undefined ? (
+                  batchQuantities[batch.ID]!.toLocaleString()
+                ) : (
+                  "N/A"
+                )}
+              </TableCell>
               <TableCell>{batch.ProductionDate}</TableCell>
               <TableCell>{batch.ExpiryDate}</TableCell>
               <TableCell className="text-right">

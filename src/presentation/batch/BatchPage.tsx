@@ -1,4 +1,4 @@
-import BatchesTable from "@/components/batches-table"
+import BatchesTable from "@/presentation/batch/BatchesTable"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ROUTES } from "@/core/Routes"
