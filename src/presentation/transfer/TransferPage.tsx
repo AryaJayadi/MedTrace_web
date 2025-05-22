@@ -7,19 +7,6 @@ import useViewModel from "./TransferPageViewModel";
 import { Skeleton } from "@/components/ui/skeleton";
 import TransfersTable from "./TransfersTable";
 
-// Removed local Transfer interface as we now use the domain model
-// interface Transfer {
-//   id: string;
-//   batchId: string;
-//   drugName: string;
-//   quantity: number;
-//   sender: string;
-//   receiver: string;
-//   status: string;
-//   date: string;
-// }
-
-// Skeleton component for loading state, similar to BatchesPage
 const TransfersTableSkeleton = () => (
   <div className="space-y-4">
     <div className="flex justify-between items-center">
