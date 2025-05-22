@@ -1,4 +1,3 @@
-import TransfersTable from "@/components/transfers-table";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { ROUTES } from "@/core/Routes";
@@ -6,6 +5,7 @@ import { Plus, ArrowRightLeft, Filter, Send, AlertTriangle } from "lucide-react"
 import { Link } from "react-router"
 import useViewModel from "./TransferPageViewModel";
 import { Skeleton } from "@/components/ui/skeleton";
+import TransfersTable from "./TransfersTable";
 
 // Removed local Transfer interface as we now use the domain model
 // interface Transfer {
