@@ -1,78 +1,60 @@
-
 import TransfersTable from "@/components/transfers-table";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { ROUTES } from "@/core/Routes";
-import { Plus, ArrowRightLeft, Filter, Send } from "lucide-react"
-import { useState } from "react";
+import { Plus, ArrowRightLeft, Filter, Send, AlertTriangle } from "lucide-react"
 import { Link } from "react-router"
+import useViewModel from "./TransferPageViewModel";
+import { Skeleton } from "@/components/ui/skeleton";
 
-// Interface for Transfer data, should match the one used in TransfersTable
-interface Transfer {
-  id: string;
-  batchId: string;
-  drugName: string;
-  quantity: number;
-  sender: string;
-  receiver: string;
-  status: string;
-  date: string;
-}
+// Removed local Transfer interface as we now use the domain model
+// interface Transfer {
+//   id: string;
+//   batchId: string;
+//   drugName: string;
+//   quantity: number;
+//   sender: string;
+//   receiver: string;
+//   status: string;
+//   date: string;
+// }
+
+// Skeleton component for loading state, similar to BatchesPage
+const TransfersTableSkeleton = () => (
+  <div className="space-y-4">
+    <div className="flex justify-between items-center">
+      <Skeleton className="h-8 w-1/4" />
+      <Skeleton className="h-10 w-1/4" />
+    </div>
+    <Skeleton className="h-12 w-full" />
+    {[...Array(5)].map((_, i) => (
+      <div key={i} className="flex items-center space-x-4 p-4 border-b">
+        <Skeleton className="h-6 w-1/6" />
+        <Skeleton className="h-6 w-1/4" />
+        <Skeleton className="h-6 w-1/6" />
+        <Skeleton className="h-6 w-1/6" />
+        <Skeleton className="h-6 w-1/6" />
+        <Skeleton className="h-6 w-1/12" />
+      </div>
+    ))}
+  </div>
+);
 
 export default function TransferPage() {
-  // Mock data for demonstration, in a real app this would come from an API
-  const [allTransfers, setAllTransfers] = useState<Transfer[]>([
-    {
-      id: "T-001",
-      batchId: "B-001",
-      drugName: "Paracetamol",
-      quantity: 25000,
-      sender: "PT Manufacturer Pharmacy",
-      receiver: "General Hospital KL",
-      status: "pending",
-      date: "2025-02-15",
-    },
-    {
-      id: "T-002",
-      batchId: "B-002",
-      drugName: "Amoxicillin",
-      quantity: 10000,
-      sender: "PT Manufacturer Pharmacy",
-      receiver: "City Pharmacy",
-      status: "completed",
-      date: "2025-01-20",
-    },
-    {
-      id: "T-003",
-      batchId: "B-003",
-      drugName: "Ibuprofen",
-      quantity: 15000,
-      sender: "PT Manufacturer Pharmacy",
-      receiver: "Medical Center Penang",
-      status: "pending",
-      date: "2025-03-05",
-    },
-  ]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const {
+    filteredTransfers,
+    transfersIsLoading,
+    transfersError,
+    searchQuery,
+    handleSearchChange,
+  } = useViewModel();
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const filteredTransfers = allTransfers.filter(
-    (transfer) =>
-      transfer.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transfer.drugName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transfer.receiver.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transfer.status.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const hasTransfers = filteredTransfers.length > 0;
-  const hasAnyTransfersAtAll = allTransfers.length > 0; // To distinguish between no data vs. no search results
+  const hasFilteredTransfers = filteredTransfers && filteredTransfers.length > 0;
+  // Determine if there are any transfers at all, before filtering
+  const hasAnyTransfersAtAll = !transfersIsLoading && !transfersError && filteredTransfers && filteredTransfers.length > 0 || (filteredTransfers?.length === 0 && searchQuery === "");
 
   // Fallback for create transfer route
-  const createTransferPath = ROUTES.FULL_PATH_APP_TRANSFER_CREATE || "/transfers/create";
-
+  const createTransferPath = ROUTES.FULL_PATH_APP_TRANSFER_CREATE;
 
   return (
     <div className="space-y-6 p-4 md:p-6">
@@ -85,12 +67,25 @@ export default function TransferPage() {
         </Link>
       </div>
 
-      {hasAnyTransfersAtAll ? (
+      {transfersIsLoading ? (
+        <TransfersTableSkeleton />
+      ) : transfersError ? (
+        <div className="bg-destructive/10 text-destructive-foreground rounded-xl p-8 shadow-lg flex flex-col items-center justify-center text-center py-16">
+          <AlertTriangle className="h-10 w-10 text-destructive mb-6" />
+          <h3 className="text-xl font-semibold mb-2">
+            Error Fetching Transfers
+          </h3>
+          <p className="max-w-md mb-8">
+            There was an issue retrieving transfer data. Please try again later.
+          </p>
+          {/* Optional: Add a retry button here that calls loadMyTransfers() */}
+        </div>
+      ) : hasAnyTransfersAtAll || searchQuery !== "" ? (
         <div className="bg-card text-card-foreground rounded-xl p-6 shadow-lg">
           <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
             <div className="w-full sm:max-w-md lg:max-w-lg relative">
               <Input
-                placeholder="Filter by ID, drug, receiver, status..."
+                placeholder="Filter by ID, receiver, status..."
                 value={searchQuery}
                 onChange={handleSearchChange}
                 className="pl-10 border-input rounded-lg focus:ring-2 focus:ring-ring placeholder:text-muted-foreground"
@@ -99,12 +94,12 @@ export default function TransferPage() {
             </div>
             <Link to={createTransferPath}>
               <Button className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground gap-2">
-                <Send className="h-4 w-4" /> Initiate New Transfer {/* Changed text for clarity */}
+                <Send className="h-4 w-4" /> Initiate New Transfer
               </Button>
             </Link>
           </div>
 
-          {hasTransfers ? (
+          {hasFilteredTransfers ? (
             <TransfersTable transfers={filteredTransfers} />
           ) : (
             <div className="text-center py-10 text-muted-foreground">
