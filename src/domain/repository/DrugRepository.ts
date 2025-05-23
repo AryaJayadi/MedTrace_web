@@ -8,4 +8,5 @@ export interface DrugRepository {
   getMyDrugs(): Promise<BaseListResponse<Drug>>;
   getDrug(drugID: string): Promise<BaseValueResponse<Drug>>;
   getDrugsByBatch(batchID: string): Promise<BaseListResponse<Drug>>;
+  getMyAvailDrugs(): Promise<BaseListResponse<Drug>>;
 } 
