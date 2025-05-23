@@ -107,7 +107,7 @@ export default function CreateTransferPageViewModel() {
     setUiBatches(prev => prev.map(b => {
       if (b.ID === batchId) {
         const numQty = parseInt(quantity, 10);
-        const currentRemaining = b.remainingQty; 
+        const currentRemaining = b.remainingQty;
         return {
           ...b,
           selectedQty: quantity === "" || isNaN(numQty) ? "" : String(Math.max(0, Math.min(numQty, currentRemaining)))
@@ -122,7 +122,7 @@ export default function CreateTransferPageViewModel() {
       (batch) =>
         (batch.DrugName?.toLowerCase().includes(batchSearchQuery.toLowerCase()) ||
         batch.ID.toLowerCase().includes(batchSearchQuery.toLowerCase())) &&
-        batch.remainingQty > 0 
+        batch.remainingQty > 0
     );
   }, [uiBatches, batchSearchQuery]);
 

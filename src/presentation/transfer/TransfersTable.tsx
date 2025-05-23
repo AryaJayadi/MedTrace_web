@@ -21,7 +21,7 @@ export default function TransfersTable({
     actionStates,
     handleAccept,
     handleReject,
-  } = useViewModel(transfers, onTransferUpdate);
+  } = useViewModel(onTransferUpdate);
 
   if (!transfers || transfers.length === 0) {
     return (
