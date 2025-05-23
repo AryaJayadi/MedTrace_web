@@ -64,13 +64,19 @@ export default function CreateTransferPageViewModel() {
   const organizationDataSource = useMemo(() => new OrganizationApiDataSource(), []);
   const orgRepo = useMemo(() => new OrganizationRepositoryDataSource(organizationDataSource), [organizationDataSource]);
   const getOrganizationsUseCase = useMemo(() => new GetOrganizations(orgRepo), [orgRepo]);
-  const { list: organizations, isLoading: organizationsIsLoading, error: organizationsError, execute: fetchOrganizations } = useApiRequest<Organization, []>(getOrganizationsUseCase.invoke);
+  const getOrganizations = useCallback(async () => {
+    return await getOrganizationsUseCase.invoke();
+  }, [getOrganizationsUseCase]);
+  const { list: organizations, isLoading: organizationsIsLoading, error: organizationsError, execute: fetchOrganizations } = useApiRequest<Organization, []>(getOrganizations);
 
   // Batches
   const batchDataSource = useMemo(() => new BatchApiDataSource(), []);
   const batchRepo = useMemo(() => new BatchRepositoryDataSource(batchDataSource), [batchDataSource]);
   const getAllBatchesUseCase = useMemo(() => new GetAllBatches(batchRepo), [batchRepo]);
-  const { list: availableBatchesFromApi, isLoading: batchesIsLoading, error: batchesError, execute: fetchBatches } = useApiRequest<Batch, []>(getAllBatchesUseCase.execute);
+  const getAllBatches = useCallback(async () => {
+    return await getAllBatchesUseCase.execute();
+  }, [getAllBatchesUseCase]);
+  const { list: availableBatchesFromApi, isLoading: batchesIsLoading, error: batchesError, execute: fetchBatches } = useApiRequest<Batch, []>(getAllBatches);
 
   // Create Transfer Use Case
   const transferDataSource = useMemo(() => new TransferApiDataSource(), []);
@@ -121,7 +127,7 @@ export default function CreateTransferPageViewModel() {
     return uiBatches.filter(
       (batch) =>
         (batch.DrugName?.toLowerCase().includes(batchSearchQuery.toLowerCase()) ||
-        batch.ID.toLowerCase().includes(batchSearchQuery.toLowerCase())) &&
+          batch.ID.toLowerCase().includes(batchSearchQuery.toLowerCase())) &&
         batch.remainingQty > 0
     );
   }, [uiBatches, batchSearchQuery]);
