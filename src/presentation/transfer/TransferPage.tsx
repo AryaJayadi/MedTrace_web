@@ -34,13 +34,18 @@ export default function TransferPage() {
     transfersError,
     searchQuery,
     handleSearchChange,
+    loadMyTransfers,
   } = useViewModel();
 
+  const currentUserId = "user-placeholder-id";
+
+  const handleTransferUpdate = () => {
+    loadMyTransfers();
+  };
+
   const hasFilteredTransfers = filteredTransfers && filteredTransfers.length > 0;
-  // Determine if there are any transfers at all, before filtering
   const hasAnyTransfersAtAll = !transfersIsLoading && !transfersError && filteredTransfers && filteredTransfers.length > 0 || (filteredTransfers?.length === 0 && searchQuery === "");
 
-  // Fallback for create transfer route
   const createTransferPath = ROUTES.FULL_PATH_APP_TRANSFER_CREATE;
 
   return (
@@ -65,7 +70,9 @@ export default function TransferPage() {
           <p className="max-w-md mb-8">
             There was an issue retrieving transfer data. Please try again later.
           </p>
-          {/* Optional: Add a retry button here that calls loadMyTransfers() */}
+          <Button onClick={loadMyTransfers} variant="outline" className="text-destructive border-destructive hover:bg-destructive/20">
+             Retry
+          </Button>
         </div>
       ) : hasAnyTransfersAtAll || searchQuery !== "" ? (
         <div className="bg-card text-card-foreground rounded-xl p-6 shadow-lg">
@@ -87,7 +94,11 @@ export default function TransferPage() {
           </div>
 
           {hasFilteredTransfers ? (
-            <TransfersTable transfers={filteredTransfers} />
+            <TransfersTable 
+              transfers={filteredTransfers} 
+              onTransferUpdate={handleTransferUpdate} 
+              currentUserId={currentUserId} 
+            />
           ) : (
             <div className="text-center py-10 text-muted-foreground">
               <Filter className="mx-auto h-12 w-12 text-muted-foreground/50 mb-4" />

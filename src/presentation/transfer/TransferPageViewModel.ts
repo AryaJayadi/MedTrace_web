@@ -15,7 +15,7 @@ export default function TransferPageViewModel() {
   }, [getMyTransfersUseCase]);
 
   const {
-    list: allTransfers, // Renamed from 'transfers' to 'allTransfers' to avoid conflict later if needed
+    list: allTransfers,
     isLoading: transfersIsLoading,
     error: transfersError,
     execute: loadMyTransfers
@@ -50,6 +50,6 @@ export default function TransferPageViewModel() {
     transfersError,
     searchQuery,
     handleSearchChange,
-    loadMyTransfers // To allow manual refresh if needed
+    loadMyTransfers
   };
 }
