@@ -1,5 +1,5 @@
 import { CreateBatchRequest } from "@/data/datasource/api/request/CreateBatchRequest";
-import { UpdateBatchRequest } from "../model/dto/UpdateBatchRequest";
+import { UpdateBatchRequest } from "../model/batch/UpdateBatchRequest";
 import { Batch } from "../model/batch/Batch";
 import { BaseValueResponse } from "../model/response/BaseValueResponse";
 import { BaseListResponse } from "../model/response/BaseListResponse";

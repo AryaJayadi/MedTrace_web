@@ -1,5 +1,5 @@
 import { Drug } from "../model/drug/Drug";
-import { CreateDrugRequest } from "../model/dto/CreateDrugRequest";
+import { CreateDrugRequest } from "../model/drug/CreateDrugRequest";
 import { BaseValueResponse } from "../model/response/BaseValueResponse";
 import { BaseListResponse } from "../model/response/BaseListResponse";
 

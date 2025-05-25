@@ -1,6 +1,6 @@
 import { DrugDataSource } from "../DrugDataSource";
 import { Drug } from "@/domain/model/drug/Drug";
-import { CreateDrugRequest } from "@/domain/model/dto/CreateDrugRequest";
+import { CreateDrugRequest } from "@/domain/model/drug/CreateDrugRequest";
 import { BaseListResponse } from "@/domain/model/response/BaseListResponse";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
 import apiClient from "./axiosInstance"; // Import the global axios instance

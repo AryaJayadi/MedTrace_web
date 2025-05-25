@@ -1,6 +1,6 @@
 import { Transfer } from "../model/transfer/Transfer";
-import { CreateTransferRequest } from "../model/dto/CreateTransferRequest";
-import { ProcessTransferRequest } from "../model/dto/ProcessTransferRequest";
+import { CreateTransferRequest } from "../model/transfer/CreateTransferRequest";
+import { ProcessTransferRequest } from "../model/transfer/ProcessTransferRequest";
 import { BaseValueResponse } from "../model/response/BaseValueResponse";
 import { BaseListResponse } from "../model/response/BaseListResponse";
 

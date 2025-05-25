@@ -1,5 +1,5 @@
 import { DrugRepository } from "@/domain/repository/DrugRepository";
-import { CreateDrugRequest } from "@/domain/model/dto/CreateDrugRequest";
+import { CreateDrugRequest } from "@/domain/model/drug/CreateDrugRequest";
 import { Drug } from "@/domain/model/drug/Drug";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
 
@@ -8,7 +8,7 @@ export interface CreateDrugUseCase {
 }
 
 export class CreateDrug implements CreateDrugUseCase {
-  constructor(private readonly drugRepository: DrugRepository) {}
+  constructor(private readonly drugRepository: DrugRepository) { }
 
   async execute(request: CreateDrugRequest): Promise<BaseValueResponse<Drug>> {
     return this.drugRepository.createDrug(request);
