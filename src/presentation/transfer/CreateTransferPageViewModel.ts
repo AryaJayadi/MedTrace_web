@@ -19,10 +19,9 @@ import { DrugRepositoryDataSource } from "@/data/repository/DrugRepositoryDataSo
 import { TransferApiDataSource } from "@/data/datasource/api/TransferApiDataSource";
 import { TransferRepositoryDataSource } from "@/data/repository/TransferRepositoryDataSource";
 import { CreateTransfer } from "@/domain/usecase/transfer/CreateTransfer";
-import { CreateTransferRequest } from "@/domain/model/dto/CreateTransferRequest";
-import { Transfer } from "@/domain/model/transfer/Transfer";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ROUTES } from "@/core/Routes";
+import { CreateTransferRequest } from "@/domain/model/transfer/CreateTransferRequest";
 
 // UI specific Batch model for the form
 interface VMBatch extends Batch {
@@ -169,8 +168,8 @@ export default function CreateTransferPageViewModel() {
     });
 
     if (selectionError) {
-        setIsSubmittingForm(false);
-        return;
+      setIsSubmittingForm(false);
+      return;
     }
 
     if (drugsToSubmit.length === 0) {
