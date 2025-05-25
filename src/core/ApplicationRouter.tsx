@@ -1,9 +1,15 @@
 import { JSX } from "react";
-import { createBrowserRouter, Navigate, Outlet, useLocation, RouterProvider, useNavigate } from "react-router";
+import { createBrowserRouter, Navigate, Outlet, useLocation, RouterProvider } from "react-router";
 import { AuthLayout } from "@/presentation/template/AuthLayout.tsx";
 import { RootLayout } from "@/presentation/template/RootLayout.tsx";
 import { AuthProvider, useAuth } from "@/presentation/context/AuthContext.tsx";
-import LoginPage from "@/presentation/auth/LoginPage";
+import { LoginPage } from "@/presentation/auth/LoginPage";
+import { ROUTES } from "./Routes";
+import { BaseLayout } from "@/presentation/template/BaseLayout";
+import BatchPage from "@/presentation/batch/BatchPage";
+import CreateBatchPage from "@/presentation/batch/CreateBatchPage";
+import TransferPage from "@/presentation/transfer/TransferPage";
+import CreateTransferPage from "@/presentation/transfer/CreateTransferPage";
 
 interface ProtectedRouteProps {
   redirectPath?: string;
@@ -20,56 +26,57 @@ const ProtectedRoute: (p: ProtectedRouteProps) => (JSX.Element) = ({ redirectPat
   return <Outlet />;
 }
 
-const HomePagePlaceholder = () => {
-  const { logout, orgId } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/auth/login");
-  }
-  return (
-    <div style={{ padding: '20px', textAlign: 'center' }}>
-      <h1>Welcome, Organization: {orgId}!</h1>
-      <p>You are now logged in to a protected area of MedTrace.</p>
-      <button onClick={handleLogout} style={{ padding: '10px 20px', marginTop: '20px' }}>Logout</button>
-    </div>
-  );
-}
-
 const Root = () => {
   return (
     <AuthProvider>
       <RootLayout />
     </AuthProvider>
-  );
+  )
 }
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: ROUTES.ROOT,
     element: <Root />,
     children: [
       {
-        path: "",
-        element: <Navigate to="/app" replace />
+        path: ROUTES.ROOT,
+        element: <Navigate to={ROUTES.FULL_PATH_APP_BATCH} replace />
       },
       {
-        path: "app",
-        element: <ProtectedRoute />,
+        path: ROUTES.ROOT,
+        element: <ProtectedRoute redirectPath={ROUTES.FULL_PATH_AUTH_LOGIN} />,
         children: [
           {
-            path: "",
-            element: <HomePagePlaceholder />
-          },
+            path: ROUTES.APP_MAIN_SEGMENT,
+            element: <BaseLayout />,
+            children: [
+              {
+                path: ROUTES.APP_BATCH,
+                element: <BatchPage />
+              },
+              {
+                path: ROUTES.APP_BATCH_CREATE,
+                element: <CreateBatchPage />
+              },
+              {
+                path: ROUTES.APP_TRANSFER,
+                element: <TransferPage />
+              },
+              {
+                path: ROUTES.APP_TRANSFER_CREATE,
+                element: <CreateTransferPage />
+              }
+            ]
+          }
         ]
       },
       {
-        path: "auth",
+        path: ROUTES.AUTH_SEGMENT,
         element: <AuthLayout />,
         children: [
           {
-            path: "login",
+            path: ROUTES.AUTH_LOGIN,
             element: <LoginPage />
           },
         ]
