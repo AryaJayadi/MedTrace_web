@@ -118,7 +118,7 @@ export default function Sidebar() {
   return (
     // Relative container for the desktop sidebar and its toggle button
     <div className={cn(
-      "relative h-screen transition-width duration-300 ease-in-out", // Ensure h-screen if it's a direct child of body or a flex container
+      "relative min-h-screen transition-width duration-300 ease-in-out", // Ensure h-screen if it's a direct child of body or a flex container
       collapsed ? "w-20" : "w-64"
     )}>
       {/* Desktop Navigation Panel */}
