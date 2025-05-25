@@ -1,3 +1,4 @@
+import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
 import { AuthDataSource } from "../AuthDataSource";
 import { AuthRequest } from "./request/AuthRequest";
 
@@ -16,12 +17,22 @@ const passwords = [
 ]
 
 export class AuthMockDataSource implements AuthDataSource {
-  login(request: AuthRequest): Promise<Boolean> {
+  login(request: AuthRequest): Promise<BaseValueResponse<Boolean>> {
     for (let i = 0; i < organizations.length; i++) {
       if (request.organization === organizations[i] && request.password === passwords[i]) {
-        return Promise.resolve(true);
+        const res = {
+          success: true,
+          value: true,
+          error: undefined,
+        } as BaseValueResponse<Boolean>;
+        return Promise.resolve(res);
       }
     }
-    return Promise.resolve(false);
+    const res = {
+      success: true,
+      value: false,
+      error: undefined
+    } as BaseValueResponse<Boolean>;
+    return Promise.resolve(res);
   }
 }
