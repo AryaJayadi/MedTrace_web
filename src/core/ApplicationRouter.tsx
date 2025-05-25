@@ -1,76 +1,75 @@
-import { RootLayout } from "@/presentation/template/RootLayout";
 import { JSX } from "react";
-import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router";
-import { ROUTES } from "./Routes";
-import BatchPage from "@/presentation/batch/BatchPage";
-import { BaseLayout } from "@/presentation/template/BaseLayout";
-import CreateBatchPage from "@/presentation/batch/CreateBatchPage";
-import TransferPage from "@/presentation/transfer/TransferPage";
-import CreateTransferPage from "@/presentation/transfer/CreateTransferPage";
+import { createBrowserRouter, Navigate, Outlet, useLocation, RouterProvider, useNavigate } from "react-router";
+import { AuthLayout } from "@/presentation/template/AuthLayout.tsx";
+import { RootLayout } from "@/presentation/template/RootLayout.tsx";
+import { AuthProvider, useAuth } from "@/presentation/context/AuthContext.tsx";
 import LoginPage from "@/presentation/auth/LoginPage";
-import { AuthLayout } from "@/presentation/template/AuthLayout";
 
 interface ProtectedRouteProps {
-  redirectPath: string;
+  redirectPath?: string;
 }
 
-const ProtectedRoute: (p: ProtectedRouteProps) => (JSX.Element) = (p: ProtectedRouteProps) => {
-  if (false) {
-    return <Navigate to={p.redirectPath} state={{ from: location }} />
+const ProtectedRoute: (p: ProtectedRouteProps) => (JSX.Element) = ({ redirectPath = "/auth/login" }) => {
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
+
+  if (!isAuthenticated) {
+    return <Navigate to={redirectPath} state={{ from: location }} replace />;
   }
 
-  return <Outlet />
+  return <Outlet />;
+}
+
+const HomePagePlaceholder = () => {
+  const { logout, orgId } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/auth/login");
+  }
+  return (
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h1>Welcome, Organization: {orgId}!</h1>
+      <p>You are now logged in to a protected area of MedTrace.</p>
+      <button onClick={handleLogout} style={{ padding: '10px 20px', marginTop: '20px' }}>Logout</button>
+    </div>
+  );
 }
 
 const Root = () => {
   return (
-    <RootLayout />
-  )
+    <AuthProvider>
+      <RootLayout />
+    </AuthProvider>
+  );
 }
 
 const router = createBrowserRouter([
   {
-    path: ROUTES.ROOT,
+    path: "/",
     element: <Root />,
     children: [
       {
-        path: ROUTES.ROOT,
-        element: <Navigate to={ROUTES.FULL_PATH_APP_BATCH} replace />
+        path: "",
+        element: <Navigate to="/app" replace />
       },
       {
-        path: ROUTES.ROOT,
-        element: <ProtectedRoute redirectPath={ROUTES.FULL_PATH_AUTH_LOGIN} />,
+        path: "app",
+        element: <ProtectedRoute />,
         children: [
           {
-            path: ROUTES.APP_MAIN_SEGMENT,
-            element: <BaseLayout />,
-            children: [
-              {
-                path: ROUTES.APP_BATCH,
-                element: <BatchPage />
-              },
-              {
-                path: ROUTES.APP_BATCH_CREATE,
-                element: <CreateBatchPage />
-              },
-              {
-                path: ROUTES.APP_TRANSFER,
-                element: <TransferPage />
-              },
-              {
-                path: ROUTES.APP_TRANSFER_CREATE,
-                element: <CreateTransferPage />
-              }
-            ]
-          }
+            path: "",
+            element: <HomePagePlaceholder />
+          },
         ]
       },
       {
-        path: ROUTES.AUTH_SEGMENT,
+        path: "auth",
         element: <AuthLayout />,
         children: [
           {
-            path: ROUTES.AUTH_LOGIN,
+            path: "login",
             element: <LoginPage />
           },
         ]

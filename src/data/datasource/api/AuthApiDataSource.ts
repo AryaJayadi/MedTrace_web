@@ -1,35 +1,26 @@
-import axios from "axios";
 import { AuthDataSource } from "../AuthDataSource";
 import { AuthRequest } from "../mock/request/AuthRequest";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
+import apiClient from "./axiosInstance"; // Import the global axios instance
 
-const BASE_URL = import.meta.env.VITE_BACKEND_URL + "/";
+interface LoginResponseData {
+    token: string;
+    orgId: string;
+    message?: string;
+}
 
 export class AuthApiDataSource implements AuthDataSource {
-  private axiosInstance = axios.create({
-    baseURL: BASE_URL,
-    transformResponse: [function (response) {
-      let resp;
+  // private axiosInstance = axios.create({ ... }); // Removed old instance
 
-      try {
-        resp = JSON.parse(response);
-      } catch (error) {
-        throw Error(`[requestClient] Error parsing response JSON data - ${JSON.stringify(error)}`);
-      }
-
-      if (resp) {
-        return resp;
-      }
-    }]
-  })
-
-  async login(request: AuthRequest): Promise<BaseValueResponse<Boolean>> {
-    const response = await this.axiosInstance.post<BaseValueResponse<Boolean>>("login", request);
-    return response.data;
+  async login(request: AuthRequest): Promise<BaseValueResponse<LoginResponseData>> {
+    const response = await apiClient.post<BaseValueResponse<LoginResponseData>>("login", request);
+    return response.data; 
   }
 
-  async logout(): Promise<BaseValueResponse<Boolean>> {
-    const response = await this.axiosInstance.post<BaseValueResponse<Boolean>>("logout");
+  async logout(): Promise<BaseValueResponse<boolean>> { 
+    // Logout might need to clear the token on the client, which is handled by AuthContext
+    // This call could be to invalidate the token on the server if such a mechanism exists
+    const response = await apiClient.post<BaseValueResponse<boolean>>("logout");
     return response.data;
   }
 }
