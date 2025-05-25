@@ -11,7 +11,11 @@ import { GetOrganizations } from "@/domain/usecase/organization/GetOrganizations
 import { BatchApiDataSource } from "@/data/datasource/api/BatchApiDataSource";
 import { BatchRepositoryDataSource } from "@/data/repository/BatchRepositoryDataSource";
 import { Batch } from "@/domain/model/batch/Batch";
+import { Drug } from "@/domain/model/drug/Drug";
 import { GetAllBatches } from "@/domain/usecase/batch/GetAllBatches";
+import { GetMyAvailDrugs } from "@/domain/usecase/drug/GetMyAvailDrugs";
+import { DrugApiDataSource } from "@/data/datasource/api/DrugApiDataSource";
+import { DrugRepositoryDataSource } from "@/data/repository/DrugRepositoryDataSource";
 import { TransferApiDataSource } from "@/data/datasource/api/TransferApiDataSource";
 import { TransferRepositoryDataSource } from "@/data/repository/TransferRepositoryDataSource";
 import { CreateTransfer } from "@/domain/usecase/transfer/CreateTransfer";
@@ -25,6 +29,7 @@ interface VMBatch extends Batch {
   remainingQty: number;
   selectedQty: string; // Input is string, will be parsed
   isSelected: boolean;
+  availableDrugIdsInBatch: string[]; // Store actual available drug IDs for this batch
 }
 
 const selectedBatchSchema = z.object({
@@ -70,13 +75,20 @@ export default function CreateTransferPageViewModel() {
   const { list: organizations, isLoading: organizationsIsLoading, error: organizationsError, execute: fetchOrganizations } = useApiRequest<Organization, []>(getOrganizations);
 
   // Batches
-  const batchDataSource = useMemo(() => new BatchApiDataSource(), []);
-  const batchRepo = useMemo(() => new BatchRepositoryDataSource(batchDataSource), [batchDataSource]);
+  const batchApiDataSource = useMemo(() => new BatchApiDataSource(), []);
+  const batchRepo = useMemo(() => new BatchRepositoryDataSource(batchApiDataSource), [batchApiDataSource]);
   const getAllBatchesUseCase = useMemo(() => new GetAllBatches(batchRepo), [batchRepo]);
   const getAllBatches = useCallback(async () => {
     return await getAllBatchesUseCase.execute();
   }, [getAllBatchesUseCase]);
-  const { list: availableBatchesFromApi, isLoading: batchesIsLoading, error: batchesError, execute: fetchBatches } = useApiRequest<Batch, []>(getAllBatches);
+  const { list: allBatchesFromApi, isLoading: batchesIsLoading, error: batchesError, execute: fetchBatches } = useApiRequest<Batch, []>(getAllBatches);
+
+  // My Available Drugs
+  const drugApiDataSource = useMemo(() => new DrugApiDataSource(), []);
+  const drugRepo = useMemo(() => new DrugRepositoryDataSource(drugApiDataSource), [drugApiDataSource]);
+  const getMyAvailDrugsUseCase = useMemo(() => new GetMyAvailDrugs(drugRepo), [drugRepo]);
+  const getMyAvailDrugsInternal = useCallback(async () => getMyAvailDrugsUseCase.execute(), [getMyAvailDrugsUseCase]);
+  const { list: myAvailableDrugs, isLoading: myAvailDrugsIsLoading, error: myAvailDrugsError, execute: fetchMyAvailDrugs } = useApiRequest<Drug, []>(getMyAvailDrugsInternal);
 
   // Create Transfer Use Case
   const transferDataSource = useMemo(() => new TransferApiDataSource(), []);
@@ -90,23 +102,27 @@ export default function CreateTransferPageViewModel() {
   useEffect(() => {
     fetchOrganizations();
     fetchBatches();
-  }, [fetchOrganizations, fetchBatches]);
+    fetchMyAvailDrugs();
+  }, [fetchOrganizations, fetchBatches, fetchMyAvailDrugs]);
 
   useEffect(() => {
-    if (availableBatchesFromApi) {
-      setUiBatches(availableBatchesFromApi.map(b => ({
-        ...b,
-        // CRITICAL TODO: Replace placeholder. Accurate remainingQty requires fetching drugs for this batch 
-        // or an API update to include this count directly in the Batch model.
-        remainingQty: 100, // Placeholder value
-        selectedQty: "",
-        isSelected: false,
-      })));
+    if (allBatchesFromApi && myAvailableDrugs) {
+      const processedUiBatches = allBatchesFromApi.map(batch => {
+        const drugsInThisBatch = myAvailableDrugs.filter(drug => drug.BatchID === batch.ID);
+        return {
+          ...batch,
+          remainingQty: drugsInThisBatch.length,
+          selectedQty: "",
+          isSelected: false,
+          availableDrugIdsInBatch: drugsInThisBatch.map(d => d.ID),
+        };
+      });
+      setUiBatches(processedUiBatches);
     }
-  }, [availableBatchesFromApi]);
+  }, [allBatchesFromApi, myAvailableDrugs]);
 
   const handleBatchSelectionChange = (batchId: string, isSelected: boolean) => {
-    setUiBatches(prev => prev.map(b => b.ID === batchId ? { ...b, isSelected } : b));
+    setUiBatches(prev => prev.map(b => b.ID === batchId ? { ...b, isSelected, selectedQty: isSelected ? b.selectedQty : "" } : b)); // Reset selectedQty if deselected
   };
 
   const handleBatchQuantityChange = (batchId: string, quantity: string) => {
@@ -136,28 +152,38 @@ export default function CreateTransferPageViewModel() {
     setIsSubmittingForm(true);
     setOverallApiError(null);
 
-    const selectedForSubmission = uiBatches
-      .filter(b => b.isSelected && b.selectedQty !== "" && parseInt(b.selectedQty, 10) > 0 && parseInt(b.selectedQty, 10) <= b.remainingQty)
-      .map(b => ({
-        id: b.ID,
-        quantity: parseInt(b.selectedQty, 10),
-        // CRITICAL TODO: This generates placeholder drug IDs. The backend expects real, existing drug IDs.
-        // This logic needs to be replaced with a mechanism to select/allocate actual drug IDs.
-        drugIDs: Array.from({ length: parseInt(b.selectedQty, 10) }, (_, i) => `${b.ID}-drug-${i + 1}`)
-      }));
+    const drugsToSubmit: string[] = [];
+    let selectionError = false;
 
-    if (selectedForSubmission.length === 0) {
-      const msg = "Please select at least one batch and specify a valid quantity.";
+    uiBatches.forEach(batch => {
+      if (batch.isSelected && batch.selectedQty !== "") {
+        const quantityToSelect = parseInt(batch.selectedQty, 10);
+        if (quantityToSelect > 0 && quantityToSelect <= batch.remainingQty) {
+          // Take the first 'quantityToSelect' drug IDs from the available ones for this batch
+          drugsToSubmit.push(...batch.availableDrugIdsInBatch.slice(0, quantityToSelect));
+        } else if (quantityToSelect > batch.remainingQty) {
+          selectionError = true;
+          toast.error("Validation Error", { description: `Quantity for batch ${batch.ID} exceeds available drugs.` });
+        }
+      }
+    });
+
+    if (selectionError) {
+        setIsSubmittingForm(false);
+        return;
+    }
+
+    if (drugsToSubmit.length === 0) {
+      const msg = "Please select at least one batch and specify a valid quantity greater than 0.";
       setOverallApiError(msg);
       toast.error("Validation Error", { description: msg });
       setIsSubmittingForm(false);
       return;
     }
 
-    const allDrugIDsToTransfer = selectedForSubmission.reduce((acc, curr) => acc.concat(curr.drugIDs || []), [] as string[]);
     const request: CreateTransferRequest = {
       ReceiverID: data.receiverId,
-      DrugsID: allDrugIDsToTransfer,
+      DrugsID: drugsToSubmit,
     };
 
     try {
@@ -187,8 +213,8 @@ export default function CreateTransferPageViewModel() {
     organizationsIsLoading,
     organizationsError,
     availableUiBatches: filteredUiBatches,
-    batchesIsLoading,
-    batchesError,
+    batchesIsLoading: batchesIsLoading || myAvailDrugsIsLoading, // Combine loading states
+    batchesError: batchesError || myAvailDrugsError, // Combine error states
     batchSearchQuery,
     setBatchSearchQuery,
     handleBatchSelectionChange,

@@ -161,6 +161,7 @@ export default function CreateTransferPage() {
                   className="border-input focus:ring-2 focus:ring-ring pl-10 placeholder:text-muted-foreground"
                   value={batchSearchQuery}
                   onChange={(e) => setBatchSearchQuery(e.target.value)}
+                  disabled={batchesIsLoading}
                 />
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               </div>
@@ -168,12 +169,12 @@ export default function CreateTransferPage() {
             <CardContent className="p-0">
               {batchesIsLoading ? (
                 <div className="h-60 flex items-center justify-center text-muted-foreground">
-                  <Loader2 className="h-8 w-8 animate-spin mr-2" /> Loading available batches...
+                  <Loader2 className="h-8 w-8 animate-spin mr-2" /> Loading available batches & drug data...
                 </div>
               ) : batchesError ? (
                 <div className="h-60 flex flex-col items-center justify-center text-destructive p-4 text-center">
                   <AlertTriangle className="h-8 w-8 mb-2" />
-                  <p className="font-semibold">Error loading batches:</p>
+                  <p className="font-semibold">Error loading batch/drug data:</p>
                   <p className="text-sm">{batchesError.message}</p>
                 </div>
               ) : (
@@ -184,7 +185,7 @@ export default function CreateTransferPage() {
                         <TableHead className="w-[50px] text-muted-foreground"><span className="sr-only">Select</span></TableHead>
                         <TableHead className="font-semibold text-muted-foreground">Batch ID</TableHead>
                         <TableHead className="font-semibold text-muted-foreground">Drug Name</TableHead>
-                        <TableHead className="font-semibold text-muted-foreground text-right">Remaining Qty</TableHead>
+                        <TableHead className="font-semibold text-muted-foreground text-right">Available Qty</TableHead>
                         <TableHead className="font-semibold text-muted-foreground text-right w-[150px]">Transfer Qty</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -194,7 +195,7 @@ export default function CreateTransferPage() {
                           <TableCell colSpan={5} className="h-40 text-center text-muted-foreground">
                             <div className="flex flex-col items-center justify-center py-6">
                               <Package className="h-10 w-10 text-muted-foreground/50 mb-3" />
-                              {batchSearchQuery ? 'No batches match your search.' : 'No available batches with remaining quantity.'}
+                              {batchSearchQuery ? 'No batches match your search.' : 'No available batches with transferable drugs.'}
                             </div>
                           </TableCell>
                         </TableRow>
@@ -216,8 +217,7 @@ export default function CreateTransferPage() {
                             <TableCell className="font-medium text-foreground py-3">{batch.ID}</TableCell>
                             <TableCell className="py-3">{batch.DrugName}</TableCell>
                             <TableCell className="text-right py-3">
-                              {batch.remainingQty.toLocaleString()} 
-                              <span className="text-xs text-muted-foreground"> (Placeholder)</span>
+                              {batch.remainingQty.toLocaleString()}
                             </TableCell>
                             <TableCell className="py-3">
                               <Input
