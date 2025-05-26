@@ -9,12 +9,10 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import useViewModel from "./LoginPageViewModel"
-import { Form, Link, useNavigate } from "react-router"
-import { useEffect } from "react"
-import { useAuth } from "@/presentation/context/AuthContext"
+import { Link } from "react-router"
 import { Activity, AlertTriangle } from "lucide-react"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
+import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "@/components/ui/form"
 
 export const LoginPage = () => {
   const {
@@ -23,14 +21,6 @@ export const LoginPage = () => {
     apiError,
     isLoading,
   } = useViewModel()
-  const navigate = useNavigate()
-  const { isAuthenticated } = useAuth()
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/app/beranda")
-    }
-  }, [isAuthenticated, navigate])
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
