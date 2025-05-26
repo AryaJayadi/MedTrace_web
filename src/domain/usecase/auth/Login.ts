@@ -1,11 +1,11 @@
-import { AuthRequest } from "@/data/datasource/mock/request/AuthRequest";
+import { LoginRequest } from "@/domain/model/auth/LoginRequest";
 import { Organization } from "@/domain/model/organization/Organization";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
 import { AuthRepository } from "@/domain/repository/AuthRepository";
 import { OrganizationRepository } from "@/domain/repository/OrganizationRepository";
 
 interface LoginUseCase {
-  invoke(request: AuthRequest): Promise<BaseValueResponse<Organization>>;
+  invoke(request: LoginRequest): Promise<BaseValueResponse<Organization>>;
 }
 
 export class Login implements LoginUseCase {
@@ -17,9 +17,9 @@ export class Login implements LoginUseCase {
     this.organizationRepository = _organizationRepository;
   }
 
-  async invoke(request: AuthRequest): Promise<BaseValueResponse<Organization>> {
-    const isSuccess = await this.repository.login(request);
-    if (isSuccess) {
+  async invoke(request: LoginRequest): Promise<BaseValueResponse<Organization>> {
+    const res = await this.repository.login(request);
+    if (res.success) {
       return this.organizationRepository.getOrganizationById(request.organization);
     }
     const errorResponse: BaseValueResponse<Organization> = {

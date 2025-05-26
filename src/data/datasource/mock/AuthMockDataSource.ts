@@ -1,6 +1,6 @@
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
 import { AuthDataSource } from "../AuthDataSource";
-import { AuthRequest } from "./request/AuthRequest";
+import { LoginRequest } from "@/domain/model/auth/LoginRequest";
 
 const organizations = [
   "Org1",
@@ -17,7 +17,7 @@ const passwords = [
 ]
 
 export class AuthMockDataSource implements AuthDataSource {
-  login(request: AuthRequest): Promise<BaseValueResponse<Boolean>> {
+  login(request: LoginRequest): Promise<BaseValueResponse<Boolean>> {
     for (let i = 0; i < organizations.length; i++) {
       if (request.organization === organizations[i] && request.password === passwords[i]) {
         const res = {

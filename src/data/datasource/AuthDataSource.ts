@@ -1,14 +1,9 @@
+import { LoginRequest } from "@/domain/model/auth/LoginRequest";
+import { LoginResponse } from "@/domain/model/auth/LoginResponse";
+import { LogoutResponse } from "@/domain/model/auth/LogoutResponse";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
-import { AuthRequest } from "./mock/request/AuthRequest";
-
-// Define the expected response type for login, matching AuthApiDataSource
-interface LoginResponseData {
-    token: string;
-    orgId: string;
-    message?: string;
-}
 
 export interface AuthDataSource {
-    login(request: AuthRequest): Promise<BaseValueResponse<LoginResponseData>>;
-    logout(): Promise<BaseValueResponse<boolean>>; // Assuming logout returns boolean
+  login(request: LoginRequest): Promise<BaseValueResponse<LoginResponse>>;
+  logout(): Promise<BaseValueResponse<LogoutResponse>>;
 }

@@ -1,7 +1,9 @@
 import { AuthRepository } from "@/domain/repository/AuthRepository";
-import { AuthRequest } from "../datasource/mock/request/AuthRequest";
 import { AuthDataSource } from "../datasource/AuthDataSource";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
+import { LoginRequest } from "@/domain/model/auth/LoginRequest";
+import { LoginResponse } from "@/domain/model/auth/LoginResponse";
+import { LogoutResponse } from "@/domain/model/auth/LogoutResponse";
 
 export class AuthRepositoryDataSource implements AuthRepository {
   private datasource: AuthDataSource;
@@ -10,7 +12,11 @@ export class AuthRepositoryDataSource implements AuthRepository {
     this.datasource = _datasource;
   }
 
-  login(request: AuthRequest): Promise<BaseValueResponse<Boolean>> {
+  login(request: LoginRequest): Promise<BaseValueResponse<LoginResponse>> {
     return this.datasource.login(request);
+  }
+
+  logout(): Promise<BaseValueResponse<LogoutResponse>> {
+    return this.datasource.logout();
   }
 }
