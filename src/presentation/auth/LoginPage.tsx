@@ -42,9 +42,8 @@ export const LoginPage = () => {
           </CardDescription>
         </CardHeader>
 
-        {/* Using react-hook-form's Form component */}
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-0"> {/* Removed space-y-8 from form tag to control spacing in CardContent/Footer */}
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-0">
             <CardContent className="space-y-4 pt-4 pb-6">
               {apiError && (
                 <Alert variant="destructive" className="text-sm">
@@ -96,7 +95,7 @@ export const LoginPage = () => {
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage /> {/* Displays validation errors for this field */}
+                    <FormMessage />
                   </FormItem>
                 )}
               />
