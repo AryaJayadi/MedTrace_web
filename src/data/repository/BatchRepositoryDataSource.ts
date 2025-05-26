@@ -1,6 +1,6 @@
 import { BatchRepository } from "@/domain/repository/BatchRepository";
 import { BatchDataSource } from "../datasource/BatchDataSource";
-import { CreateBatchRequest } from "../datasource/api/request/CreateBatchRequest";
+import { CreateBatchRequest } from "../../domain/model/batch/CreateBatchRequest";
 import { UpdateBatchRequest } from "@/domain/model/dto/UpdateBatchRequest";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
 import { BaseListResponse } from "@/domain/model/response/BaseListResponse";

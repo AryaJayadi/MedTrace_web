@@ -1,8 +1,8 @@
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
 import { BaseListResponse } from "@/domain/model/response/BaseListResponse";
-import { CreateBatchRequest } from "./api/request/CreateBatchRequest";
+import { CreateBatchRequest } from "../../domain/model/batch/CreateBatchRequest";
 import { Batch } from "@/domain/model/batch/Batch";
-import { UpdateBatchRequest } from "@/domain/model/dto/UpdateBatchRequest";
+import { UpdateBatchRequest } from "@/domain/model/batch/UpdateBatchRequest";
 
 export interface BatchDataSource {
   createBatch(request: CreateBatchRequest): Promise<BaseValueResponse<Batch>>;

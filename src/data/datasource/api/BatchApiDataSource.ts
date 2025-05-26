@@ -2,9 +2,9 @@ import { BatchDataSource } from "../BatchDataSource";
 import { Batch } from "@/domain/model/batch/Batch";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
 import { BaseListResponse } from "@/domain/model/response/BaseListResponse";
-import { CreateBatchRequest } from "./request/CreateBatchRequest";
-import { UpdateBatchRequest } from "@/domain/model/dto/UpdateBatchRequest";
+import { CreateBatchRequest } from "../../../domain/model/batch/CreateBatchRequest";
 import apiClient from "./axiosInstance"; // Import the global axios instance
+import { UpdateBatchRequest } from "@/domain/model/batch/UpdateBatchRequest";
 
 // Note: The BASE_URL for batches is different, this needs to be handled.
 // Option 1: The apiClient's baseURL is just the domain, and paths are full here.

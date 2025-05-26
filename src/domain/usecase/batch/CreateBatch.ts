@@ -1,4 +1,4 @@
-import { CreateBatchRequest } from "@/data/datasource/api/request/CreateBatchRequest";
+import { CreateBatchRequest } from "@/domain/model/batch/CreateBatchRequest";
 import { Batch } from "@/domain/model/batch/Batch";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
 import { BatchRepository } from "@/domain/repository/BatchRepository";

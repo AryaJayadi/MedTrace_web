@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useNavigate } from "react-router";
 import { useCallback, useMemo, useState } from "react";
-import { CreateBatchRequest } from "@/data/datasource/api/request/CreateBatchRequest"; // Assuming this DTO is used
+import { CreateBatchRequest } from "@/domain/model/batch/CreateBatchRequest"; // Assuming this DTO is used
 import { ROUTES } from "@/core/Routes";
 import { toast } from "sonner"
 import { BatchApiDataSource } from "@/data/datasource/api/BatchApiDataSource";
