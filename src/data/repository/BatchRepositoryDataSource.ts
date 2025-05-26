@@ -1,10 +1,10 @@
 import { BatchRepository } from "@/domain/repository/BatchRepository";
 import { BatchDataSource } from "../datasource/BatchDataSource";
 import { CreateBatchRequest } from "../../domain/model/batch/CreateBatchRequest";
-import { UpdateBatchRequest } from "@/domain/model/dto/UpdateBatchRequest";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
 import { BaseListResponse } from "@/domain/model/response/BaseListResponse";
 import { Batch } from "@/domain/model/batch/Batch";
+import { UpdateBatchRequest } from "@/domain/model/batch/UpdateBatchRequest";
 
 export class BatchRepositoryDataSource implements BatchRepository {
   private datasource: BatchDataSource;
