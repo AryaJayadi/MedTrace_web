@@ -59,6 +59,34 @@ export default function LoginPageViewModel() {
   const organizationRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setApiError(""); // Clear previous API errors
+    setIsLoading(true);
+    console.log("Form values being submitted:", values);
+
+    try {
+      const request = {
+        organization: values.organization,
+        password: values.password
+      } as AuthRequest;
+
+      const resp = await login(request);
+
+      if (resp.success) {
+        console.log("Login successful:", resp);
+        navigate(ROUTES.FULL_PATH_APP_BATCH);
+      } else if (!resp.success && resp.error != undefined) {
+        console.error("Login failed:", resp.error);
+        setApiError(resp.error.message);
+      }
+    } catch (err) {
+      console.error("API Error:", err);
+      setApiError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   async function handleSubmit() {
     if (!organizationRef.current || !passwordRef.current) {
       toast.error("Login failed!", {
@@ -111,6 +139,7 @@ export default function LoginPageViewModel() {
 
   return {
     form,
+    onSubmit,
     handleSubmit,
     organizationRef,
     passwordRef,
