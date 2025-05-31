@@ -35,6 +35,9 @@ importers:
       axios:
         specifier: ^1.9.0
         version: 1.9.0
+      axios-jwt:
+        specifier: ^4.0.3
+        version: 4.0.3(axios@1.9.0)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -1238,6 +1241,15 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
+  axios-jwt@4.0.3:
+    resolution: {integrity: sha512-8y2lXSG3v/AKgrwT2fjwN0+GRjOVoHJk/dlbAoaUOI9+Ym9xbptkPZd7HS+QdPynzdcDykeiJjQUoruInF+shQ==}
+    peerDependencies:
+      '@react-native-async-storage/async-storage': ^1.15.17
+      axios: ^1.4.0
+    peerDependenciesMeta:
+      '@react-native-async-storage/async-storage':
+        optional: true
+
   axios@1.9.0:
     resolution: {integrity: sha512-re4CqKTJaURpzbLHtIi6XpDv20/CnpXOtjRY5/CU32L8gU8ek9UIivcfvSWvmKEngmVbrUtPpdDwWDWL7DNHvg==}
 
@@ -1600,6 +1612,9 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
+  jwt-decode@3.1.2:
+    resolution: {integrity: sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==}
+
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
@@ -1718,6 +1733,10 @@ packages:
 
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
+
+  ms@3.0.0-canary.1:
+    resolution: {integrity: sha512-kh8ARjh8rMN7Du2igDRO9QJnqCb2xYTJxyQYK7vJJS4TvLLmsbyhiKpSW+t+y26gyOyMd0riphX0GeWKU3ky5g==}
+    engines: {node: '>=12.13'}
 
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
@@ -3075,6 +3094,12 @@ snapshots:
 
   asynckit@0.4.0: {}
 
+  axios-jwt@4.0.3(axios@1.9.0):
+    dependencies:
+      axios: 1.9.0
+      jwt-decode: 3.1.2
+      ms: 3.0.0-canary.1
+
   axios@1.9.0:
     dependencies:
       follow-redirects: 1.15.9
@@ -3441,6 +3466,8 @@ snapshots:
 
   json5@2.2.3: {}
 
+  jwt-decode@3.1.2: {}
+
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
@@ -3535,6 +3562,8 @@ snapshots:
       brace-expansion: 2.0.1
 
   ms@2.1.3: {}
+
+  ms@3.0.0-canary.1: {}
 
   nanoid@3.3.11: {}
 
