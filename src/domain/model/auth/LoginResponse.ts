@@ -1,5 +1,6 @@
 export interface LoginResponse {
-  Token: string;
+  AccessToken: string;
+  RefreshToken: string;
   OrgID: string;
   Message: string;
 }

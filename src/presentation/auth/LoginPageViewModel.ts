@@ -6,7 +6,7 @@ import { z } from "zod";
 import { toast } from "sonner"
 import { useAuth } from "@/presentation/context/AuthContext";
 import { LoginRequest } from "@/domain/model/auth/LoginRequest";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const formSchema = z.object({
   organization: z.string().min(4, "Organization is required"),

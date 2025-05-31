@@ -8,11 +8,9 @@ import { Login } from '@/domain/usecase/auth/Login';
 import { errorValueResponse } from '@/lib/ResponseHelper';
 import { createContext, useContext, useState, ReactNode, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import { useLocalStorage } from 'usehooks-ts'
+import { isLoggedIn, setAuthTokens, clearAuthTokens } from 'axios-jwt'
 
 interface AuthContextType {
-  token: string | null;
-  orgId: string | null;
   handleLogin: (request: LoginRequest) => Promise<BaseValueResponse<LoginResponse>>;
   logout: () => void;
   isAuthenticated: boolean;
@@ -21,8 +19,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [token, setToken, removeToken] = useLocalStorage<string | null>('jwtToken', null);
-  const [orgId, setOrgId, removeOrgId] = useLocalStorage<string | null>('orgId', null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const authDataSource = useMemo(() => new AuthApiDataSource(), []);
@@ -32,7 +29,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return await loginUseCase.execute(request);
   }, [loginUseCase]);
 
-  const isAuthenticated = token !== null;
+  useEffect(() => {
+    isLoggedIn().then((loggedIn) => {
+      setIsAuthenticated(loggedIn);
+    });
+  }, [])
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -40,8 +41,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } else {
       navigate(ROUTES.FULL_PATH_AUTH_LOGIN);
     }
-    console.log(token)
-    console.log("Authentication state changed:", isAuthenticated);
   }, [isAuthenticated, navigate])
 
   async function handleLogin(request: LoginRequest): Promise<BaseValueResponse<LoginResponse>> {
@@ -49,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const result = await submitLogin(request);
       console.log("Login result:", result);
       if (result.success && result.value) {
-        login(result.value.Token, result.value.OrgID);
+        login(result.value);
         return result;
       } else {
         return result
@@ -60,19 +59,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  const login = (newToken: string, newOrgId: string) => {
-    console.log("Login successful with token:", newToken, "and orgId:", newOrgId);
-    setToken(newToken);
-    setOrgId(newOrgId);
+  const login = (data: LoginResponse) => {
+    setAuthTokens({
+      accessToken: data.AccessToken,
+      refreshToken: data.RefreshToken
+    })
+    setIsAuthenticated(true);
   };
 
-  const logout = () => {
-    setToken(null);
-    setOrgId(null);
-  };
+  const logout = async () => {
+    await clearAuthTokens();
+    setIsAuthenticated(false);
+  }
 
   return (
-    <AuthContext.Provider value={{ token, orgId, handleLogin, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ handleLogin, logout, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );
