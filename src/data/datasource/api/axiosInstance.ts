@@ -1,7 +1,7 @@
 import { IAuthTokens, TokenRefreshRequest, applyAuthTokenInterceptor, getBrowserLocalStorage } from 'axios-jwt'
 import axios, { AxiosInstance } from 'axios';
 
-const BASE_URL = import.meta.env.VITE_BACKEND_URL + "/";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -13,7 +13,7 @@ const axiosInstance: AxiosInstance = axios.create({
 // 2. Define token refresh function.
 const requestRefresh: TokenRefreshRequest = async (refreshToken: string): Promise<IAuthTokens | string> => {
 
-  const response = await axios.post(`${BASE_URL}/refresh`, { token: refreshToken })
+  const response = await axios.post(`${BASE_URL}/refresh`, { RefreshToken: refreshToken })
 
   // If your backend supports rotating refresh tokens, you may also choose to return an object containing both tokens:
   // return {
