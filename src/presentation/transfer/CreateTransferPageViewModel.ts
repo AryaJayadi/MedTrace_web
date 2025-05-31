@@ -4,10 +4,6 @@ import { z } from "zod";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useApiRequest } from "@/core/hooks/useApiRequest";
-import { OrganizationApiDataSource } from "@/data/datasource/api/OrganizationApiDataSource";
-import { OrganizationRepositoryDataSource } from "@/data/repository/OrganizationRepositoryDataSource";
-import { Organization } from "@/domain/model/organization/Organization";
-import { GetOrganizations } from "@/domain/usecase/organization/GetOrganizations";
 import { BatchApiDataSource } from "@/data/datasource/api/BatchApiDataSource";
 import { BatchRepositoryDataSource } from "@/data/repository/BatchRepositoryDataSource";
 import { Batch } from "@/domain/model/batch/Batch";
@@ -64,15 +60,6 @@ export default function CreateTransferPageViewModel() {
   const [overallApiError, setOverallApiError] = useState<string | null>(null);
   const [isSubmittingForm, setIsSubmittingForm] = useState<boolean>(false);
 
-  // Organizations
-  const organizationDataSource = useMemo(() => new OrganizationApiDataSource(), []);
-  const orgRepo = useMemo(() => new OrganizationRepositoryDataSource(organizationDataSource), [organizationDataSource]);
-  const getOrganizationsUseCase = useMemo(() => new GetOrganizations(orgRepo), [orgRepo]);
-  const getOrganizations = useCallback(async () => {
-    return await getOrganizationsUseCase.invoke();
-  }, [getOrganizationsUseCase]);
-  const { list: organizations, isLoading: organizationsIsLoading, error: organizationsError, execute: fetchOrganizations } = useApiRequest<Organization, []>(getOrganizations);
-
   // Batches
   const batchApiDataSource = useMemo(() => new BatchApiDataSource(), []);
   const batchRepo = useMemo(() => new BatchRepositoryDataSource(batchApiDataSource), [batchApiDataSource]);
@@ -99,10 +86,9 @@ export default function CreateTransferPageViewModel() {
   const [uiBatches, setUiBatches] = useState<VMBatch[]>([]);
 
   useEffect(() => {
-    fetchOrganizations();
     fetchBatches();
     fetchMyAvailDrugs();
-  }, [fetchOrganizations, fetchBatches, fetchMyAvailDrugs]);
+  }, [fetchBatches, fetchMyAvailDrugs]);
 
   useEffect(() => {
     if (allBatchesFromApi && myAvailableDrugs) {
@@ -208,9 +194,6 @@ export default function CreateTransferPageViewModel() {
     onSubmit,
     overallApiError,
     isSubmittingForm,
-    organizations,
-    organizationsIsLoading,
-    organizationsError,
     availableUiBatches: filteredUiBatches,
     batchesIsLoading: batchesIsLoading || myAvailDrugsIsLoading, // Combine loading states
     batchesError: batchesError || myAvailDrugsError, // Combine error states

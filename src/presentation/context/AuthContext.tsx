@@ -20,7 +20,7 @@ import { ErrorInfo } from '@/domain/model/response/ErrorInfo';
 interface AuthContextType {
   handleLogin: (request: LoginRequest) => Promise<BaseValueResponse<LoginResponse>>;
   logout: () => void;
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | null;
   user?: Organization | null;
   otherOrgs: Organization[];
   organizationsIsLoading: boolean;
@@ -82,7 +82,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   async function handleLogin(request: LoginRequest): Promise<BaseValueResponse<LoginResponse>> {
     try {
       const result = await submitLogin(request);
-      console.log("Login result:", result);
       if (result.success && result.value) {
         login(result.value);
         return result;

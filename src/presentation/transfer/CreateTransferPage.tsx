@@ -13,6 +13,7 @@ import { ROUTES } from "@/core/Routes"
 import { cn } from "@/lib/utils"
 import useViewModel from "./CreateTransferPageViewModel"
 import { toast } from "sonner"
+import { useAuth } from "../context/AuthContext"
 
 export default function CreateTransferPage() {
   const navigate = useNavigate();
@@ -21,9 +22,6 @@ export default function CreateTransferPage() {
     onSubmit,
     overallApiError,
     isSubmittingForm,
-    organizations,
-    organizationsIsLoading,
-    organizationsError,
     availableUiBatches,
     batchesIsLoading,
     batchesError,
@@ -33,6 +31,12 @@ export default function CreateTransferPage() {
     handleBatchQuantityChange,
     uiBatches,
   } = useViewModel();
+  const {
+    user,
+    otherOrgs,
+    organizationsIsLoading,
+    organizationsError
+  } = useAuth();
 
   useEffect(() => {
     if (overallApiError) {
@@ -45,16 +49,18 @@ export default function CreateTransferPage() {
   const renderOrganizationOptions = () => {
     if (organizationsIsLoading) return <SelectItem value="loading" disabled>Loading organizations...</SelectItem>;
     if (organizationsError) return <SelectItem value="error" disabled>Error: {organizationsError.message}</SelectItem>;
-    if (!organizations || organizations.length === 0) return <SelectItem value="empty" disabled>No organizations found</SelectItem>;
-    return organizations.map(org => (
+    if (!otherOrgs || otherOrgs.length === 0) return <SelectItem value="empty" disabled>No organizations found</SelectItem>;
+    return otherOrgs.map(org => (
       <SelectItem key={org.ID} value={org.ID}>{org.Name} ({org.Type})</SelectItem>
     ));
   };
-  
+
   const manufacturerInfo = {
-    name: "My Pharma Corp (Placeholder)",
-    location: "My Location (Placeholder)"
+    name: user?.Name || "My Pharma Corp (Placeholder)",
+    location: user?.Location || "My Location (Placeholder)"
   };
+
+  console.log(organizationsError, organizationsIsLoading, otherOrgs);
 
   return (
     <div className="max-w-5xl mx-auto p-4 md:p-6">
@@ -128,10 +134,10 @@ export default function CreateTransferPage() {
                     <Label htmlFor="receiverId" className="text-foreground font-medium mb-1 block">
                       Company (Receiver)
                     </Label>
-                    <Select 
-                      onValueChange={field.onChange} 
+                    <Select
+                      onValueChange={field.onChange}
                       defaultValue={field.value}
-                      disabled={organizationsIsLoading || !!organizationsError || !organizations || organizations.length === 0}
+                      disabled={organizationsIsLoading || !!organizationsError || !otherOrgs || otherOrgs.length === 0}
                     >
                       <FormControl>
                         <SelectTrigger className="border-input focus:ring-2 focus:ring-ring text-foreground">
@@ -252,12 +258,12 @@ export default function CreateTransferPage() {
                 >
                   Cancel
                 </Button>
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2"
                   disabled={isSubmittingForm || selectedBatchesCount === 0 || !form.getValues("receiverId")}
                 >
-                  {isSubmittingForm ? <Loader2 className="h-4 w-4 animate-spin mr-1"/> : <Save className="h-4 w-4" />}
+                  {isSubmittingForm ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Save className="h-4 w-4" />}
                   {isSubmittingForm ? "Submitting..." : "Save Transfer"}
                 </Button>
               </div>
