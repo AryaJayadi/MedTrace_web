@@ -1,4 +1,3 @@
-import { ROUTES } from '@/core/Routes';
 import { AuthApiDataSource } from '@/data/datasource/api/AuthApiDataSource';
 import { AuthRepositoryDataSource } from '@/data/repository/AuthRepositoryDataSource';
 import { LoginRequest } from '@/domain/model/auth/LoginRequest';
@@ -7,7 +6,6 @@ import { BaseValueResponse } from '@/domain/model/response/BaseValueResponse';
 import { Login } from '@/domain/usecase/auth/Login';
 import { errorValueResponse } from '@/lib/ResponseHelper';
 import { createContext, useContext, useState, ReactNode, useEffect, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router';
 import { isLoggedIn, setAuthTokens, clearAuthTokens } from 'axios-jwt'
 import { OrganizationApiDataSource } from '@/data/datasource/api/OrganizationApiDataSource';
 import { OrganizationRepositoryDataSource } from '@/data/repository/OrganizationRepositoryDataSource';
@@ -34,7 +32,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [user, setUser] = useState<Organization | null>(null);
   const [otherOrgs, setOtherOrgs] = useState<Organization[]>([])
-  const navigate = useNavigate();
 
   const authDataSource = useMemo(() => new AuthApiDataSource(), []);
   const authRepository = useMemo(() => new AuthRepositoryDataSource(authDataSource), [authDataSource]);

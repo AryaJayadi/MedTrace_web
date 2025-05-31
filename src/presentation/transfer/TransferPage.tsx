@@ -6,6 +6,7 @@ import { Link } from "react-router"
 import useViewModel from "./TransferPageViewModel";
 import { Skeleton } from "@/components/ui/skeleton";
 import TransfersTable from "./TransfersTable";
+import { useAuth } from "../context/AuthContext";
 
 const TransfersTableSkeleton = () => (
   <div className="space-y-4">
@@ -36,8 +37,9 @@ export default function TransferPage() {
     handleSearchChange,
     loadMyTransfers,
   } = useViewModel();
-
-  const currentUserId = "user-placeholder-id";
+  const {
+    user
+  } = useAuth();
 
   const handleTransferUpdate = () => {
     loadMyTransfers();
@@ -71,7 +73,7 @@ export default function TransferPage() {
             There was an issue retrieving transfer data. Please try again later.
           </p>
           <Button onClick={loadMyTransfers} variant="outline" className="text-destructive border-destructive hover:bg-destructive/20">
-             Retry
+            Retry
           </Button>
         </div>
       ) : hasAnyTransfersAtAll || searchQuery !== "" ? (
@@ -94,10 +96,10 @@ export default function TransferPage() {
           </div>
 
           {hasFilteredTransfers ? (
-            <TransfersTable 
-              transfers={filteredTransfers} 
-              onTransferUpdate={handleTransferUpdate} 
-              currentUserId={currentUserId} 
+            <TransfersTable
+              transfers={filteredTransfers}
+              onTransferUpdate={handleTransferUpdate}
+              currentUserId={user?.ID || ""}
             />
           ) : (
             <div className="text-center py-10 text-muted-foreground">

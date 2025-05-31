@@ -17,7 +17,7 @@ export default function TransfersTable({
   onTransferUpdate,
   currentUserId,
 }: TransfersTableProps) {
-  const { 
+  const {
     actionStates,
     handleAccept,
     handleReject,
@@ -49,14 +49,14 @@ export default function TransfersTable({
             <TableHead className="font-semibold text-muted-foreground">Receiver ID</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Transfer Date</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Status</TableHead>
-            <TableHead className="font-semibold text-muted-foreground text-center">Actions / Receive Date</TableHead> 
+            <TableHead className="font-semibold text-muted-foreground text-center">Actions / Receive Date</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="text-card-foreground">
           {transfers.map((transfer) => {
             const isCurrentUserReceiver = transfer.ReceiverID === currentUserId;
             const transferActionState = actionStates[transfer.ID] || { isLoading: false };
-            
+
             return (
               <TableRow
                 key={transfer.ID}
@@ -85,7 +85,7 @@ export default function TransfersTable({
                     <Loader2 className="h-5 w-5 animate-spin mx-auto" />
                   ) : transferActionState.error ? (
                     <div className="flex items-center justify-center text-destructive" title={transferActionState.error}>
-                       <AlertCircle className="h-5 w-5 mr-1" /> Error
+                      <AlertCircle className="h-5 w-5 mr-1" /> Error
                     </div>
                   ) : !transfer.isAccepted && isCurrentUserReceiver ? (
                     <div className="flex justify-center gap-2">
@@ -109,13 +109,14 @@ export default function TransfersTable({
                   ) : transfer.ReceiveDate ? (
                     new Date(transfer.ReceiveDate).toLocaleDateString()
                   ) : transfer.isAccepted ? (
-                    'N/A' 
+                    'N/A'
                   ) : (
                     'Not Yet Actioned'
                   )}
                 </TableCell>
               </TableRow>
-            )}
+            )
+          }
           )}
         </TableBody>
       </Table>
