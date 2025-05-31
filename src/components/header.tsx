@@ -52,7 +52,6 @@ export default function Header() {
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-white/30 transition-colors">
                 <div className="h-2 w-2 rounded-full bg-green-300 animate-pulse"></div>
-                <span className="hidden sm:inline">Welcome,</span>
                 <span className="max-w-[150px] truncate">{manufacturerName || "{{Manufacture Name}}"}</span>
                 <ChevronDown className="h-4 w-4 opacity-70" />
               </button>
