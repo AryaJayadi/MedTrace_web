@@ -8,7 +8,7 @@ import { Login } from '@/domain/usecase/auth/Login';
 import { errorValueResponse } from '@/lib/ResponseHelper';
 import { createContext, useContext, useState, ReactNode, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import { isLoggedIn, setAuthTokens, clearAuthTokens } from 'axios-jwt'
+import { isLoggedIn, setAuthTokens, clearAuthTokens, getAccessToken } from 'axios-jwt'
 
 interface AuthContextType {
   handleLogin: (request: LoginRequest) => Promise<BaseValueResponse<LoginResponse>>;
@@ -33,12 +33,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isLoggedIn().then((loggedIn) => {
       setIsAuthenticated(loggedIn);
     });
+
   }, [])
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated === true) {
       navigate(ROUTES.FULL_PATH_APP_BATCH);
-    } else {
+    } else if (isAuthenticated === false) {
       navigate(ROUTES.FULL_PATH_AUTH_LOGIN);
     }
   }, [isAuthenticated, navigate])
