@@ -15,12 +15,12 @@ interface ProtectedRouteProps {
   redirectPath?: string;
 }
 
-const ProtectedRoute: (p: ProtectedRouteProps) => (JSX.Element) = ({ redirectPath = "/auth/login" }) => {
+const ProtectedRoute: (p: ProtectedRouteProps) => (JSX.Element) = () => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
 
-  if (!isAuthenticated) {
-    return <Navigate to={redirectPath} state={{ from: location }} replace />;
+  if (isAuthenticated === false) {
+    return <Navigate to={ROUTES.FULL_PATH_AUTH_LOGIN} state={{ from: location }} replace />;
   }
 
   return <Outlet />;

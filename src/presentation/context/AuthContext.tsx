@@ -8,18 +8,32 @@ import { Login } from '@/domain/usecase/auth/Login';
 import { errorValueResponse } from '@/lib/ResponseHelper';
 import { createContext, useContext, useState, ReactNode, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import { isLoggedIn, setAuthTokens, clearAuthTokens, getAccessToken } from 'axios-jwt'
+import { isLoggedIn, setAuthTokens, clearAuthTokens } from 'axios-jwt'
+import { OrganizationApiDataSource } from '@/data/datasource/api/OrganizationApiDataSource';
+import { OrganizationRepositoryDataSource } from '@/data/repository/OrganizationRepositoryDataSource';
+import { GetOrganizations } from '@/domain/usecase/organization/GetOrganizations';
+import { Organization } from '@/domain/model/organization/Organization';
+import { useLocalStorage } from 'usehooks-ts';
+import { useApiRequest } from '@/core/hooks/useApiRequest';
+import { ErrorInfo } from '@/domain/model/response/ErrorInfo';
 
 interface AuthContextType {
   handleLogin: (request: LoginRequest) => Promise<BaseValueResponse<LoginResponse>>;
   logout: () => void;
   isAuthenticated: boolean;
+  user?: Organization | null;
+  otherOrgs: Organization[];
+  organizationsIsLoading: boolean;
+  organizationsError: ErrorInfo | undefined;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [orgId, setOrgId, removeOrgId] = useLocalStorage<string | null>('orgId', null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [user, setUser] = useState<Organization | null>(null);
+  const [otherOrgs, setOtherOrgs] = useState<Organization[]>([])
   const navigate = useNavigate();
 
   const authDataSource = useMemo(() => new AuthApiDataSource(), []);
@@ -29,6 +43,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return await loginUseCase.execute(request);
   }, [loginUseCase]);
 
+  const organizationDataSource = useMemo(() => new OrganizationApiDataSource(), []);
+  const orgRepo = useMemo(() => new OrganizationRepositoryDataSource(organizationDataSource), [organizationDataSource]);
+  const getOrganizationsUseCase = useMemo(() => new GetOrganizations(orgRepo), [orgRepo]);
+  const getOrganizations = useCallback(async () => {
+    return await getOrganizationsUseCase.invoke();
+  }, [getOrganizationsUseCase]);
+  const { list: organizations, isLoading: organizationsIsLoading, error: organizationsError, execute: fetchOrganizations } = useApiRequest<Organization, []>(getOrganizations);
+
   useEffect(() => {
     isLoggedIn().then((loggedIn) => {
       setIsAuthenticated(loggedIn);
@@ -37,12 +59,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [])
 
   useEffect(() => {
-    if (isAuthenticated === true) {
-      navigate(ROUTES.FULL_PATH_APP_BATCH);
-    } else if (isAuthenticated === false) {
-      navigate(ROUTES.FULL_PATH_AUTH_LOGIN);
+    if (orgId) fetchOrganizations();
+
+  }, [orgId])
+
+  useEffect(() => {
+    if (organizations && organizations.length > 0) {
+      let currOrg;
+      const tempOrgs = [];
+
+      for (const org of organizations) {
+        if (org.ID === orgId) currOrg = org;
+        else tempOrgs.push(org);
+      }
+
+      setUser(currOrg || null);
+      setOtherOrgs(tempOrgs);
     }
-  }, [isAuthenticated, navigate])
+
+  }, [organizations])
 
   async function handleLogin(request: LoginRequest): Promise<BaseValueResponse<LoginResponse>> {
     try {
@@ -61,6 +96,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const login = (data: LoginResponse) => {
+    setOrgId(data.OrgID);
     setAuthTokens({
       accessToken: data.AccessToken,
       refreshToken: data.RefreshToken
@@ -70,11 +106,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     await clearAuthTokens();
+    removeOrgId();
     setIsAuthenticated(false);
   }
 
   return (
-    <AuthContext.Provider value={{ handleLogin, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ handleLogin, logout, isAuthenticated, user, otherOrgs, organizationsIsLoading, organizationsError }}>
       {children}
     </AuthContext.Provider>
   );
