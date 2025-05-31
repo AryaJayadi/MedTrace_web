@@ -18,8 +18,7 @@ type LoginFormValues = z.infer<typeof formSchema>;
 export default function LoginPageViewModel() {
   const navigate = useNavigate();
   const {
-    handleLogin,
-    isAuthenticated
+    handleLogin
   } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -31,12 +30,6 @@ export default function LoginPageViewModel() {
       password: "",
     },
   });
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate(ROUTES.FULL_PATH_APP_BATCH);
-    }
-  }, [isAuthenticated, navigate])
 
   const onSubmit = async (values: LoginFormValues) => {
     setIsLoading(true);

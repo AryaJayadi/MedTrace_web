@@ -1,3 +1,4 @@
+import { ROUTES } from '@/core/Routes';
 import { AuthApiDataSource } from '@/data/datasource/api/AuthApiDataSource';
 import { AuthRepositoryDataSource } from '@/data/repository/AuthRepositoryDataSource';
 import { LoginRequest } from '@/domain/model/auth/LoginRequest';
@@ -6,6 +7,8 @@ import { BaseValueResponse } from '@/domain/model/response/BaseValueResponse';
 import { Login } from '@/domain/usecase/auth/Login';
 import { errorValueResponse } from '@/lib/ResponseHelper';
 import { createContext, useContext, useState, ReactNode, useEffect, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router';
+import { useLocalStorage } from 'usehooks-ts'
 
 interface AuthContextType {
   token: string | null;
@@ -18,8 +21,9 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [token, setToken] = useState<string | null>(localStorage.getItem('jwtToken'));
-  const [orgId, setOrgId] = useState<string | null>(localStorage.getItem('orgId'));
+  const [token, setToken, removeToken] = useLocalStorage<string | null>('jwtToken', null);
+  const [orgId, setOrgId, removeOrgId] = useLocalStorage<string | null>('orgId', null);
+  const navigate = useNavigate();
 
   const authDataSource = useMemo(() => new AuthApiDataSource(), []);
   const authRepository = useMemo(() => new AuthRepositoryDataSource(authDataSource), [authDataSource]);
@@ -28,20 +32,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return await loginUseCase.execute(request);
   }, [loginUseCase]);
 
-  const isAuthenticated = !!token;
+  const isAuthenticated = token !== null;
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('jwtToken');
-    const storedOrgId = localStorage.getItem('orgId');
-    if (storedToken && storedOrgId) {
-      setToken(storedToken);
-      setOrgId(storedOrgId);
+    if (isAuthenticated) {
+      navigate(ROUTES.FULL_PATH_APP_BATCH);
+    } else {
+      navigate(ROUTES.FULL_PATH_AUTH_LOGIN);
     }
-  }, []);
+    console.log(token)
+    console.log("Authentication state changed:", isAuthenticated);
+  }, [isAuthenticated, navigate])
 
   async function handleLogin(request: LoginRequest): Promise<BaseValueResponse<LoginResponse>> {
     try {
       const result = await submitLogin(request);
+      console.log("Login result:", result);
       if (result.success && result.value) {
         login(result.value.Token, result.value.OrgID);
         return result;
@@ -55,15 +61,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const login = (newToken: string, newOrgId: string) => {
-    localStorage.setItem('jwtToken', newToken);
-    localStorage.setItem('orgId', newOrgId);
+    console.log("Login successful with token:", newToken, "and orgId:", newOrgId);
     setToken(newToken);
     setOrgId(newOrgId);
   };
 
   const logout = () => {
-    localStorage.removeItem('jwtToken');
-    localStorage.removeItem('orgId');
     setToken(null);
     setOrgId(null);
   };
