@@ -1,42 +1,20 @@
 import { Organization } from "@/domain/model/organization/Organization";
 import { BaseListResponse } from "@/domain/model/response/BaseListResponse";
 import { OrganizationDataSource } from "../OrganizationDataSource";
-import axios from "axios";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
+import axiosInstance from "./axiosInstance";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL + "/organizations";
 
 export class OrganizationApiDataSource implements OrganizationDataSource {
-  private axiosInstance = axios.create({
-    baseURL: BASE_URL,
-    transformResponse: [function (response) {
-      let resp;
-
-      try {
-        resp = JSON.parse(response);
-      } catch (error) {
-        throw Error(`[requestClient] Error parsing response JSON data - ${JSON.stringify(error)}`);
-      }
-
-      if (resp) {
-        return resp;
-      }
-    }]
-  })
 
   async getOrganizations(): Promise<BaseListResponse<Organization>> {
-    const response = await this.axiosInstance({
-      method: "GET",
-      url: "",
-    })
-    return response.data as BaseListResponse<Organization>;
+    const response = await axiosInstance.get<BaseListResponse<Organization>>(BASE_URL);
+    return response.data;
   }
 
   async getOrganizationById(id: string): Promise<BaseValueResponse<Organization>> {
-    const response = await this.axiosInstance({
-      method: "GET",
-      url: `/${id}`,
-    });
-    return response.data as BaseValueResponse<Organization>;
+    const response = await axiosInstance.get<BaseValueResponse<Organization>>(`${BASE_URL}/${id}`);
+    return response.data;
   }
 }
