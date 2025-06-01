@@ -10,6 +10,7 @@ import BatchPage from "@/presentation/batch/BatchPage";
 import CreateBatchPage from "@/presentation/batch/CreateBatchPage";
 import TransferPage from "@/presentation/transfer/TransferPage";
 import CreateTransferPage from "@/presentation/transfer/CreateTransferPage";
+import DrugPage from "@/presentation/drug/DrugPage";
 
 interface ProtectedRouteProps {
   redirectPath?: string;
@@ -24,6 +25,14 @@ const ProtectedRoute: (p: ProtectedRouteProps) => (JSX.Element) = () => {
   }
 
   return <Outlet />;
+}
+
+const BatchPageWrapper = () => {
+  const { user } = useAuth();
+
+  if (!user) return <Navigate to={ROUTES.FULL_PATH_AUTH_LOGIN} replace />;
+  if (user.Type === "Manufacturer") return <BatchPage />;
+  else return <DrugPage />;
 }
 
 const Root = () => {
@@ -53,7 +62,7 @@ const router = createBrowserRouter([
             children: [
               {
                 path: ROUTES.APP_BATCH,
-                element: <BatchPage />
+                element: <BatchPageWrapper />
               },
               {
                 path: ROUTES.APP_BATCH_CREATE,
