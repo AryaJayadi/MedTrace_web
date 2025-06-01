@@ -5,27 +5,7 @@ import { ROUTES } from "@/core/Routes"
 import { Plus, Filter, Package, AlertTriangle } from "lucide-react"
 import { Link } from "react-router"
 import useViewModel from "./BatchPageViewModel"
-import { Skeleton } from "@/components/ui/skeleton"
-
-const BatchesTableSkeleton = () => (
-  <div className="space-y-4">
-    <div className="flex justify-between items-center">
-      <Skeleton className="h-8 w-1/4" />
-      <Skeleton className="h-10 w-1/4" />
-    </div>
-    <Skeleton className="h-12 w-full" />
-    {[...Array(5)].map((_, i) => (
-      <div key={i} className="flex items-center space-x-4 p-4 border-b">
-        <Skeleton className="h-6 w-1/6" />
-        <Skeleton className="h-6 w-1/4" />
-        <Skeleton className="h-6 w-1/6" />
-        <Skeleton className="h-6 w-1/6" />
-        <Skeleton className="h-6 w-1/6" />
-        <Skeleton className="h-6 w-1/12" />
-      </div>
-    ))}
-  </div>
-);
+import { TableSkeleton } from "@/components/table-skeleton"
 
 export default function BatchesPage() {
   const {
@@ -48,7 +28,7 @@ export default function BatchesPage() {
       </div>
 
       {batchesIsLoading ? (
-        <BatchesTableSkeleton />
+        <TableSkeleton />
       ) : batchesError ? (
         <div className="bg-destructive/10 text-destructive-foreground rounded-xl p-8 shadow-lg flex flex-col items-center justify-center text-center py-16">
           <AlertTriangle className="h-10 w-10 text-destructive mb-6" />

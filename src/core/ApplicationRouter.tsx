@@ -11,6 +11,7 @@ import CreateBatchPage from "@/presentation/batch/CreateBatchPage";
 import TransferPage from "@/presentation/transfer/TransferPage";
 import CreateTransferPage from "@/presentation/transfer/CreateTransferPage";
 import DrugPage from "@/presentation/drug/DrugPage";
+import { TableSkeleton } from "@/components/table-skeleton";
 
 interface ProtectedRouteProps {
   redirectPath?: string;
@@ -30,7 +31,7 @@ const ProtectedRoute: (p: ProtectedRouteProps) => (JSX.Element) = () => {
 const BatchPageWrapper = () => {
   const { user } = useAuth();
 
-  if (!user) return <Navigate to={ROUTES.FULL_PATH_AUTH_LOGIN} replace />;
+  if (!user) return <TableSkeleton />;
   if (user.Type === "Manufacturer") return <BatchPage />;
   else return <DrugPage />;
 }
