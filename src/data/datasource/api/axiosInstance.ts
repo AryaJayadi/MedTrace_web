@@ -21,7 +21,7 @@ const requestRefresh: TokenRefreshRequest = async (refreshToken: string): Promis
   //  refreshToken: response.data.refresh_token
   //}
 
-  return response.data.access_token
+  return response.data.value.AccessToken; // Assuming the response structure contains the access token in this path
 }
 
 // 3. Add interceptor to your axios instance
