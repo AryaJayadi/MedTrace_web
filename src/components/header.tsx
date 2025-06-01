@@ -8,9 +8,13 @@ import { Avatar, AvatarFallback } from "./ui/avatar";
 
 export default function Header() {
   const {
+    user,
     logout
   } = useAuth()
-  const manufacturerName = "PT Manufacturer Pharmacy";
+
+  const manufacturerName = user?.Name || "PT Manufacturer Pharmacy";
+  const manufacturerLocation = user?.Location || "Bandung"
+
   const [theme, setTheme] = useState(() => {
     if (typeof window !== "undefined") {
       const savedTheme = localStorage.getItem("theme");
@@ -63,7 +67,7 @@ export default function Header() {
                 </Avatar>
                 <div className="flex flex-col space-y-0.5">
                   <p className="text-sm font-medium leading-none">{manufacturerName}</p>
-                  <p className="text-xs leading-none text-muted-foreground">admin@ptmanufacturer.com</p>
+                  <p className="text-xs leading-none text-muted-foreground">{manufacturerLocation}</p>
                 </div>
               </div>
               <DropdownMenuSeparator />
