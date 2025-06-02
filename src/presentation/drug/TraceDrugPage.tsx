@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Search, Building, TruckIcon, Hospital } from "lucide-react"
 import DrugTimeline from "@/components/drug-timeline"
 
-export default function TracePage() {
+export default function TraceDrugPage() {
   const [drugId, setDrugId] = useState("")
   const [isSearching, setIsSearching] = useState(false)
   const [searchPerformed, setSearchPerformed] = useState(false)

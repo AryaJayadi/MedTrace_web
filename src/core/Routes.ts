@@ -11,11 +11,14 @@ export const ROUTES = {
   APP_TRANSFER: "transfer",
   APP_TRANSFER_CREATE: "transfer/create",
 
+  APP_DRUG_TRACE: "drug/trace",
+
   AUTH_LOGIN: "login",
 
   FULL_PATH_APP_BATCH: "/app/batch",
   FULL_PATH_APP_BATCH_CREATE: "/app/batch/create",
   FULL_PATH_APP_TRANSFER: "/app/transfer",
   FULL_PATH_APP_TRANSFER_CREATE: "/app/transfer/create",
+  FULL_PATH_APP_DRUG_TRACE: "/app/drug/trace",
   FULL_PATH_AUTH_LOGIN: "/auth/login",
 };

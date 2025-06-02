@@ -12,6 +12,7 @@ import TransferPage from "@/presentation/transfer/TransferPage";
 import CreateTransferPage from "@/presentation/transfer/CreateTransferPage";
 import DrugPage from "@/presentation/drug/DrugPage";
 import { TableSkeleton } from "@/components/table-skeleton";
+import TraceDrugPage from "@/presentation/drug/TraceDrugPage";
 
 interface ProtectedRouteProps {
   redirectPath?: string;
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
               {
                 path: ROUTES.APP_TRANSFER_CREATE,
                 element: <CreateTransferPage />
+              },
+              {
+                path: ROUTES.APP_DRUG_TRACE,
+                element: <TraceDrugPage />
               }
             ]
           }

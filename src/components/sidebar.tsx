@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { Package, ArrowRightLeft, ChevronLeft, ChevronRight } from "lucide-react"
+import { Package, ArrowRightLeft, ChevronLeft, ChevronRight, Search } from "lucide-react"
 import { useState, useEffect } from "react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Link, useLocation } from "react-router"
@@ -32,6 +32,7 @@ export default function Sidebar() {
   const navItems = [
     { name: "Batch", path: ROUTES.FULL_PATH_APP_BATCH, icon: <Package className="h-5 w-5" /> },
     { name: "Transfer", path: ROUTES.FULL_PATH_APP_TRANSFER, icon: <ArrowRightLeft className="h-5 w-5" /> },
+    { name: "Trace", path: ROUTES.FULL_PATH_APP_DRUG_TRACE, icon: <Search className="h-5 w-5" /> },
     // Add more items as needed
   ];
 
