@@ -35,17 +35,4 @@ export class DrugApiDataSource implements DrugDataSource {
     return response.data;
   }
 
-  // The following methods were in a previous version of DrugApiDataSource but not in the interface:
-  // They are kept here, commented out, in case they are needed or the interface is incomplete.
-  /*
-  async getAllDrugs(): Promise<BaseListResponse<Drug>> {
-    const response = await apiClient.get<BaseListResponse<Drug>>(DRUGS_API_PATH);
-    return response.data;
-  }
-
-  async drugExists(drugID: string): Promise<BaseValueResponse<boolean>> {
-    const response = await apiClient.get<BaseValueResponse<boolean>>(`${DRUGS_API_PATH}/${drugID}/exists`);
-    return response.data;
-  }
-  */
 } 
