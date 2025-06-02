@@ -58,27 +58,27 @@ export default function TraceDrugPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4 md:p-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-800">Trace Drug</h1>
+        <h1 className="text-2xl font-bold text-foreground">Trace Drug</h1>
       </div>
 
-      <Card className="card-shadow">
-        <CardHeader className="bg-gray-50 border-b">
-          <CardTitle className="text-lg font-medium text-gray-700">Search Drug by ID</CardTitle>
+      <Card className="shadow-lg">
+        <CardHeader className="border-b border-border align-items-center">
+          <CardTitle className="text-lg font-medium text-card-foreground">Search Drug by ID</CardTitle>
         </CardHeader>
         <CardContent className="p-6">
-          <form onSubmit={handleSearch} className="flex gap-3">
+          <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
               <Input
                 placeholder="Enter drug ID..."
                 value={drugId}
                 onChange={(e) => setDrugId(e.target.value)}
-                className="pl-10 border-gray-200 focus:ring-primary"
+                className="pl-10 border-input focus-visible:ring-ring"
               />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             </div>
-            <Button type="submit" className="bg-primary hover:bg-primary/90 text-white" disabled={isSearching}>
+            <Button type="submit" className="bg-primary hover:bg-primary/90 text-primary-foreground" disabled={isSearching || !drugId}>
               {isSearching ? "Searching..." : "Trace"}
             </Button>
           </form>
@@ -86,29 +86,29 @@ export default function TraceDrugPage() {
       </Card>
 
       {searchPerformed && (
-        <Card className="card-shadow">
-          <CardHeader className="bg-gray-50 border-b">
-            <CardTitle className="text-lg font-medium text-gray-700">Drug Trace Results</CardTitle>
+        <Card className="shadow-lg">
+          <CardHeader className="bg-muted/50 border-b border-border">
+            <CardTitle className="text-lg font-medium text-card-foreground">Drug Trace Results</CardTitle>
           </CardHeader>
           <CardContent className="p-6">
             <div className="mb-8 text-center">
-              <h2 className="text-xl font-semibold text-gray-800 mb-1">Trusted by MedTrace</h2>
-              <p className="text-gray-500 text-sm">Verified pharmaceutical supply chain</p>
+              <h2 className="text-xl font-semibold text-foreground mb-1">Trusted by MedTrace</h2>
+              <p className="text-muted-foreground text-sm">Verified pharmaceutical supply chain</p>
             </div>
 
             <DrugTimeline timeline={drugTraceData.timeline} />
 
-            <div className="mt-8 pt-6 border-t border-gray-100">
+            <div className="mt-8 pt-6 border-t border-border">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <span className="text-sm text-gray-500">Drug ID:</span>
-                  <span className="ml-2 font-mono text-gray-700">{drugTraceData.id}</span>
+                  <span className="text-sm text-muted-foreground">Drug ID:</span>
+                  <span className="ml-2 font-mono text-foreground">{drugTraceData.id}</span>
                 </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" className="border-gray-200 text-gray-700 hover:bg-gray-100">
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Button variant="outline" className="border-border text-secondary-foreground hover:bg-secondary/80">
                     Download Certificate
                   </Button>
-                  <Button className="bg-primary hover:bg-primary/90 text-white">Verify Authenticity</Button>
+                  <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">Verify Authenticity</Button>
                 </div>
               </div>
             </div>
@@ -116,5 +116,5 @@ export default function TraceDrugPage() {
         </Card>
       )}
     </div>
-  )
+  );
 }
