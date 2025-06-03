@@ -6,6 +6,7 @@ import { Search, AlertTriangle, X, PackageIcon, Info } from "lucide-react"
 import DrugTimeline from "@/components/drug-timeline"
 import useViewModel from "./TraceDrugPageViewModel"
 import { Skeleton } from "@/components/ui/skeleton"
+import { formatDate } from "@/lib/utils"
 
 // Skeleton for the results section
 const DrugTraceSkeleton = () => (
@@ -55,7 +56,7 @@ export default function TraceDrugPage() {
   } = useViewModel()
 
   const timelineData = drugHistory?.map(item => ({
-    date: new Date(item.Timestamp).toLocaleString(),
+    date: formatDate(item.Timestamp),
     organization: `Owner: ${item.Drug.OwnerID}`,
     location: item.Drug.BatchID ? `Batch: ${item.Drug.BatchID}` : "N/A",
     type: item.IsDelete ? "Deleted" : "Updated/Created",
@@ -130,7 +131,7 @@ export default function TraceDrugPage() {
       {!isLoading && searchPerformed && !error && drugHistory && (
         drugHistory.length > 0 ? (
           <Card className="shadow-lg">
-            <CardHeader className="bg-muted/50 border-b border-border">
+            <CardHeader className="border-b border-border align-items-center">
               <CardTitle className="text-lg font-medium text-card-foreground">Drug Trace Results for: <span className="font-mono">{drugId}</span></CardTitle>
             </CardHeader>
             <CardContent className="p-6">
