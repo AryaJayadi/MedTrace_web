@@ -1,5 +1,6 @@
 export const ROUTES = {
   ROOT: "/",
+  FORBIDDEN: "/forbidden",
 
   APP_MAIN_SEGMENT: "app",
 
