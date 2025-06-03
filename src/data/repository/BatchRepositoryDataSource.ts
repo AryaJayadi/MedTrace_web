@@ -7,11 +7,7 @@ import { Batch } from "@/domain/model/batch/Batch";
 import { UpdateBatchRequest } from "@/domain/model/batch/UpdateBatchRequest";
 
 export class BatchRepositoryDataSource implements BatchRepository {
-  private datasource: BatchDataSource;
-
-  constructor(_datasource: BatchDataSource) {
-    this.datasource = _datasource;
-  }
+  constructor(private readonly datasource: BatchDataSource) { }
 
   createBatch(request: CreateBatchRequest): Promise<BaseValueResponse<Batch>> {
     return this.datasource.createBatch(request);

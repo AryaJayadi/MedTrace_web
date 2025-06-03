@@ -5,11 +5,7 @@ import { BaseListResponse } from "@/domain/model/response/BaseListResponse";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
 
 export class OrganizationRepositoryDataSource implements OrganizationRepository {
-  private datasource: OrganizationDataSource;
-
-  constructor(_datasource: OrganizationDataSource) {
-    this.datasource = _datasource;
-  }
+  constructor(private readonly datasource: OrganizationDataSource) { }
 
   getOrganizations(): Promise<BaseListResponse<Organization>> {
     return this.datasource.getOrganizations();

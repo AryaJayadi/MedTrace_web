@@ -1,13 +1,13 @@
 import { TransferRepository } from "@/domain/repository/TransferRepository";
 import { Transfer } from "@/domain/model/transfer/Transfer";
-import { CreateTransferRequest } from "@/domain/model/dto/CreateTransferRequest";
-import { ProcessTransferRequest } from "@/domain/model/dto/ProcessTransferRequest";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
 import { BaseListResponse } from "@/domain/model/response/BaseListResponse";
-import { TransferApiDataSource } from "../datasource/api/TransferApiDataSource"; // Adjust path if needed
+import { TransferDataSource } from "../datasource/TransferDataSource";
+import { CreateTransferRequest } from "@/domain/model/transfer/CreateTransferRequest";
+import { ProcessTransferRequest } from "@/domain/model/transfer/ProcessTransferRequest";
 
 export class TransferRepositoryDataSource implements TransferRepository {
-  constructor(private readonly transferApiDataSource: TransferApiDataSource) {}
+  constructor(private readonly transferApiDataSource: TransferDataSource) { }
 
   async createTransfer(request: CreateTransferRequest): Promise<BaseValueResponse<Transfer>> {
     return this.transferApiDataSource.createTransfer(request);

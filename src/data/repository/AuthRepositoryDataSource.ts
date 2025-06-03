@@ -6,11 +6,7 @@ import { LoginResponse } from "@/domain/model/auth/LoginResponse";
 import { LogoutResponse } from "@/domain/model/auth/LogoutResponse";
 
 export class AuthRepositoryDataSource implements AuthRepository {
-  private datasource: AuthDataSource;
-
-  constructor(_datasource: AuthDataSource) {
-    this.datasource = _datasource;
-  }
+  constructor(private readonly datasource: AuthDataSource) { }
 
   login(request: LoginRequest): Promise<BaseValueResponse<LoginResponse>> {
     return this.datasource.login(request);

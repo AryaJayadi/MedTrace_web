@@ -3,10 +3,11 @@ import { Drug } from "@/domain/model/drug/Drug";
 import { CreateDrugRequest } from "@/domain/model/drug/CreateDrugRequest";
 import { BaseValueResponse } from "@/domain/model/response/BaseValueResponse";
 import { BaseListResponse } from "@/domain/model/response/BaseListResponse";
-import { DrugApiDataSource } from "../datasource/api/DrugApiDataSource"; // Adjust path if needed
+import { DrugDataSource } from "../datasource/DrugDataSource";
+import { HistoryDrug } from "@/domain/model/history/HistoryDrug";
 
 export class DrugRepositoryDataSource implements DrugRepository {
-  constructor(private readonly drugApiDataSource: DrugApiDataSource) { }
+  constructor(private readonly drugApiDataSource: DrugDataSource) { }
 
   async createDrug(request: CreateDrugRequest): Promise<BaseValueResponse<Drug>> {
     return this.drugApiDataSource.createDrug(request);
@@ -26,5 +27,9 @@ export class DrugRepositoryDataSource implements DrugRepository {
 
   async getMyAvailDrugs(): Promise<BaseListResponse<Drug>> {
     return this.drugApiDataSource.getMyAvailDrugs();
+  }
+
+  async getHistoryDrug(drugID: string): Promise<BaseListResponse<HistoryDrug>> {
+    return this.drugApiDataSource.getHistoryDrug(drugID);
   }
 } 
