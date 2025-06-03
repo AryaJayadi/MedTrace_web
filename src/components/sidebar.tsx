@@ -4,8 +4,12 @@ import { useState, useEffect } from "react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Link, useLocation } from "react-router"
 import { ROUTES } from "@/core/Routes"
+import { useAuth } from "@/presentation/context/AuthContext"
 
 export default function Sidebar() {
+  const {
+    user
+  } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false); // For mobile sidebar
@@ -30,11 +34,12 @@ export default function Sidebar() {
   }, [isOpen]); // Added isOpen to dependencies to handle closing it on resize
 
   const navItems = [
-    { name: "Batch", path: ROUTES.FULL_PATH_APP_BATCH, icon: <Package className="h-5 w-5" /> },
-    { name: "Transfer", path: ROUTES.FULL_PATH_APP_TRANSFER, icon: <ArrowRightLeft className="h-5 w-5" /> },
-    { name: "Trace", path: ROUTES.FULL_PATH_APP_DRUG_TRACE, icon: <Search className="h-5 w-5" /> },
-    // Add more items as needed
+    { name: "Batch", path: ROUTES.FULL_PATH_APP_BATCH, roles: ["Manufacturer", "Distributor", "Pharmacy"], icon: <Package className="h-5 w-5" /> },
+    { name: "Transfer", path: ROUTES.FULL_PATH_APP_TRANSFER, roles: ["Manufacturer", "Distributor", "Pharmacy"], icon: <ArrowRightLeft className="h-5 w-5" /> },
+    { name: "Trace", path: ROUTES.FULL_PATH_APP_DRUG_TRACE, roles: ["Manufacturer", "Distributor", "Pharmacy", "Patient"], icon: <Search className="h-5 w-5" /> },
   ];
+
+  const role = user?.Type || "Guest"
 
   const toggleSidebar = () => {
     if (isMobile) {
@@ -93,6 +98,7 @@ export default function Sidebar() {
           {/* Navigation items container */}
           <div className="pt-4 pb-6"> {/* Adjusted padding from pt-16 to pt-4 due to header */}
             {navItems.map((item) => (
+              item.roles.includes(role) &&
               <Link
                 key={item.path}
                 to={item.path}
@@ -149,6 +155,7 @@ export default function Sidebar() {
         <div className="py-6 flex-grow overflow-y-auto"> {/* flex-grow and overflow for scrollable content if needed */}
           <TooltipProvider delayDuration={0}>
             {navItems.map((item) => (
+              item.roles.includes(role) &&
               <Tooltip key={item.path}>
                 <TooltipTrigger asChild>
                   <Link
