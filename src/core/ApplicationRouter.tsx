@@ -48,7 +48,7 @@ const ProtectedRoute: (p: ProtectedRouteProps) => (JSX.Element) = () => {
   if (isAuthenticated === false) {
     return <Navigate to={ROUTES.FULL_PATH_AUTH_LOGIN} state={{ from: location }} replace />;
   }
-  if (!isAllowed) {
+  if (role !== "" && !isAllowed) {
     return <Navigate to={ROUTES.FORBIDDEN} state={{ from: location }} replace />;
   }
 
