@@ -1,9 +1,12 @@
 import { Activity, Shield, Home, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
+import { ROUTES } from "@/core/Routes"
 
 export default function ForbiddenPage() {
+  const navigate = useNavigate()
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Top gradient bar: Using primary color. If a specific gradient is intended, 
@@ -53,7 +56,7 @@ export default function ForbiddenPage() {
 
             {/* Action Buttons */}
             <div className="space-y-3">
-              <Link to="/batches" className="block"> {/* Ensure '/batches' is a valid route */}
+              <Link to={ROUTES.FULL_PATH_APP_BATCH} className="block"> {/* Ensure '/batches' is a valid route */}
                 {/* Button (Primary): Uses themed primary colors (var(--primary), var(--primary-foreground)) */}
                 <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
                   <Home className="mr-2 h-4 w-4" />
@@ -64,22 +67,13 @@ export default function ForbiddenPage() {
               <Button
                 variant="outline"
                 className="w-full border-border text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                onClick={() => window.history.back()}
+                onClick={() => navigate(-1)}
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Go Back
               </Button>
             </div>
 
-            {/* Contact Support Section */}
-            <div className="mt-6 pt-4 border-t border-border">
-              {/* Text: Uses themed muted-foreground color */}
-              <p className="text-sm text-muted-foreground mb-2">Need help?</p>
-              {/* Link: Uses themed primary color for links */}
-              <Link to="/contact" className="text-primary hover:underline text-sm"> {/* Ensure '/contact' is a valid route */}
-                Contact Support
-              </Link>
-            </div>
           </CardContent>
         </Card>
 
