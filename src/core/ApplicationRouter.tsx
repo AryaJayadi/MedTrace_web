@@ -13,17 +13,43 @@ import CreateTransferPage from "@/presentation/transfer/CreateTransferPage";
 import DrugPage from "@/presentation/drug/DrugPage";
 import { TableSkeleton } from "@/components/table-skeleton";
 import TraceDrugPage from "@/presentation/drug/TraceDrugPage";
+import ForbiddenPage from "@/presentation/util/ForbiddenPage";
 
 interface ProtectedRouteProps {
   redirectPath?: string;
 }
 
+function useRouteRoles(route: string) {
+  switch (route) {
+    case ROUTES.FULL_PATH_APP_BATCH:
+      return ["Manufacturer", "Distributor", "Pharmacy"]
+    case ROUTES.FULL_PATH_APP_BATCH_CREATE:
+      return ["Manufacturer"]
+    case ROUTES.FULL_PATH_APP_TRANSFER:
+      return ["Manufacturer", "Distributor", "Pharmacy"]
+    case ROUTES.FULL_PATH_APP_TRANSFER_CREATE:
+      return ["Manufacturer", "Distributor", "Pharmacy"]
+    case ROUTES.FULL_PATH_APP_TRANSFER_CREATE:
+      return ["Manufacturer", "Distributor", "Pharmacy"]
+    case ROUTES.FULL_PATH_APP_DRUG_TRACE:
+      return ["Manufacturer", "Distributor", "Pharmacy", "Patient"]
+    default:
+      return []
+  }
+}
+
 const ProtectedRoute: (p: ProtectedRouteProps) => (JSX.Element) = () => {
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const location = useLocation();
+
+  const role = user?.Type || ""
+  const isAllowed = useRouteRoles(location.pathname).includes(role)
 
   if (isAuthenticated === false) {
     return <Navigate to={ROUTES.FULL_PATH_AUTH_LOGIN} state={{ from: location }} replace />;
+  }
+  if (!isAllowed) {
+    return <Navigate to={ROUTES.FORBIDDEN} state={{ from: location }} replace />;
   }
 
   return <Outlet />;
@@ -95,6 +121,10 @@ const router = createBrowserRouter([
             element: <LoginPage />
           },
         ]
+      },
+      {
+        path: ROUTES.FORBIDDEN,
+        element: <ForbiddenPage />,
       }
     ]
   }
