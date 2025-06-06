@@ -36,7 +36,7 @@ export default function Sidebar() {
   const navItems = [
     { name: "Batch", path: ROUTES.FULL_PATH_APP_BATCH, roles: ["Manufacturer", "Distributor", "Pharmacy"], icon: <Package className="h-5 w-5" /> },
     { name: "Transfer", path: ROUTES.FULL_PATH_APP_TRANSFER, roles: ["Manufacturer", "Distributor", "Pharmacy"], icon: <ArrowRightLeft className="h-5 w-5" /> },
-    { name: "Trace", path: ROUTES.FULL_PATH_APP_DRUG_TRACE, roles: ["Manufacturer", "Distributor", "Pharmacy", "Patient"], icon: <Search className="h-5 w-5" /> },
+    { name: "Trace", path: ROUTES.FULL_PATH_APP_DRUG_TRACE, roles: ["Manufacturer", "Patient"], icon: <Search className="h-5 w-5" /> },
   ];
 
   const role = user?.Type || "Guest"

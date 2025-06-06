@@ -32,7 +32,7 @@ function useRouteRoles(route: string) {
     case ROUTES.FULL_PATH_APP_TRANSFER_CREATE:
       return ["Manufacturer", "Distributor", "Pharmacy"]
     case ROUTES.FULL_PATH_APP_DRUG_TRACE:
-      return ["Manufacturer", "Distributor", "Pharmacy", "Patient"]
+      return ["Manufacturer", "Patient"]
     default:
       return []
   }
