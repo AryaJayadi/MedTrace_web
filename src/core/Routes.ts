@@ -1,6 +1,7 @@
 export const ROUTES = {
   ROOT: "/",
   FORBIDDEN: "/forbidden",
+  TRACE_DRUG_QR: "/drug/trace/qr/:drugID",
 
   APP_MAIN_SEGMENT: "app",
 

@@ -14,6 +14,7 @@ import DrugPage from "@/presentation/drug/DrugPage";
 import { TableSkeleton } from "@/components/table-skeleton";
 import TraceDrugPage from "@/presentation/drug/TraceDrugPage";
 import ForbiddenPage from "@/presentation/util/ForbiddenPage";
+import TraceDrugQRPage from "@/presentation/drug/TraceDrugQRPage";
 
 interface ProtectedRouteProps {
   redirectPath?: string;
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
       {
         path: ROUTES.ROOT,
         element: <Navigate to={ROUTES.FULL_PATH_APP_BATCH} replace />
+      },
+      {
+        path: ROUTES.APP_TRANSFER_CREATE,
+        element: <TraceDrugQRPage />
       },
       {
         path: ROUTES.ROOT,
