@@ -1,9 +1,7 @@
 import { useParams } from "react-router";
 import useViewModel from "./TraceDrugQRPageViewModel";
 import DrugTraceSkeleton from "./DrugTraceSkeleton";
-import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { error } from "console";
 import { AlertTriangle, Info, PackageIcon } from "lucide-react";
 import DrugTimeline from "@/components/drug-timeline";
 import { formatDate } from "@/lib/utils";
@@ -44,7 +42,7 @@ export default function TraceDrugQRPage() {
     )
   }
 
-  if (!isLoading && !error && drugHistoryFromApi && drugHistoryFromApi.length > 0) return (
+  if (fetchSuccess && drugHistoryFromApi && drugHistoryFromApi.length > 0) return (
     <Card className="shadow-lg">
       <CardHeader className="border-b border-border align-items-center">
         <CardTitle className="text-lg font-medium text-card-foreground">Drug Trace Results for: <span className="font-mono">{drugID}</span></CardTitle>
