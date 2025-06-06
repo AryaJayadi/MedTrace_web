@@ -82,7 +82,7 @@ const router = createBrowserRouter([
         element: <Navigate to={ROUTES.FULL_PATH_APP_BATCH} replace />
       },
       {
-        path: ROUTES.APP_TRANSFER_CREATE,
+        path: ROUTES.TRACE_DRUG_QR,
         element: <TraceDrugQRPage />
       },
       {
