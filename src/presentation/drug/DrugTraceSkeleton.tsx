@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function DrugTraceSkeleton() {
   return (
-    <Card className="shadow-lg">
+    <Card className="min-w-[60%] shadow-lg">
       <CardHeader className="bg-muted/50 border-b border-border">
         <Skeleton className="h-6 w-1/2" />
       </CardHeader>

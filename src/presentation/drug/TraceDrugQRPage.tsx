@@ -50,27 +50,42 @@ export default function TraceDrugQRPage() {
           </Card>
         )}
 
-        {fetchSuccess && drugHistoryFromApi && drugHistoryFromApi.length > 0 && (
-          <Card className="min-w-[60%] shadow-lg">
-            <CardHeader className="border-b border-border align-items-center">
-              <CardTitle className="text-lg font-medium text-card-foreground">Drug Trace Results for: <span className="font-mono">{drugID}</span></CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="mb-8 text-center">
-                <h2 className="text-xl font-semibold text-foreground mb-1">Trusted by MedTrace</h2>
-                <p className="text-muted-foreground text-sm">Verified pharmaceutical supply chain history</p>
-              </div>
-              <DrugTimeline timeline={timelineData || []} />
-              <div className="mt-8 pt-6 border-t border-border">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div>
-                    <span className="text-sm text-muted-foreground">Drug ID:</span>
-                    <span className="ml-2 font-mono text-foreground">{drugID}</span>
+        {fetchSuccess && drugHistoryFromApi && (
+          drugHistoryFromApi.length > 0 ?
+            (
+              <Card className="min-w-[60%] shadow-lg">
+                <CardHeader className="border-b border-border align-items-center">
+                  <CardTitle className="text-lg font-medium text-card-foreground">Drug Trace Results for: <span className="font-mono">{drugID}</span></CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="mb-8 text-center">
+                    <h2 className="text-xl font-semibold text-foreground mb-1">Trusted by MedTrace</h2>
+                    <p className="text-muted-foreground text-sm">Verified pharmaceutical supply chain history</p>
                   </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                  <DrugTimeline timeline={timelineData || []} />
+                  <div className="mt-8 pt-6 border-t border-border">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div>
+                        <span className="text-sm text-muted-foreground">Drug ID:</span>
+                        <span className="ml-2 font-mono text-foreground">{drugID}</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="shadow-lg">
+                <CardHeader className="bg-muted/50 border-b border-border">
+                  <CardTitle className="text-lg font-medium text-card-foreground flex items-center">
+                    <Info className="h-5 w-5 mr-2 text-blue-500" /> No Trace Found
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 text-center">
+                  <p className="text-muted-foreground">No trace history found for Drug ID: <strong>{drugId}</strong>.</p>
+                  <p className="text-sm text-muted-foreground mt-1">This could mean the Drug ID is incorrect, or the drug has no recorded history.</p>
+                </CardContent>
+              </Card>
+            )
         )}
 
       </div>
