@@ -84,7 +84,7 @@ export default function CreateTransferPage() {
           <Card className="bg-card text-card-foreground shadow-lg">
             <CardHeader className="bg-muted/50 border-b border-border">
               <CardTitle className="text-lg font-medium text-foreground">
-                Manufacturer Information
+                Organization Information
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
@@ -95,7 +95,7 @@ export default function CreateTransferPage() {
                   </div>
                   <div>
                     <div className="text-sm text-muted-foreground">
-                      Manufacturer Name
+                      Organization Name
                     </div>
                     <div className="font-medium text-foreground">
                       {manufacturerInfo.name}
@@ -108,7 +108,7 @@ export default function CreateTransferPage() {
                   </div>
                   <div>
                     <div className="text-sm text-muted-foreground">
-                      Manufacture Location
+                      Organization Location
                     </div>
                     <div className="font-medium text-foreground">
                       {manufacturerInfo.location}
