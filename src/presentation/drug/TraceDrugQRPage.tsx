@@ -18,7 +18,7 @@ export default function TraceDrugQRPage() {
   const timelineData = drugHistoryFromApi?.map(item => ({
     date: formatDate(item.Timestamp),
     organization: `Owner: ${item.Drug.OwnerID}`,
-    location: item.Drug.BatchID ? `Batch: ${item.Drug.BatchID}` : "N/A",
+    location: item.Drug.Location ? `Location: ${item.Drug.Location}` : "N/A",
     type: item.IsDelete ? "Deleted" : "Updated/Created",
     icon: <PackageIcon className="h-5 w-5" />,
   }))
@@ -66,8 +66,8 @@ export default function TraceDrugQRPage() {
                   <div className="mt-8 pt-6 border-t border-border">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div>
-                        <span className="text-sm text-muted-foreground">Drug ID:</span>
-                        <span className="ml-2 font-mono text-foreground">{drugID}</span>
+                        <span className="text-sm text-muted-foreground">Batch ID:</span>
+                        <span className="ml-2 font-mono text-foreground">{drugHistoryFromApi[0].Drug.BatchID}</span>
                       </div>
                     </div>
                   </div>
@@ -81,7 +81,7 @@ export default function TraceDrugQRPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 text-center">
-                  <p className="text-muted-foreground">No trace history found for Drug ID: <strong>{drugId}</strong>.</p>
+                  <p className="text-muted-foreground">No trace history found for Drug ID: <strong>{drugID}</strong>.</p>
                   <p className="text-sm text-muted-foreground mt-1">This could mean the Drug ID is incorrect, or the drug has no recorded history.</p>
                 </CardContent>
               </Card>
