@@ -122,7 +122,7 @@ export default function CreateTransferPage() {
           <Card className="bg-card text-card-foreground shadow-lg">
             <CardHeader className="bg-muted/50 border-b border-border">
               <CardTitle className="text-lg font-medium text-foreground">
-                Company Receiver
+                Organization Receiver
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
@@ -132,7 +132,7 @@ export default function CreateTransferPage() {
                 render={({ field }) => (
                   <FormItem>
                     <Label htmlFor="receiverId" className="text-foreground font-medium mb-1 block">
-                      Company (Receiver)
+                      Organization (Receiver)
                     </Label>
                     <Select
                       onValueChange={field.onChange}
@@ -141,7 +141,7 @@ export default function CreateTransferPage() {
                     >
                       <FormControl>
                         <SelectTrigger className="border-input focus:ring-2 focus:ring-ring text-foreground">
-                          <SelectValue placeholder="Select Receiver Company" />
+                          <SelectValue placeholder="Select Receiver Organization" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="bg-popover text-popover-foreground">
