@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, XCircle, Loader2, AlertCircle } from 'lucide-react'
-import { cn } from "@/lib/utils"
+import { cn, formatDateLong } from "@/lib/utils"
 import { Transfer } from "@/domain/model/transfer/Transfer";
 import useViewModel from "./TransfersTableViewModel";
 
@@ -107,7 +107,7 @@ export default function TransfersTable({
                       </Button>
                     </div>
                   ) : transfer.ReceiveDate ? (
-                    new Date(transfer.ReceiveDate).toLocaleDateString()
+                    formatDateLong(transfer.ReceiveDate)
                   ) : transfer.isAccepted ? (
                     'N/A'
                   ) : (
