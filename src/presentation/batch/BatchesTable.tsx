@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils"
+import { cn, formatDate } from "@/lib/utils"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Package, Pencil, Trash2, Loader2, AlertCircle } from "lucide-react"
 import { Batch } from "@/domain/model/batch/Batch"
@@ -14,7 +14,6 @@ export default function BatchesTable({ batches }: BatchesTableProps) {
     batchQuantitiesLoading,
     batchQuantitiesError,
     handleEdit,
-    handleDelete,
   } = useViewModel(batches);
 
   if (!batches || batches.length === 0) {
@@ -69,8 +68,8 @@ export default function BatchesTable({ batches }: BatchesTableProps) {
                   "N/A"
                 )}
               </TableCell>
-              <TableCell>{batch.ProductionDate}</TableCell>
-              <TableCell>{batch.ExpiryDate}</TableCell>
+              <TableCell>{formatDate(batch.ProductionDate)}</TableCell>
+              <TableCell>{formatDate(batch.ExpiryDate)}</TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
                   <button
