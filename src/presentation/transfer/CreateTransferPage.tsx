@@ -82,8 +82,8 @@ export default function CreateTransferPage() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <Card className="bg-card text-card-foreground shadow-lg">
-            <CardHeader className="bg-muted/50 border-b border-border">
-              <CardTitle className="text-lg font-medium text-foreground">
+            <CardHeader className="border-b border-border items-center">
+              <CardTitle className="text-lg font-semibold text-foreground whitespace-nowrap">
                 Organization Information
               </CardTitle>
             </CardHeader>
@@ -120,8 +120,8 @@ export default function CreateTransferPage() {
           </Card>
 
           <Card className="bg-card text-card-foreground shadow-lg">
-            <CardHeader className="bg-muted/50 border-b border-border">
-              <CardTitle className="text-lg font-medium text-foreground">
+            <CardHeader className="border-b border-border">
+              <CardTitle className="text-lg font-semibold text-foreground">
                 Organization Receiver
               </CardTitle>
             </CardHeader>
@@ -157,8 +157,8 @@ export default function CreateTransferPage() {
           </Card>
 
           <Card className="bg-card text-card-foreground shadow-lg">
-            <CardHeader className="bg-muted/50 border-b border-border flex flex-col sm:flex-row items-center justify-between gap-3 p-4">
-              <CardTitle className="text-lg font-medium text-foreground whitespace-nowrap">
+            <CardHeader className="border-b border-border flex flex-col sm:flex-row items-center justify-between gap-3 p-4">
+              <CardTitle className="text-lg font-semibold text-foreground whitespace-nowrap">
                 Select Batches for Transfer
               </CardTitle>
               <div className="relative w-full sm:w-72">
