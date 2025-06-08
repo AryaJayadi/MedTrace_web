@@ -38,7 +38,7 @@ export default function TransfersTableViewModel(onTransferUpdate: () => void) {
 
   const handleReject = useCallback(async (transferId: string) => {
     setActionStates(prev => ({ ...prev, [transferId]: { isLoading: true } }));
-    const request: ProcessTransferRequest = { transferID: transferId }; // ReceiveDate not needed for rejection
+    const request: ProcessTransferRequest = { transferID: transferId, ReceiveDate: new Date().toISOString() };
     try {
       const result = await rejectTransferUseCase.execute(request);
       if (result.success) {
