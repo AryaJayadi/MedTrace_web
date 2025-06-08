@@ -77,7 +77,7 @@ export default function TransfersTable({
                       "bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900/50 dark:text-yellow-300 dark:border-yellow-700"
                     )}
                   >
-                    {transfer.isAccepted ? "Accepted" : "Pending"}
+                    {transfer.isAccepted ? "Accepted" : transfer.ReceiveDate ? "Rejected" : "Pending"}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-center">
