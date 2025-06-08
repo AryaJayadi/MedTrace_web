@@ -49,11 +49,6 @@ export default function BatchesPage() {
               />
               <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             </div>
-            <Link to={ROUTES.FULL_PATH_APP_BATCH_CREATE} className="w-full sm:w-auto">
-              <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                <Plus className="mr-2 h-4 w-4" /> Create Batch
-              </Button>
-            </Link>
           </div>
 
           <BatchesTable batches={batches} />

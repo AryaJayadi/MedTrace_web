@@ -55,8 +55,8 @@ export default function TransferPage() {
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <h1 className="text-2xl font-bold text-foreground">Transfer Management</h1>
         <Link to={createTransferPath}>
-          <Button className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground">
-            <Plus className="mr-2 h-4 w-4" /> Create Transfer
+          <Button className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground gap-2">
+            <Send className="h-4 w-4" /> Initiate New Transfer
           </Button>
         </Link>
       </div>
@@ -88,11 +88,6 @@ export default function TransferPage() {
               />
               <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             </div>
-            <Link to={createTransferPath}>
-              <Button className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground gap-2">
-                <Send className="h-4 w-4" /> Initiate New Transfer
-              </Button>
-            </Link>
           </div>
 
           {hasFilteredTransfers ? (
