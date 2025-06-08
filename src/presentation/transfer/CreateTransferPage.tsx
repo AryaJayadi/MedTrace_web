@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { useEffect } from "react"
-import { Search, ArrowLeft, Save, Building, MapPin, Package, AlertTriangle, Loader2 } from "lucide-react"
+import { Search, ArrowLeft, Save, Building, MapPin, Package, AlertTriangle, Loader2, PackageMinus } from "lucide-react"
 import { Link, useNavigate } from "react-router"
 import { ROUTES } from "@/core/Routes"
 import { cn } from "@/lib/utils"
@@ -76,7 +76,10 @@ export default function CreateTransferPage() {
         >
           <ArrowLeft className="h-5 w-5" />
         </Link>
-        <h1 className="text-2xl font-bold text-foreground">Create New Transfer</h1>
+        <div className="flex items-center gap-2 mb-3">
+          <PackageMinus className="h-9 w-9 text-primary" />
+          <h1 className="text-3xl font-bold text-foreground">Create New Batch</h1>
+        </div>
       </div>
 
       <Form {...form}>
