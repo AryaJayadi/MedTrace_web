@@ -42,7 +42,7 @@ export default function BatchesTable({ batches }: BatchesTableProps) {
             <TableHead className="font-semibold text-muted-foreground">Quantity</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Production Date</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Expiry Date</TableHead>
-            <TableHead className="text-right font-semibold text-muted-foreground">Actions</TableHead>
+            <TableHead className="text-center font-semibold text-muted-foreground">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="text-card-foreground">
@@ -70,20 +70,18 @@ export default function BatchesTable({ batches }: BatchesTableProps) {
               </TableCell>
               <TableCell>{formatDateLong(batch.ProductionDate)}</TableCell>
               <TableCell>{formatDateLong(batch.ExpiryDate)}</TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end gap-2">
-                  <button
-                    onClick={() => handleEdit(batch.ID)}
-                    aria-label={`Edit batch ${batch.ID}`}
-                    className={cn(
-                      "p-1.5 rounded-md transition-colors",
-                      "text-muted-foreground hover:text-primary hover:bg-primary/10", // Uses primary theme for hover
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
-                    )}
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </button>
-                </div>
+              <TableCell className="text-center">
+                <button
+                  onClick={() => handleEdit(batch.ID)}
+                  aria-label={`Edit batch ${batch.ID}`}
+                  className={cn(
+                    "p-1.5 rounded-md transition-colors",
+                    "text-muted-foreground hover:text-primary hover:bg-primary/10", // Uses primary theme for hover
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                  )}
+                >
+                  <Pencil className="h-4 w-4" />
+                </button>
               </TableCell>
             </TableRow>
           ))}
