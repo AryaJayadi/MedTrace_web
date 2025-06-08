@@ -16,6 +16,7 @@ import TraceDrugPage from "@/presentation/drug/TraceDrugPage";
 import ForbiddenPage from "@/presentation/util/ForbiddenPage";
 import TraceDrugQRPage from "@/presentation/drug/TraceDrugQRPage";
 import UpdateBatchPage from "@/presentation/batch/UpdateBatchPage";
+import TransferDetailPage from "@/presentation/transfer/TransferDetailPage";
 
 interface ProtectedRouteProps {
   redirectPath?: string;
@@ -27,6 +28,9 @@ function useRouteRoles(route: string) {
   }
   if (route.startsWith(ROUTES.TRACE_DRUG_QR.replace(":drugID", ""))) {
     return ["Manufacturer", "Patient"];
+  }
+  if (route.startsWith(ROUTES.FULL_PATH_APP_TRANSFER_VIEW.replace(":transferID", ""))) {
+    return ["Manufacturer", "Distributor", "Pharmacy"];
   }
   switch (route) {
     case ROUTES.FULL_PATH_APP_BATCH:
@@ -115,6 +119,10 @@ const router = createBrowserRouter([
               {
                 path: ROUTES.APP_TRANSFER,
                 element: <TransferPage />
+              },
+              {
+                path: ROUTES.APP_TRANSFER_VIEW,
+                element: <TransferDetailPage />
               },
               {
                 path: ROUTES.APP_TRANSFER_CREATE,

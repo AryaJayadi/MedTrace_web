@@ -12,6 +12,7 @@ export const ROUTES = {
   APP_BATCH_UPDATE: "batch/update/:batchID",
 
   APP_TRANSFER: "transfer",
+  APP_TRANSFER_VIEW: "transfer/detail/:transferID",
   APP_TRANSFER_CREATE: "transfer/create",
 
   APP_DRUG_TRACE: "drug/trace",
@@ -22,6 +23,7 @@ export const ROUTES = {
   FULL_PATH_APP_BATCH_CREATE: "/app/batch/create",
   FULL_PATH_APP_BATCH_UPDATE: "/app/batch/update/:batchID",
   FULL_PATH_APP_TRANSFER: "/app/transfer",
+  FULL_PATH_APP_TRANSFER_VIEW: "/app/transfer/detail/:transferID",
   FULL_PATH_APP_TRANSFER_CREATE: "/app/transfer/create",
   FULL_PATH_APP_DRUG_TRACE: "/app/drug/trace",
   FULL_PATH_AUTH_LOGIN: "/auth/login",
