@@ -3,8 +3,11 @@ import { GetDrugsByBatch } from "@/domain/usecase/drug/GetDrugsByBatch";
 import { DrugApiDataSource } from "@/data/datasource/api/DrugApiDataSource";
 import { DrugRepositoryDataSource } from "@/data/repository/DrugRepositoryDataSource";
 import { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router";
+import { ROUTES } from "@/core/Routes";
 
 export default function BatchesTableViewModel(initialBatches: Batch[]) {
+  const navigate = useNavigate();
   const drugDataSource = useMemo(() => new DrugApiDataSource(), []);
   const drugRepository = useMemo(() => new DrugRepositoryDataSource(drugDataSource), [drugDataSource]);
   const getDrugsByBatchUseCase = useMemo(() => new GetDrugsByBatch(drugRepository), [drugRepository]);
@@ -60,10 +63,8 @@ export default function BatchesTableViewModel(initialBatches: Batch[]) {
     }
   }, [initialBatches, getDrugsByBatchUseCase, batchQuantities, batchQuantitiesLoading, batchQuantitiesError]);
 
-  // TODO: Implement actual edit and delete functions
   const handleEdit = (batchId: string) => {
-    console.log("Edit batch:", batchId);
-    // Navigate to edit page or open a modal
+    navigate(ROUTES.FULL_PATH_APP_BATCH_UPDATE.replace(":batchID", batchId));
   };
 
   return {

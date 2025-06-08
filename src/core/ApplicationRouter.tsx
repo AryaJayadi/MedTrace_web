@@ -27,6 +27,8 @@ function useRouteRoles(route: string) {
       return ["Manufacturer", "Distributor", "Pharmacy"]
     case ROUTES.FULL_PATH_APP_BATCH_CREATE:
       return ["Manufacturer"]
+    case ROUTES.FULL_PATH_APP_BATCH_UPDATE:
+      return ["Manufacturer"]
     case ROUTES.FULL_PATH_APP_TRANSFER:
       return ["Manufacturer", "Distributor", "Pharmacy"]
     case ROUTES.FULL_PATH_APP_TRANSFER_CREATE:
@@ -36,7 +38,7 @@ function useRouteRoles(route: string) {
     case ROUTES.FULL_PATH_APP_DRUG_TRACE:
       return ["Manufacturer", "Patient"]
     default:
-      return []
+      return ["Manufacturer"]
   }
 }
 
