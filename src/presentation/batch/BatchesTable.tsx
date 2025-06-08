@@ -84,17 +84,6 @@ export default function BatchesTable({ batches }: BatchesTableProps) {
                   >
                     <Pencil className="h-4 w-4" />
                   </button>
-                  <button
-                    onClick={() => handleDelete(batch.ID)}
-                    aria-label={`Delete batch ${batch.ID}`}
-                    className={cn(
-                      "p-1.5 rounded-md transition-colors",
-                      "text-muted-foreground hover:text-destructive hover:bg-destructive/10", // Uses destructive theme for hover
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
-                    )}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
                 </div>
               </TableCell>
             </TableRow>

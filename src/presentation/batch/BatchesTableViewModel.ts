@@ -66,16 +66,10 @@ export default function BatchesTableViewModel(initialBatches: Batch[]) {
     // Navigate to edit page or open a modal
   };
 
-  const handleDelete = (batchId: string) => {
-    console.log("Delete batch:", batchId);
-    // Show confirmation dialog and then remove from data
-  };
-
   return {
     batchQuantities,
     batchQuantitiesLoading,
     batchQuantitiesError,
     handleEdit,
-    handleDelete,
   };
 }
