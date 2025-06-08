@@ -22,12 +22,16 @@ interface ProtectedRouteProps {
 }
 
 function useRouteRoles(route: string) {
+  if (route.startsWith(ROUTES.APP_BATCH_UPDATE.replace(":batchID", ""))) {
+    return ["Manufacturer"];
+  }
+  if (route.startsWith(ROUTES.TRACE_DRUG_QR.replace(":drugID", ""))) {
+    return ["Manufacturer", "Patient"];
+  }
   switch (route) {
     case ROUTES.FULL_PATH_APP_BATCH:
       return ["Manufacturer", "Distributor", "Pharmacy"]
     case ROUTES.FULL_PATH_APP_BATCH_CREATE:
-      return ["Manufacturer"]
-    case ROUTES.FULL_PATH_APP_BATCH_UPDATE:
       return ["Manufacturer"]
     case ROUTES.FULL_PATH_APP_TRANSFER:
       return ["Manufacturer", "Distributor", "Pharmacy"]
@@ -38,7 +42,7 @@ function useRouteRoles(route: string) {
     case ROUTES.FULL_PATH_APP_DRUG_TRACE:
       return ["Manufacturer", "Patient"]
     default:
-      return ["Manufacturer"]
+      return []
   }
 }
 
