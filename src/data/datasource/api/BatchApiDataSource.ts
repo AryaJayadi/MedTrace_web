@@ -17,7 +17,7 @@ export class BatchApiDataSource implements BatchDataSource {
   async updateBatch(request: UpdateBatchRequest): Promise<BaseValueResponse<Batch>> {
     // Assuming the UpdateBatchRequest contains the ID or the API endpoint implies it.
     // If batch ID needs to be part of the URL: `${BATCHES_API_PATH}/${request.id}`
-    const response = await axiosInstance.patch<BaseValueResponse<Batch>>(BATCHES_API_PATH, request);
+    const response = await axiosInstance.patch<BaseValueResponse<Batch>>(`${BATCHES_API_PATH}/${request.ID}`, request);
     return response.data;
   }
 

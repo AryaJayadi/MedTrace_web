@@ -100,6 +100,9 @@ export default function UpdateBatchPageViewModel(batchID: string) {
   } = useApiRequest<InitialData, []>(fetchInitialData);
 
   const updateBatchUseCase = useMemo(() => new UpdateBatch(batchRepository), [batchRepository]);
+  const updateBatch = useCallback(async (request: UpdateBatchRequest) => {
+    return updateBatchUseCase.execute(request);
+  }, [updateBatchUseCase]);
 
   useEffect(() => {
     if (batchID) {
@@ -130,7 +133,7 @@ export default function UpdateBatchPageViewModel(batchID: string) {
     };
 
     try {
-      const result = await updateBatchUseCase.execute(requestData);
+      const result = await updateBatch(requestData);
       if (result.success && result.value) {
         toast.success("Batch Updated", {
           description: `Batch ${result.value.ID} has been successfully updated.`,
