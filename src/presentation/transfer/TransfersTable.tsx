@@ -45,6 +45,7 @@ export default function TransfersTable({
         <TableHeader className="bg-muted/50">
           <TableRow className="border-b border-border">
             <TableHead className="font-semibold text-muted-foreground">Transfer ID</TableHead>
+            <TableHead className="font-semibold text-muted-foreground">Role</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Sender ID</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Receiver ID</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Transfer Date</TableHead>
@@ -63,6 +64,7 @@ export default function TransfersTable({
                 className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors"
               >
                 <TableCell className="font-medium text-foreground">{transfer.ID}</TableCell>
+                <TableCell>{isCurrentUserReceiver ? "Receiver" : "Sender"}</TableCell>
                 <TableCell>{transfer.SenderID}</TableCell>
                 <TableCell>{transfer.ReceiverID}</TableCell>
                 <TableCell>{transfer.TransferDate ? formatDateTime(transfer.TransferDate) : 'N/A'}</TableCell>
