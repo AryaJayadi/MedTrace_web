@@ -9,6 +9,7 @@ export const ROUTES = {
 
   APP_BATCH: "batch",
   APP_BATCH_CREATE: "batch/create",
+  APP_BATCH_UPDATE: "batch/update/:batchID",
 
   APP_TRANSFER: "transfer",
   APP_TRANSFER_CREATE: "transfer/create",

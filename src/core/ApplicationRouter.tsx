@@ -15,6 +15,7 @@ import { TableSkeleton } from "@/components/table-skeleton";
 import TraceDrugPage from "@/presentation/drug/TraceDrugPage";
 import ForbiddenPage from "@/presentation/util/ForbiddenPage";
 import TraceDrugQRPage from "@/presentation/drug/TraceDrugQRPage";
+import UpdateBatchPage from "@/presentation/batch/UpdateBatchPage";
 
 interface ProtectedRouteProps {
   redirectPath?: string;
@@ -100,6 +101,10 @@ const router = createBrowserRouter([
               {
                 path: ROUTES.APP_BATCH_CREATE,
                 element: <CreateBatchPage />
+              },
+              {
+                path: ROUTES.APP_BATCH_UPDATE,
+                element: <UpdateBatchPage />
               },
               {
                 path: ROUTES.APP_TRANSFER,
