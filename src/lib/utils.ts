@@ -22,3 +22,12 @@ export function formatDate(isoString: string): string {
 
   return `${day}-${month}-${year}`;
 }
+
+export function formatDateLong(isoString: string): string {
+  const date = new Date(isoString);
+  const day = date.getDate();
+  const month = date.toLocaleString('default', { month: 'short' }); // e.g., "Jan"
+  const year = date.getFullYear();
+
+  return `${day} ${month} ${year}`;
+}
