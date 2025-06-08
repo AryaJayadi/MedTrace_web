@@ -25,7 +25,7 @@ export function formatDate(isoString: string): string {
 
 export function formatDateLong(isoString: string): string {
   const date = new Date(isoString);
-  const day = date.getDate();
+  const day = String(date.getDate()).padStart(2, '0'); // e.g., "01"
   const month = date.toLocaleString('default', { month: 'short' }); // e.g., "Jan"
   const year = date.getFullYear();
 
