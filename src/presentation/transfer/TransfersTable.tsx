@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, XCircle, Loader2, AlertCircle } from 'lucide-react'
-import { cn, formatDateLong } from "@/lib/utils"
+import { cn, formatDateLong, formatDateTime } from "@/lib/utils"
 import { Transfer } from "@/domain/model/transfer/Transfer";
 import useViewModel from "./TransfersTableViewModel";
 
@@ -65,7 +65,7 @@ export default function TransfersTable({
                 <TableCell className="font-medium text-foreground">{transfer.ID}</TableCell>
                 <TableCell>{transfer.SenderID}</TableCell>
                 <TableCell>{transfer.ReceiverID}</TableCell>
-                <TableCell>{transfer.TransferDate ? formatDateLong(transfer.TransferDate) : 'N/A'}</TableCell>
+                <TableCell>{transfer.TransferDate ? formatDateTime(transfer.TransferDate) : 'N/A'}</TableCell>
                 <TableCell>
                   <Badge
                     variant="outline"
@@ -107,7 +107,7 @@ export default function TransfersTable({
                       </Button>
                     </div>
                   ) : transfer.ReceiveDate ? (
-                    formatDateLong(transfer.ReceiveDate)
+                    formatDateTime(transfer.ReceiveDate)
                   ) : transfer.isAccepted ? (
                     'N/A'
                   ) : (
