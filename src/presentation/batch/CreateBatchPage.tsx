@@ -1,10 +1,14 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { AlertTriangle, PackagePlus } from "lucide-react"
+import { AlertTriangle, ArrowLeft, Building, Loader2, MapPin, PackagePlus, Save } from "lucide-react"
 import useViewModel from "./CreateBatchPageViewModel"
+import { Link, useNavigate } from "react-router"
+import { ROUTES } from "@/core/Routes"
+import { cn } from "@/lib/utils"
+import { useAuth } from "../context/AuthContext"
 
 export default function CreateBatchPage() {
   const {
@@ -13,30 +17,85 @@ export default function CreateBatchPage() {
     apiError,
     isLoading,
   } = useViewModel()
+  const {
+    user,
+  } = useAuth()
+  const navigate = useNavigate()
+
+  const manufacturerInfo = {
+    name: user?.Name || "Manufacturer Name",
+    location: user?.Location || "Manufacturer Location",
+  }
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-      <div className="mb-8 flex flex-col items-center text-center">
-        <div className="flex items-center justify-center gap-2 mb-3">
+    <div className="max-w-5xl mx-auto p-4 md:p-6">
+
+      <div className="mb-6 flex items-center gap-3">
+        <Link
+          to={ROUTES.FULL_PATH_APP_TRANSFER || "/transfers"}
+          aria-label="Back to transfers"
+          className={cn(
+            "p-2 rounded-md transition-colors",
+            "text-muted-foreground hover:text-primary hover:bg-primary/10",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          )}
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Link>
+
+        <div className="flex items-center gap-2 mb-3">
           <PackagePlus className="h-9 w-9 text-primary" />
           <h1 className="text-3xl font-bold text-foreground">Create New Batch</h1>
         </div>
-        <p className="text-muted-foreground">
-          Fill in the details below to register a new batch of pharmaceuticals.
-        </p>
       </div>
 
-      <Card className="w-full max-w-lg shadow-xl bg-card text-card-foreground">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-foreground">Batch Details</CardTitle>
-          <CardDescription className="text-muted-foreground">
-            All fields are required.
-          </CardDescription>
-        </CardHeader>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <Card className="bg-card text-card-foreground shadow-lg">
+            <CardHeader className="border-b border-border items-center">
+              <CardTitle className="text-lg font-semibold text-foreground whitespace-nowrap">
+                Manufacturer Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary/10 p-3 rounded-lg mt-1">
+                    <Building className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-sm text-muted-foreground">
+                      Manufacturer Name
+                    </div>
+                    <div className="font-medium text-foreground">
+                      {manufacturerInfo.name}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary/10 p-3 rounded-lg mt-1">
+                    <MapPin className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-sm text-muted-foreground">
+                      Manufacturer Location
+                    </div>
+                    <div className="font-medium text-foreground">
+                      {manufacturerInfo.location}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-0">
-            <CardContent className="space-y-4 pt-4 pb-6">
+          <Card className="bg-card text-card-foreground shadow-lg">
+            <CardHeader className="border-b border-border">
+              <CardTitle className="text-lg font-semibold text-foreground">
+                Organization Receiver
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6 space-y-4">
               {apiError && (
                 <Alert variant="destructive" className="text-sm">
                   <AlertTriangle className="h-4 w-4" />
@@ -123,18 +182,30 @@ export default function CreateBatchPage() {
               />
             </CardContent>
 
-            <CardFooter className="pt-2 pb-6">
-              <Button
-                type="submit"
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-                disabled={isLoading}
-              >
-                {isLoading ? "Creating Batch..." : "Create Batch"}
-              </Button>
+            <CardFooter className="flex flex-col sm:flex-row justify-end items-center gap-4 p-6 border-t border-border bg-muted/50">
+              <div className="flex gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => navigate(ROUTES.FULL_PATH_APP_BATCH || "/batches")}
+                  disabled={isLoading}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2"
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Save className="h-4 w-4" />}
+                  {isLoading ? "Creating Batch..." : "Create Batch"}
+                </Button>
+              </div>
             </CardFooter>
-          </form>
-        </Form>
-      </Card>
+          </Card>
+
+        </form>
+      </Form>
     </div>
   )
 }
