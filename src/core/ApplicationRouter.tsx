@@ -22,7 +22,7 @@ interface ProtectedRouteProps {
 }
 
 function useRouteRoles(route: string) {
-  if (route.startsWith(ROUTES.APP_BATCH_UPDATE.replace(":batchID", ""))) {
+  if (route.startsWith(ROUTES.FULL_PATH_APP_BATCH_UPDATE.replace(":batchID", ""))) {
     return ["Manufacturer"];
   }
   if (route.startsWith(ROUTES.TRACE_DRUG_QR.replace(":drugID", ""))) {
