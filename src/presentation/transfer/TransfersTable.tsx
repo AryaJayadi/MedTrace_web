@@ -19,6 +19,7 @@ export default function TransfersTable({
 }: TransfersTableProps) {
   const {
     actionStates,
+    handleView,
     handleAccept,
     handleReject,
   } = useViewModel(onTransferUpdate);
@@ -119,7 +120,7 @@ export default function TransfersTable({
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => handleAccept(transfer.ID)}
+                        onClick={() => handleView(transfer.ID)}
                         className="bg-blue-500 hover:bg-blue-600 text-white border-blue-600"
                       >
                         <Fullscreen className="h-4 w-4 mr-0.5" /> View

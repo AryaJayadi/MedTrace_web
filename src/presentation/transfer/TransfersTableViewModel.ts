@@ -5,8 +5,10 @@ import { TransferRepositoryDataSource } from "@/data/repository/TransferReposito
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { ProcessTransferRequest } from "@/domain/model/transfer/ProcessTransferRequest";
+import { useNavigate } from "react-router";
 
 export default function TransfersTableViewModel(onTransferUpdate: () => void) {
+  const navigate = useNavigate()
   const transferDataSource = useMemo(() => new TransferApiDataSource(), []);
   const transferRepository = useMemo(() => new TransferRepositoryDataSource(transferDataSource), [transferDataSource]);
 
@@ -14,6 +16,10 @@ export default function TransfersTableViewModel(onTransferUpdate: () => void) {
   const rejectTransferUseCase = useMemo(() => new RejectTransfer(transferRepository), [transferRepository]);
 
   const [actionStates, setActionStates] = useState<{ [transferId: string]: { isLoading: boolean; error?: string } }>({});
+
+  function handleView(transferID: string) {
+
+  }
 
   const handleAccept = useCallback(async (transferId: string) => {
     setActionStates(prev => ({ ...prev, [transferId]: { isLoading: true } }));
@@ -58,6 +64,7 @@ export default function TransfersTableViewModel(onTransferUpdate: () => void) {
 
   return {
     actionStates,
+    handleView,
     handleAccept,
     handleReject,
   };
