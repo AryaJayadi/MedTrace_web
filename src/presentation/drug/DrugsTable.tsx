@@ -2,6 +2,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Package } from "lucide-react"
 import useViewModel from "./DrugsTableViewModel"
 import { DrugViewModel } from "./DrugViewModel"
+import { formatDateLong } from "@/lib/utils";
 
 interface DrugsTableProps {
   viewModels: DrugViewModel[];
@@ -50,8 +51,8 @@ export default function DrugsTable({ viewModels }: DrugsTableProps) {
               <TableCell className="">
                 {model.Quantity.toLocaleString()}
               </TableCell>
-              <TableCell>{model.ProductionDate}</TableCell>
-              <TableCell>{model.ExpiryDate}</TableCell>
+              <TableCell>{formatDateLong(model.ProductionDate)}</TableCell>
+              <TableCell>{formatDateLong(model.ExpiryDate)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

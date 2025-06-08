@@ -20,11 +20,6 @@ export default function DrugPage() {
     <div className="space-y-6 p-4 md:p-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-foreground">Batch Management</h1>
-        <Link to={ROUTES.FULL_PATH_APP_TRANSFER}>
-          <Button className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground">
-            <Plus className="mr-2 h-4 w-4" /> View Transfers
-          </Button>
-        </Link>
       </div>
 
       {drugViewModelsIsLoading ? (
@@ -49,11 +44,6 @@ export default function DrugPage() {
               />
               <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             </div>
-            <Link to={ROUTES.FULL_PATH_APP_TRANSFER} className="w-full sm:w-auto">
-              <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                <Plus className="mr-2 h-4 w-4" /> View Transfers
-              </Button>
-            </Link>
           </div>
 
           <DrugsTable viewModels={drugViewModels} />

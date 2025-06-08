@@ -65,7 +65,7 @@ export default function TransfersTable({
                 <TableCell className="font-medium text-foreground">{transfer.ID}</TableCell>
                 <TableCell>{transfer.SenderID}</TableCell>
                 <TableCell>{transfer.ReceiverID}</TableCell>
-                <TableCell>{transfer.TransferDate ? new Date(transfer.TransferDate).toLocaleDateString() : 'N/A'}</TableCell>
+                <TableCell>{transfer.TransferDate ? formatDateLong(transfer.TransferDate) : 'N/A'}</TableCell>
                 <TableCell>
                   <Badge
                     variant="outline"
