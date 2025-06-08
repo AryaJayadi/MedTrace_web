@@ -6,6 +6,7 @@ import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { ProcessTransferRequest } from "@/domain/model/transfer/ProcessTransferRequest";
 import { useNavigate } from "react-router";
+import { ROUTES } from "@/core/Routes";
 
 export default function TransfersTableViewModel(onTransferUpdate: () => void) {
   const navigate = useNavigate()
@@ -18,7 +19,7 @@ export default function TransfersTableViewModel(onTransferUpdate: () => void) {
   const [actionStates, setActionStates] = useState<{ [transferId: string]: { isLoading: boolean; error?: string } }>({});
 
   function handleView(transferID: string) {
-
+    navigate(ROUTES.FULL_PATH_APP_TRANSFER_VIEW.replace(":transferID", transferID));
   }
 
   const handleAccept = useCallback(async (transferId: string) => {
