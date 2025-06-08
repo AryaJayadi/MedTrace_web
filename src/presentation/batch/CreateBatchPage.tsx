@@ -45,7 +45,7 @@ export default function CreateBatchPage() {
 
         <div className="flex items-center gap-2 mb-3">
           <PackagePlus className="h-9 w-9 text-primary" />
-          <h1 className="text-3xl font-bold text-foreground">Create New Batch</h1>
+          <h1 className="text-3xl font-bold text-foreground">Create Batch</h1>
         </div>
       </div>
 

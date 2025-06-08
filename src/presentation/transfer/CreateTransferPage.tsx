@@ -78,7 +78,7 @@ export default function CreateTransferPage() {
         </Link>
         <div className="flex items-center gap-2 mb-3">
           <PackageMinus className="h-9 w-9 text-primary" />
-          <h1 className="text-3xl font-bold text-foreground">Create New Batch</h1>
+          <h1 className="text-3xl font-bold text-foreground">Create New Transfer</h1>
         </div>
       </div>
 
