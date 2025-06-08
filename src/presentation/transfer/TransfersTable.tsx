@@ -1,7 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { CheckCircle, XCircle, Loader2, AlertCircle } from 'lucide-react'
+import { CheckCircle, XCircle, Loader2, AlertCircle, Fullscreen } from 'lucide-react'
 import { cn, formatDateLong, formatDateTime } from "@/lib/utils"
 import { Transfer } from "@/domain/model/transfer/Transfer";
 import useViewModel from "./TransfersTableViewModel";
@@ -50,18 +50,26 @@ export default function TransfersTable({
             <TableHead className="font-semibold text-muted-foreground">Receiver ID</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Transfer Date</TableHead>
             <TableHead className="font-semibold text-muted-foreground">Status</TableHead>
-            <TableHead className="font-semibold text-muted-foreground text-center">Actions / Receive Date</TableHead>
+            <TableHead className="font-semibold text-muted-foreground">Receive Date</TableHead>
+            <TableHead className="font-semibold text-muted-foreground text-center">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="text-card-foreground">
           {transfers.map((transfer) => {
             const isCurrentUserReceiver = transfer.ReceiverID === currentUserId;
             const transferActionState = actionStates[transfer.ID] || { isLoading: false };
+            const isRejected = transfer.ReceiveDate && !transfer.isAccepted;
 
             return (
               <TableRow
                 key={transfer.ID}
-                className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors"
+                className={cn(
+                  "border-b border-border last:border-b-0 transition-colors",
+                  !isCurrentUserReceiver ?
+                    "bg-primary/10 hover:bg-primary/20"
+                    :
+                    "hover:bg-muted/30"
+                )}
               >
                 <TableCell className="font-medium text-foreground">{transfer.ID}</TableCell>
                 <TableCell>{isCurrentUserReceiver ? "Receiver" : "Sender"}</TableCell>
@@ -73,14 +81,31 @@ export default function TransfersTable({
                     variant="outline"
                     className={cn(
                       "capitalize font-medium px-2.5 py-0.5 text-xs",
-                      transfer.isAccepted &&
-                      "bg-green-100 text-green-800 border-green-300 dark:bg-green-900/50 dark:text-green-300 dark:border-green-700",
-                      !transfer.isAccepted &&
-                      "bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900/50 dark:text-yellow-300 dark:border-yellow-700"
+                      transfer.isAccepted ?
+                        "bg-green-100 text-green-800 border-green-300 dark:bg-green-900/50 dark:text-green-300 dark:border-green-700"
+                        : isRejected ?
+                          "bg-red-100 text-red-800 border-red-300 dark:bg-red-900/50 dark:text-red-300 dark:border-red-700"
+                          :
+                          "bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900/50 dark:text-yellow-300 dark:border-yellow-700"
                     )}
                   >
-                    {transfer.isAccepted ? "Accepted" : transfer.ReceiveDate ? "Rejected" : "Pending"}
+                    {transfer.isAccepted ? "Accepted" : isRejected ? "Rejected" : "Pending"}
                   </Badge>
+                </TableCell>
+                <TableCell>
+                  {transferActionState.isLoading ? (
+                    <Loader2 className="h-5 w-5 animate-spin mx-auto" />
+                  ) : transferActionState.error ? (
+                    <div className="flex items-center justify-center text-destructive" title={transferActionState.error}>
+                      <AlertCircle className="h-5 w-5 mr-1" /> Error
+                    </div>
+                  ) : transfer.ReceiveDate ? (
+                    formatDateTime(transfer.ReceiveDate)
+                  ) : transfer.isAccepted ? (
+                    'N/A'
+                  ) : (
+                    'Not Yet Actioned'
+                  )}
                 </TableCell>
                 <TableCell className="text-center">
                   {transferActionState.isLoading ? (
@@ -89,31 +114,37 @@ export default function TransfersTable({
                     <div className="flex items-center justify-center text-destructive" title={transferActionState.error}>
                       <AlertCircle className="h-5 w-5 mr-1" /> Error
                     </div>
-                  ) : !transfer.isAccepted && isCurrentUserReceiver ? (
+                  ) : (
                     <div className="flex justify-center gap-2">
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => handleAccept(transfer.ID)}
-                        className="bg-green-500 hover:bg-green-600 text-white border-green-600"
+                        className="bg-blue-500 hover:bg-blue-600 text-white border-blue-600"
                       >
-                        <CheckCircle className="h-4 w-4 mr-1.5" /> Accept
+                        <Fullscreen className="h-4 w-4 mr-0.5" /> View
                       </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleReject(transfer.ID)}
-                        className="bg-red-500 hover:bg-red-600 text-white border-red-600"
-                      >
-                        <XCircle className="h-4 w-4 mr-1.5" /> Reject
-                      </Button>
+                      {!transfer.isAccepted && !isRejected && isCurrentUserReceiver && (
+                        <>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleAccept(transfer.ID)}
+                            className="bg-green-500 hover:bg-green-600 text-white border-green-600"
+                          >
+                            <CheckCircle className="h-4 w-4 mr-0.5" /> Accept
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleReject(transfer.ID)}
+                            className="bg-red-500 hover:bg-red-600 text-white border-red-600"
+                          >
+                            <XCircle className="h-4 w-4 mr-0.5" /> Reject
+                          </Button>
+                        </>
+                      )}
                     </div>
-                  ) : transfer.ReceiveDate ? (
-                    formatDateTime(transfer.ReceiveDate)
-                  ) : transfer.isAccepted ? (
-                    'N/A'
-                  ) : (
-                    'Not Yet Actioned'
                   )}
                 </TableCell>
               </TableRow>

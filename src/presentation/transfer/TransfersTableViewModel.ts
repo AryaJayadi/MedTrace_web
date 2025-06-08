@@ -1,10 +1,10 @@
-import { ProcessTransferRequest } from "@/domain/model/dto/ProcessTransferRequest";
 import { AcceptTransfer } from "@/domain/usecase/transfer/AcceptTransfer";
 import { RejectTransfer } from "@/domain/usecase/transfer/RejectTransfer";
 import { TransferApiDataSource } from "@/data/datasource/api/TransferApiDataSource";
 import { TransferRepositoryDataSource } from "@/data/repository/TransferRepositoryDataSource";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { ProcessTransferRequest } from "@/domain/model/transfer/ProcessTransferRequest";
 
 export default function TransfersTableViewModel(onTransferUpdate: () => void) {
   const transferDataSource = useMemo(() => new TransferApiDataSource(), []);
