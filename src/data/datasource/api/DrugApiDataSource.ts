@@ -30,6 +30,11 @@ export class DrugApiDataSource implements DrugDataSource {
     return response.data;
   }
 
+  async getDrugsByTransfer(transferID: string): Promise<BaseListResponse<Drug>> {
+    const response = await axiosInstance.get<BaseListResponse<Drug>>(`${DRUGS_API_PATH}/transfer/${transferID}`);
+    return response.data
+  }
+
   async getMyAvailDrugs(): Promise<BaseListResponse<Drug>> {
     const response = await axiosInstance.get<BaseListResponse<Drug>>(`${DRUGS_API_PATH}/my/available`);
     return response.data;

@@ -9,6 +9,7 @@ export interface DrugDataSource {
   getMyDrugs(): Promise<BaseListResponse<Drug>>;
   getDrug(drugID: string): Promise<BaseValueResponse<Drug>>;
   getDrugsByBatch(batchID: string): Promise<BaseListResponse<Drug>>;
+  getDrugsByTransfer(transferID: string): Promise<BaseListResponse<Drug>>;
   getMyAvailDrugs(): Promise<BaseListResponse<Drug>>;
   getHistoryDrug(drugID: string): Promise<BaseListResponse<HistoryDrug>>;
 } 

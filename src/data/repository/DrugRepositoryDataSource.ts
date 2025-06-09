@@ -25,6 +25,10 @@ export class DrugRepositoryDataSource implements DrugRepository {
     return this.drugApiDataSource.getDrugsByBatch(batchID);
   }
 
+  async getDrugsByTransfer(transferID: string): Promise<BaseListResponse<Drug>> {
+    return this.drugApiDataSource.getDrugsByTransfer(transferID)
+  }
+
   async getMyAvailDrugs(): Promise<BaseListResponse<Drug>> {
     return this.drugApiDataSource.getMyAvailDrugs();
   }
