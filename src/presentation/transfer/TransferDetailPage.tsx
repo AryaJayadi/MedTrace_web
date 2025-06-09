@@ -1,11 +1,13 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ROUTES } from "@/core/Routes";
 import { cn, formatDateLong } from "@/lib/utils";
-import { AlertTriangle, ArrowLeft, Building, CalendarArrowUp, CalendarCheck, Fullscreen, Loader2, MapPin } from "lucide-react";
+import { AlertTriangle, ArrowLeft, Building, CalendarCheck, ChevronsUpDown, Loader2, MapPin, Package, Search } from "lucide-react";
 import { Link, useParams } from "react-router";
 import useViewModel from "./TransferDetailPageViewModel.ts"
 import { Badge } from "@/components/ui/badge.tsx";
-import DrugsTable from "../drug/DrugsTable.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table.tsx";
+import { CalendarArrowUp } from "lucide-react";
 
 export default function TransferDetailPage() {
   const { transferID } = useParams();
@@ -16,6 +18,8 @@ export default function TransferDetailPage() {
     drugViewModels,
     drugViewModelsIsLoading,
     drugViewModelsError,
+    batchSearchQuery,
+    setBatchSearchQuery,
   } = useViewModel(transferID || "");
 
   const status = transfer ? transfer.isAccepted ? "Accepted" : transfer.ReceiveDate ? "Rejected" : "Pending" : "Pending"
@@ -46,28 +50,26 @@ export default function TransferDetailPage() {
           <ArrowLeft className="h-5 w-5" />
         </Link>
         <div className="flex items-center gap-2 mb-3">
-          <Fullscreen className="h-9 w-9 text-primary" />
-          <h1 className="text-3xl font-bold text-foreground">Transfer {transferID}</h1>
+          <ChevronsUpDown className="h-9 w-9 text-primary" />
+          <h1 className="text-3xl font-bold text-foreground">Transfer Details</h1>
         </div>
       </div>
 
       <div className="space-y-6">
         <Card className="bg-card text-card-foreground shadow-lg">
-          <CardHeader className="border-b border-border items-center">
-            <CardTitle className="flex flex-row justify-between items-center">
-              <div className="text-lg font-semibold text-foreground whitespace-nowrap">
-                Transfer Information
-              </div>
-              <Badge
-                variant="outline"
-                className={cn(
-                  "capitalize font-semibold px-2.5 py-0.5 text-lg",
-                  badgeStyle()
-                )}
-              >
-                {status}
-              </Badge>
+          <CardHeader className="border-b border-border p-4 flex flex-row justify-between items-center">
+            <CardTitle className="text-lg font-semibold text-foreground whitespace-nowrap">
+              Transfer Information
             </CardTitle>
+            <Badge
+              variant="outline"
+              className={cn(
+                "capitalize font-semibold px-2.5 py-0.5 text-sm",
+                badgeStyle()
+              )}
+            >
+              {status}
+            </Badge>
           </CardHeader>
           <CardContent className="p-6 space-y-4">
             <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
@@ -109,7 +111,7 @@ export default function TransferDetailPage() {
                     Sender Name
                   </div>
                   <div className="font-medium text-foreground">
-                    {sender?.Name || "Sender Name"}
+                    {sender?.Name || "Loading..."}
                   </div>
                 </div>
               </div>
@@ -122,7 +124,7 @@ export default function TransferDetailPage() {
                     Sender Location
                   </div>
                   <div className="font-medium text-foreground">
-                    {sender?.Location || "Sender Location"}
+                    {sender?.Location || "Loading..."}
                   </div>
                 </div>
               </div>
@@ -138,7 +140,7 @@ export default function TransferDetailPage() {
                     Receiver Name
                   </div>
                   <div className="font-medium text-foreground">
-                    {receiver?.Name || "Receiver Name"}
+                    {receiver?.Name || "Loading..."}
                   </div>
                 </div>
               </div>
@@ -151,7 +153,7 @@ export default function TransferDetailPage() {
                     Receiver Location
                   </div>
                   <div className="font-medium text-foreground">
-                    {receiver?.Location || "Receiver Location"}
+                    {receiver?.Location || "Loading..."}
                   </div>
                 </div>
               </div>
@@ -160,26 +162,73 @@ export default function TransferDetailPage() {
         </Card>
 
         <Card className="bg-card text-card-foreground shadow-lg">
-          <CardHeader className="border-b border-border p-4">
+          <CardHeader className="border-b border-border flex flex-col sm:flex-row items-center justify-between gap-3 p-4">
             <CardTitle className="text-lg font-semibold text-foreground whitespace-nowrap">
-              Select Batches for Transfer
+              Transferred Items
             </CardTitle>
-            <CardContent className="p-0">
-              {drugViewModelsIsLoading ? (
-                <div className="h-60 flex items-center justify-center text-muted-foreground">
-                  <Loader2 className="h-8 w-8 animate-spin mr-2" /> Loading available batches & drug data...
-                </div>
-              ) : drugViewModels && drugViewModels.length > 0 ? (
-                <DrugsTable viewModels={drugViewModels} />
-              ) : (
-                <div className="h-60 flex flex-col items-center justify-center text-destructive p-4 text-center">
-                  <AlertTriangle className="h-8 w-8 mb-2" />
-                  <p className="font-semibold">Error loading batch/drug data:</p>
-                  <p className="text-sm">{drugViewModelsError?.message || "There seems to be an error loading drugs..."}</p>
-                </div>
-              )}
-            </CardContent>
+            <div className="relative w-full sm:w-72">
+              <Input
+                placeholder="Search by Batch ID or Drug Name..."
+                className="border-input focus:ring-2 focus:ring-ring pl-10 placeholder:text-muted-foreground"
+                value={batchSearchQuery}
+                onChange={(e) => setBatchSearchQuery(e.target.value)}
+                disabled={drugViewModelsIsLoading}
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            </div>
           </CardHeader>
+          <CardContent className="p-0">
+            {drugViewModelsIsLoading ? (
+              <div className="h-60 flex items-center justify-center text-muted-foreground">
+                <Loader2 className="h-8 w-8 animate-spin mr-2" /> Loading transferred items...
+              </div>
+            ) : drugViewModelsError ? (
+              <div className="h-60 flex flex-col items-center justify-center text-destructive p-4 text-center">
+                <AlertTriangle className="h-8 w-8 mb-2" />
+                <p className="font-semibold">Error loading transferred items:</p>
+                <p className="text-sm">{drugViewModelsError?.message || "An unknown error occurred."}</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader className="bg-muted/50">
+                    <TableRow className="border-b-0">
+                      <TableHead className="font-semibold text-muted-foreground">Batch ID</TableHead>
+                      <TableHead className="font-semibold text-muted-foreground">Drug Name</TableHead>
+                      <TableHead className="font-semibold text-muted-foreground">Production Date</TableHead>
+                      <TableHead className="font-semibold text-muted-foreground">Expiry Date</TableHead>
+                      <TableHead className="font-semibold text-muted-foreground text-right">Transferred Qty</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="text-card-foreground">
+                    {drugViewModels.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={5} className="h-40 text-center text-muted-foreground">
+                          <div className="flex flex-col items-center justify-center py-6">
+                            <Package className="h-10 w-10 text-muted-foreground/50 mb-3" />
+                            {batchSearchQuery ? 'No items match your search.' : 'No items were found in this transfer.'}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      drugViewModels.map((item) => (
+                        <TableRow
+                          key={item.BatchID}
+                          className="border-b border-border last:border-b-0 hover:bg-muted/30 transition-colors"
+                        >
+                          <TableCell className="font-medium text-foreground py-3">{item.BatchID}</TableCell>
+                          <TableCell className="py-3">{item.DrugName}</TableCell>
+                          <TableCell className="py-3">{formatDateLong(item.ProductionDate)}</TableCell>
+                          <TableCell className="py-3">{formatDateLong(item.ExpiryDate)}</TableCell>
+                          <TableCell className="text-right py-3">{item.Quantity.toLocaleString()}</TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </CardContent>
         </Card>
       </div>
     </div >

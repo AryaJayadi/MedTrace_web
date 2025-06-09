@@ -22,8 +22,9 @@ export default function TransferDetailPageViewModel(transferID: string) {
     user,
     otherOrgs,
   } = useAuth();
-  const [transfer, setTransfer] = useState<Transfer | null>(null)
-  const [receiver, setReceiver] = useState<Organization | null>(null)
+  const [transfer, setTransfer] = useState<Transfer | null>(null);
+  const [receiver, setReceiver] = useState<Organization | null>(null);
+  const [batchSearchQuery, setBatchSearchQuery] = useState("");
 
   const batchDataSource = useMemo(() => new BatchApiDataSource(), []);
   const batchRepository = useMemo(() => new BatchRepositoryDataSource(batchDataSource), [batchDataSource]);
@@ -62,6 +63,9 @@ export default function TransferDetailPageViewModel(transferID: string) {
         curr.push(drug);
         drugsMap.set(drug.BatchID, curr);
       })
+    } else if (resp.error) {
+      res.error = resp.error;
+      return res;
     }
 
     drugsMap.forEach((drugs, batchID) => {
@@ -79,13 +83,29 @@ export default function TransferDetailPageViewModel(transferID: string) {
     res.list = drugViewModels;
     res.error = undefined;
     return res;
-  }, [getDrugsByTransferUseCase]);
+  }, [getDrugsByTransferUseCase, getAllBatchesUseCase, transferID]);
+  
   const {
     list: drugViewModels,
     isLoading: drugViewModelsIsLoading,
     error: drugViewModelsError,
     execute: fetchDrugViewModels
   } = useApiRequest<DrugViewModel, []>(getDrugViewModel)
+
+  const filteredDrugViewModels = useMemo(() => {
+    if (!drugViewModels) {
+      return [];
+    }
+    const query = batchSearchQuery.toLowerCase();
+    if (!query) {
+      return drugViewModels;
+    }
+    return drugViewModels.filter(
+      (vm) =>
+        vm.BatchID.toLowerCase().includes(query) ||
+        vm.DrugName.toLowerCase().includes(query)
+    );
+  }, [drugViewModels, batchSearchQuery]);
 
   useEffect(() => {
     fetchDrugViewModels()
@@ -110,9 +130,10 @@ export default function TransferDetailPageViewModel(transferID: string) {
     transfer,
     sender: user,
     receiver,
-    drugViewModels,
+    drugViewModels: filteredDrugViewModels,
     drugViewModelsIsLoading,
     drugViewModelsError,
-    fetchDrugViewModels
+    batchSearchQuery,
+    setBatchSearchQuery,
   }
 }
