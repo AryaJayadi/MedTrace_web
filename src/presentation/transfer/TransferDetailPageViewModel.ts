@@ -88,6 +88,10 @@ export default function TransferDetailPageViewModel(transferID: string) {
   } = useApiRequest<DrugViewModel, []>(getDrugViewModel)
 
   useEffect(() => {
+    fetchDrugViewModels()
+  }, [fetchDrugViewModels]);
+
+  useEffect(() => {
     getTranfser().then(result => {
       if (result.success && result.value) {
         setTransfer(result.value);
