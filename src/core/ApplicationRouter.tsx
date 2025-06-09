@@ -17,6 +17,7 @@ import ForbiddenPage from "@/presentation/util/ForbiddenPage";
 import TraceDrugQRPage from "@/presentation/drug/TraceDrugQRPage";
 import UpdateBatchPage from "@/presentation/batch/UpdateBatchPage";
 import TransferDetailPage from "@/presentation/transfer/TransferDetailPage";
+import { ThemeProvider } from "@/components/theme-provider";
 
 interface ProtectedRouteProps {
   redirectPath?: string;
@@ -77,9 +78,11 @@ const BatchPageWrapper = () => {
 
 const Root = () => {
   return (
-    <AuthProvider>
-      <RootLayout />
-    </AuthProvider>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <AuthProvider>
+        <RootLayout />
+      </AuthProvider>
+    </ThemeProvider>
   )
 }
 

@@ -1,43 +1,24 @@
 import { Activity, ChevronDown, LogOut, Moon, Sun } from "lucide-react"
 import { Link } from "react-router"
-import { useState, useEffect } from "react"
 import { getInitials } from "@/lib/utils";
 import { useAuth } from "@/presentation/context/AuthContext";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "./ui/avatar";
+import { useTheme } from "./theme-provider";
 
 export default function Header() {
   const {
     user,
     logout
   } = useAuth()
-
+  const { theme, setTheme } = useTheme()
   const manufacturerName = user?.Name || "PT Manufacturer Pharmacy";
   const manufacturerLocation = user?.Location || "Bandung"
 
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedTheme = localStorage.getItem("theme");
-      if (savedTheme) {
-        return savedTheme;
-      }
-    }
-    return "light";
-  });
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (theme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-      localStorage.setItem("theme", theme);
-    }
-  }, [theme]);
-
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+    if (theme === "system") setTheme("dark")
+    if (theme === "dark") setTheme("light")
+    if (theme === "light") setTheme("dark")
   };
 
   return (
