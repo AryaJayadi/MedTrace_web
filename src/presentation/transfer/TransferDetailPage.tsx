@@ -1,10 +1,11 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ROUTES } from "@/core/Routes";
 import { cn, formatDateLong } from "@/lib/utils";
-import { ArrowLeft, Building, CalendarArrowUp, CalendarCheck, Fullscreen, MapPin } from "lucide-react";
+import { AlertTriangle, ArrowLeft, Building, CalendarArrowUp, CalendarCheck, Fullscreen, Loader2, MapPin } from "lucide-react";
 import { Link, useParams } from "react-router";
 import useViewModel from "./TransferDetailPageViewModel.ts"
 import { Badge } from "@/components/ui/badge.tsx";
+import DrugsTable from "../drug/DrugsTable.tsx";
 
 export default function TransferDetailPage() {
   const { transferID } = useParams();
@@ -12,6 +13,9 @@ export default function TransferDetailPage() {
     transfer,
     sender,
     receiver,
+    drugViewModels,
+    drugViewModelsIsLoading,
+    drugViewModelsError,
   } = useViewModel(transferID || "");
 
   const status = transfer ? transfer.isAccepted ? "Accepted" : transfer.ReceiveDate ? "Rejected" : "Pending" : "Pending"
@@ -153,6 +157,29 @@ export default function TransferDetailPage() {
               </div>
             </div>
           </CardContent>
+        </Card>
+
+        <Card className="bg-card text-card-foreground shadow-lg">
+          <CardHeader className="border-b border-border p-4">
+            <CardTitle className="text-lg font-semibold text-foreground whitespace-nowrap">
+              Select Batches for Transfer
+            </CardTitle>
+            <CardContent className="p-0">
+              {drugViewModelsIsLoading ? (
+                <div className="h-60 flex items-center justify-center text-muted-foreground">
+                  <Loader2 className="h-8 w-8 animate-spin mr-2" /> Loading available batches & drug data...
+                </div>
+              ) : drugViewModels && drugViewModels.length > 0 ? (
+                <DrugsTable viewModels={drugViewModels} />
+              ) : (
+                <div className="h-60 flex flex-col items-center justify-center text-destructive p-4 text-center">
+                  <AlertTriangle className="h-8 w-8 mb-2" />
+                  <p className="font-semibold">Error loading batch/drug data:</p>
+                  <p className="text-sm">{drugViewModelsError?.message || "There seems to be an error loading drugs..."}</p>
+                </div>
+              )}
+            </CardContent>
+          </CardHeader>
         </Card>
       </div>
     </div >
