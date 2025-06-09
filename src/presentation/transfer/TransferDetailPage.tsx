@@ -164,7 +164,7 @@ export default function TransferDetailPage() {
         <Card className="bg-card text-card-foreground shadow-lg">
           <CardHeader className="border-b border-border flex flex-col sm:flex-row items-center justify-between gap-3 p-4">
             <CardTitle className="text-lg font-semibold text-foreground whitespace-nowrap">
-              Transferred Items
+              Transferred Drugs
             </CardTitle>
             <div className="relative w-full sm:w-72">
               <Input
@@ -180,12 +180,12 @@ export default function TransferDetailPage() {
           <CardContent className="p-0">
             {drugViewModelsIsLoading ? (
               <div className="h-60 flex items-center justify-center text-muted-foreground">
-                <Loader2 className="h-8 w-8 animate-spin mr-2" /> Loading transferred items...
+                <Loader2 className="h-8 w-8 animate-spin mr-2" /> Loading transferred drugs...
               </div>
             ) : drugViewModelsError ? (
               <div className="h-60 flex flex-col items-center justify-center text-destructive p-4 text-center">
                 <AlertTriangle className="h-8 w-8 mb-2" />
-                <p className="font-semibold">Error loading transferred items:</p>
+                <p className="font-semibold">Error loading transferred drugs:</p>
                 <p className="text-sm">{drugViewModelsError?.message || "An unknown error occurred."}</p>
               </div>
             ) : (

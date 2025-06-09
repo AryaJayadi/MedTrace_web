@@ -23,6 +23,7 @@ export default function TransferDetailPageViewModel(transferID: string) {
     otherOrgs,
   } = useAuth();
   const [transfer, setTransfer] = useState<Transfer | null>(null);
+  const [sender, setSender] = useState<Organization | null>(null);
   const [receiver, setReceiver] = useState<Organization | null>(null);
   const [batchSearchQuery, setBatchSearchQuery] = useState("");
 
@@ -84,7 +85,7 @@ export default function TransferDetailPageViewModel(transferID: string) {
     res.error = undefined;
     return res;
   }, [getDrugsByTransferUseCase, getAllBatchesUseCase, transferID]);
-  
+
   const {
     list: drugViewModels,
     isLoading: drugViewModelsIsLoading,
@@ -120,15 +121,21 @@ export default function TransferDetailPageViewModel(transferID: string) {
   }, [getTranfser]);
 
   useEffect(() => {
-    if (transfer && otherOrgs.length > 0) {
-      const foundReceiver = otherOrgs.find(org => org.ID === transfer.ReceiverID);
-      setReceiver(foundReceiver || null);
+    if (transfer && user && otherOrgs.length > 0) {
+      const orgs = [...otherOrgs, user]
+      orgs.forEach(o => {
+        if (o.ID === transfer.SenderID) {
+          setSender(o)
+        } else if (o.ID === transfer.ReceiverID) {
+          setReceiver(o)
+        }
+      })
     }
   }, [transfer, otherOrgs])
 
   return {
     transfer,
-    sender: user,
+    sender,
     receiver,
     drugViewModels: filteredDrugViewModels,
     drugViewModelsIsLoading,
