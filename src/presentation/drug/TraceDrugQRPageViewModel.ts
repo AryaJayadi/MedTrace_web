@@ -1,16 +1,42 @@
 import { useApiRequest } from "@/core/hooks/useApiRequest"
 import { DrugApiDataSource } from "@/data/datasource/api/DrugApiDataSource"
 import { DrugRepositoryDataSource } from "@/data/repository/DrugRepositoryDataSource"
-import { HistoryDrug } from "@/domain/model/history/HistoryDrug"
 import { GetHistoryDrug } from "@/domain/usecase/history/GetHistoryDrug"
 import { useCallback, useEffect, useMemo } from "react"
+import { TimelineData } from "./TimelineData"
+import { BaseListResponse } from "@/domain/model/response/BaseListResponse"
+import { ErrorInfo } from "@/domain/model/response/ErrorInfo"
+import { useAuth } from "../context/AuthContext"
+import { formatDateLong } from "@/lib/utils"
+import { JSX } from "react/jsx-runtime"
+import { errorListResponse, successListResponse } from "@/lib/ResponseHelper"
 
-export default function TraceDrugQRPageViewModel(drugID: string) {
+export default function TraceDrugQRPageViewModel(drugID: string, icon: JSX.Element) {
+  const {
+    user,
+    otherOrgs,
+  } = useAuth()
+
   const drugDataSource = useMemo(() => new DrugApiDataSource(), [])
   const drugRepository = useMemo(() => new DrugRepositoryDataSource(drugDataSource), [drugDataSource])
   const getHistoryDrugUseCase = useMemo(() => new GetHistoryDrug(drugRepository), [drugRepository])
   const fetchDrugHistory = useCallback(async () => {
-    return await getHistoryDrugUseCase.execute(drugID)
+    const histories = await getHistoryDrugUseCase.execute(drugID)
+    if (!histories.success || histories.list === undefined) return errorListResponse(500, "An error occurred while fetching timeline data.")
+    if (user === null || otherOrgs.length === 0) return errorListResponse(400, "User or organizaiton is missing.")
+
+    const orgs = [...otherOrgs, user]
+    const models = histories.list.map(o => (
+      {
+        date: formatDateLong(o.Timestamp),
+        organization: `Owner: ${orgs.find(org => org?.ID === o.Drug.OwnerID) || "-"}.`,
+        location: o.Drug.Location ? `Location: ${o.Drug.Location}` : "N/A",
+        type: o.IsDelete ? "Deleted" : "Updated/Created",
+        icon: icon,
+      }
+    )) as [TimelineData]
+
+    return successListResponse(models)
   }, [getHistoryDrugUseCase])
 
   const {
@@ -19,7 +45,7 @@ export default function TraceDrugQRPageViewModel(drugID: string) {
     error: apiError,
     execute: triggerFetchDrugHistory,
     success: fetchSuccess,
-  } = useApiRequest<HistoryDrug, []>(fetchDrugHistory)
+  } = useApiRequest<TimelineData, []>(fetchDrugHistory)
 
   useEffect(() => {
     triggerFetchDrugHistory()

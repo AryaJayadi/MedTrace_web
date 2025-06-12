@@ -1,7 +1,9 @@
+import { JSX } from "react/jsx-runtime"
+
 export interface TimelineData {
   date: string
   organization: string
   location: string
   type: string
-  icon: React.ReactNode
+  icon: JSX.Element
 }
