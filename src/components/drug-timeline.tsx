@@ -1,16 +1,8 @@
+import { TimelineData } from "@/presentation/drug/TimelineData";
 import type React from "react"
-import { cn } from "@/lib/utils"
-
-type TimelineItem = {
-  date: string
-  organization: string
-  location: string
-  type: string
-  icon: React.ReactNode
-}
 
 type DrugTimelineProps = {
-  timeline: TimelineItem[]
+  timeline: TimelineData[]
 }
 
 export default function DrugTimeline({ timeline }: DrugTimelineProps) {

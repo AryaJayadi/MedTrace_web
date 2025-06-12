@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Activity, AlertTriangle, Info, PackageIcon } from "lucide-react";
 import DrugTimeline from "@/components/drug-timeline";
 import { formatDate } from "@/lib/utils";
+import { TimelineData } from "./TimelineData";
 
 export default function TraceDrugQRPage() {
   const { drugID } = useParams()
@@ -21,7 +22,7 @@ export default function TraceDrugQRPage() {
     location: item.Drug.Location ? `Location: ${item.Drug.Location}` : "N/A",
     type: item.IsDelete ? "Deleted" : "Updated/Created",
     icon: <PackageIcon className="h-5 w-5" />,
-  }))
+  })) as [TimelineData]
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
