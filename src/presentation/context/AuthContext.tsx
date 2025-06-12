@@ -86,8 +86,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return result
       }
     } catch (error: any) {
-      const errorMessage = error.message || "An unexpected error occurred during login.";
-      return errorValueResponse<LoginResponse>(500, errorMessage);
+      const err = error.response.data
+      return err
     }
   }
 
