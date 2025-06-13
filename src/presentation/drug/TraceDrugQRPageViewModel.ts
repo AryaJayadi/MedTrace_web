@@ -8,6 +8,7 @@ import { useAuth } from "../context/AuthContext"
 import { formatDateLong } from "@/lib/utils"
 import { JSX } from "react/jsx-runtime"
 import { errorListResponse, successListResponse } from "@/lib/ResponseHelper"
+import { Organization } from "@/domain/model/organization/Organization"
 
 export default function TraceDrugQRPageViewModel(drugID: string, icon: JSX.Element) {
   const {
@@ -18,22 +19,21 @@ export default function TraceDrugQRPageViewModel(drugID: string, icon: JSX.Eleme
   const drugDataSource = useMemo(() => new DrugApiDataSource(), [])
   const drugRepository = useMemo(() => new DrugRepositoryDataSource(drugDataSource), [drugDataSource])
   const getHistoryDrugUseCase = useMemo(() => new GetHistoryDrug(drugRepository), [drugRepository])
-  const fetchDrugHistory = useCallback(async () => {
+  const fetchDrugHistory = useCallback(async (orgs: Organization[]) => {
     const histories = await getHistoryDrugUseCase.execute(drugID)
     if (!histories.success || histories.list === undefined) return errorListResponse(500, "An error occurred while fetching timeline data.")
-    if (user === null || otherOrgs.length === 0) return errorListResponse(400, "User or organizaiton is missing.")
+    if (orgs.length === 0) return errorListResponse(400, "Organizaiton is missing.")
 
-    const orgs = [...otherOrgs, user]
     const models = histories.list.map(o => (
       {
         date: formatDateLong(o.Timestamp),
-        organization: `Owner: ${orgs.find(org => org?.ID === o.Drug.OwnerID) || "-"}.`,
+        organization: `Owner: ${orgs.find(org => org?.ID === o.Drug.OwnerID)?.Name || "-"}.`,
         location: o.Drug.Location ? `Location: ${o.Drug.Location}` : "N/A",
         type: o.IsDelete ? "Deleted" : "Updated/Created",
         batchID: o.Drug.BatchID,
         icon: icon,
       }
-    )) as [TimelineData]
+    )) as TimelineData[]
 
     return successListResponse(models)
   }, [getHistoryDrugUseCase])
@@ -44,11 +44,11 @@ export default function TraceDrugQRPageViewModel(drugID: string, icon: JSX.Eleme
     error: apiError,
     execute: triggerFetchDrugHistory,
     success: fetchSuccess,
-  } = useApiRequest<TimelineData, []>(fetchDrugHistory)
+  } = useApiRequest<TimelineData, [Organization[]]>(fetchDrugHistory)
 
   useEffect(() => {
-    triggerFetchDrugHistory()
-  }, [])
+    if (user !== null && otherOrgs.length > 0) triggerFetchDrugHistory([user, ...otherOrgs])
+  }, [user, otherOrgs])
 
   return {
     drugHistoryFromApi,

@@ -19,7 +19,7 @@ interface AuthContextType {
   handleLogin: (request: LoginRequest) => Promise<BaseValueResponse<LoginResponse>>;
   logout: () => void;
   isAuthenticated: boolean | null;
-  user?: Organization | null;
+  user: Organization | null;
   otherOrgs: Organization[];
   organizationsIsLoading: boolean;
   organizationsError: ErrorInfo | undefined;
