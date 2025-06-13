@@ -4,8 +4,6 @@ import DrugTraceSkeleton from "./DrugTraceSkeleton";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Activity, AlertTriangle, Info, PackageIcon } from "lucide-react";
 import DrugTimeline from "@/components/drug-timeline";
-import { formatDate } from "@/lib/utils";
-import { TimelineData } from "./TimelineData";
 
 export default function TraceDrugQRPage() {
   const { drugID } = useParams()
@@ -14,15 +12,7 @@ export default function TraceDrugQRPage() {
     isLoading,
     apiError,
     fetchSuccess
-  } = useViewModel(drugID || "")
-
-  const timelineData = drugHistoryFromApi?.map(item => ({
-    date: formatDate(item.Timestamp),
-    organization: `Owner: ${item.Drug.OwnerID}`,
-    location: item.Drug.Location ? `Location: ${item.Drug.Location}` : "N/A",
-    type: item.IsDelete ? "Deleted" : "Updated/Created",
-    icon: <PackageIcon className="h-5 w-5" />,
-  })) as [TimelineData]
+  } = useViewModel(drugID || "", <PackageIcon className="h-5 w-5" />)
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -63,12 +53,12 @@ export default function TraceDrugQRPage() {
                     <h2 className="text-xl font-semibold text-foreground mb-1">Trusted by MedTrace</h2>
                     <p className="text-muted-foreground text-sm">Verified pharmaceutical supply chain history</p>
                   </div>
-                  <DrugTimeline timeline={timelineData || []} />
+                  <DrugTimeline timeline={drugHistoryFromApi || []} />
                   <div className="mt-8 pt-6 border-t border-border">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div>
                         <span className="text-sm text-muted-foreground">Batch ID:</span>
-                        <span className="ml-2 font-mono text-foreground">{drugHistoryFromApi[0].Drug.BatchID}</span>
+                        <span className="ml-2 font-mono text-foreground">{drugHistoryFromApi[0].batchID}</span>
                       </div>
                     </div>
                   </div>

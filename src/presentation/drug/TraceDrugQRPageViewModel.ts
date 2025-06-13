@@ -4,8 +4,6 @@ import { DrugRepositoryDataSource } from "@/data/repository/DrugRepositoryDataSo
 import { GetHistoryDrug } from "@/domain/usecase/history/GetHistoryDrug"
 import { useCallback, useEffect, useMemo } from "react"
 import { TimelineData } from "./TimelineData"
-import { BaseListResponse } from "@/domain/model/response/BaseListResponse"
-import { ErrorInfo } from "@/domain/model/response/ErrorInfo"
 import { useAuth } from "../context/AuthContext"
 import { formatDateLong } from "@/lib/utils"
 import { JSX } from "react/jsx-runtime"
@@ -32,6 +30,7 @@ export default function TraceDrugQRPageViewModel(drugID: string, icon: JSX.Eleme
         organization: `Owner: ${orgs.find(org => org?.ID === o.Drug.OwnerID) || "-"}.`,
         location: o.Drug.Location ? `Location: ${o.Drug.Location}` : "N/A",
         type: o.IsDelete ? "Deleted" : "Updated/Created",
+        batchID: o.Drug.BatchID,
         icon: icon,
       }
     )) as [TimelineData]
